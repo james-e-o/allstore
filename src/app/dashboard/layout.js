@@ -18,18 +18,10 @@ export default function DashboardLayout({ children }) {
        setActiveMenu(Heading[Heading.length-1])
     },[path])  
     return (   
-        <SidebarProvider className='flex bg-gray-100'>
+        <SidebarProvider className='flex bg-gray-50'>
             <AppSidebar />
-            <main className='flex-grow'>
-                <div className="h-full flex flex-col bg-gray-100 w-full">
-                    <header className="p-4 font-Voces ">
-                        {/* <SidebarTrigger/> */}
-                        <p className="font-bold">{activeMenu.toUpperCase()}</p>
-                        <p className="mt-[1px] text-gray-300 text-xs">{path}</p>
-                    </header>
-                    <Separator/>
-                    {children}
-                </div>
+            <main className='flex-grow'>              
+                {children}
             </main>
         </SidebarProvider>
     );
