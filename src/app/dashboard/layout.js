@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }) {
     return (   
         <SidebarProvider className='flex bg-gray-50'>
             <AppSidebar />
-            <main className='flex-grow'>              
+            <main className='flex-grow h-svh ml-8'>              
                 {children}
             </main>
         </SidebarProvider>

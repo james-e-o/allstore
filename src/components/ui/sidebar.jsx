@@ -21,7 +21,7 @@ import {
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "13rem"
-const SIDEBAR_WIDTH_MOBILE = "18rem"
+const SIDEBAR_WIDTH_MOBILE = "14rem"
 const SIDEBAR_WIDTH_ICON = "2rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
@@ -170,7 +170,7 @@ const Sidebar = React.forwardRef((
             }
           }
           side={side}>
-          <div className="flex h-full w-full flex-col bg-gray-100">{children}</div>
+          <div className="flex h-full w-full flex-col bg-gray-50">{children}</div>
         </div>
       </Sheet>)
     );

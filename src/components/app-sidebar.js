@@ -31,32 +31,32 @@ const AppSidebar = () => {
   } = useSidebar()
 
   return (
-    <Sidebar side='left' collapsible="icon"  className='bg-gray-100' >
+    <Sidebar side='left' collapsible="icon"  className='bg-gray-50' >
       {/* {isMobile && <DialogTitle/>} */}
-      <div className=" h-full rounded-2xl overflow-clip bg-gray-950">
+      <div data-mobile={openMobile} className="transition-[_padding_250ms_ease-in-out_] h-full rounded-e-lg justify-between flex flex-col data-[mobile=true]:px-3 px-0 overflow-clip bg-gray-950">
       <SidebarHeader className='p-6 h-fit bg-gray-950 text-white'>
         <div className="flex justify-center items-center">
-          <h1 className="font-bold font-Madetommy text-lg">nexShelf</h1>
+          <h1 className="font-bold font-Madetommy md:block hidden text-lg">nexShelf</h1>
         </div>
       </SidebarHeader>
       <SidebarTrigger/>
       {/* <SidebarSeparator/> */}
-      <SidebarContent className='px-2 font-semibold py-9 flex flex-col items-center bg-gray-950 text-white'>
+      <SidebarContent className='font-semibold py-9 min-h-fit flex flex-col gap-0 p-0 items-center bg-gray-950 text-white'>
 
-            <SidebarMenu className='gap-1'>
+            <SidebarMenu className='text-xs gap-1'>
               {items.map((item) => (
-                <SidebarMenuItem className='mt-1' key={item.title}>
+                <SidebarMenuItem className='' key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} className="text-[0.8125rem] px-4">
-                      {item.icon && <item.icon/>}
-                      {item.title}
+                    <Link href={item.url} data-mobile={openMobile} className="flex text-xs transition-[_border-radius_300ms_ease-in-out_] duration-300 data-[mobile=true]:rounded-md rounded-none  items-center">
+                      {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-3"/>}
+                      <span className="w-fit">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
-                  {item.sub_content ? <SidebarMenuSub className='border-none'>
+                  {item.sub_content ? <SidebarMenuSub className='border-none '>
                   {item.sub_content.map((sub,index)=>(
-                      <SidebarMenuSubItem key={index}>
+                      <SidebarMenuSubItem key={index} className='ml-4'>
                         <SidebarMenuSubButton asChild>
-                          <Link href={sub.url} className="text-[0.8125rem] px-2">
+                          <Link href={sub.url} className="text-xs px-2">
                             {sub.icon && <sub.icon/>}
                             {sub.title}
                           </Link>
@@ -69,7 +69,6 @@ const AppSidebar = () => {
             </SidebarMenu>
           
       </SidebarContent>
-      <SidebarSeparator/>
       <SidebarFooter>
               helloo
       </SidebarFooter>
