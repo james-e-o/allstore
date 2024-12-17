@@ -12,17 +12,20 @@ export default function DashboardLayout({ children }) {
     const [activeMenu, setActiveMenu] = useState('')
     let split = path.split('/')
     const commonTitle = items.map(item=>item.title.toLowerCase())
+
+    const[sidebarActive,setSidebarActive]=useState(false)
     
     useEffect(()=>{
        let Heading = commonTitle.filter(value => split.includes(value))
        setActiveMenu(Heading[Heading.length-1])
-    },[path])  
+    },[path]) 
+   
     return (   
-        <SidebarProvider className='flex bg-gray-50'>
-            <AppSidebar />
-            <main className='flex-grow h-svh ml-8'>              
-                {children}
+        <div className='flex bg-gray-50 h-full overflow-hidden'>
+            <AppSidebar sidebarOpen={sidebarActive} activeMenu={activeMenu} toggleSidebar={()=>setSidebarActive(!sidebarActive)} closeSidebar={()=>setSidebarActive(false)} openSidebar={()=>setSidebarActive(true)}/>
+            <main className='flex-grow h-svh'>              
+            {children}
             </main>
-        </SidebarProvider>
+        </div>
     );
  }
