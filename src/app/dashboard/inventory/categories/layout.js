@@ -2,8 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link";
-// import { db } from "@/firebase/config";
-// import { collection,addDoc,onSnapshot,updateDoc,deleteDoc,getDoc,getDocs } from "firebase/firestore";
+
 
 
 

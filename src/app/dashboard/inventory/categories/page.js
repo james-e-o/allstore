@@ -56,6 +56,8 @@ const Categories = () => {
           ...doc.data()
         }))
       )
+    },(error)=>{
+      throw new Error('Cannot retrieve data, chech your internet connection')
     })
 
     return (
@@ -134,7 +136,7 @@ const CategoryLanding = ({changeInterface,categoryList}) => {
 
           {search!=''&&searchFilter!=''?searchFilter.map((item,index)=>(
             <CategoryItem key={item.id} Category={item.name}/>
-          )): search!=''&&searchFilter==''? <div className="p-4 text-sm text-center">Category not found</div>:categoryList.map((item,index)=>(
+          )): search!=''&&searchFilter==''? <div className="p-4 text-xs text-center">Category not found</div>:categoryList.map((item,index)=>(
             <CategoryItem key={item.id} Category={item.name}/>
           ))}
           
