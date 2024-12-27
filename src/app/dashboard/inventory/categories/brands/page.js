@@ -2,18 +2,18 @@
 import { Button } from "@/components/ui/button";
 import { MoveLeftIcon, Plus, Search,Check, ChevronsUpDown, ChevronUp, ChevronDown, Edit2, } from "lucide-react"
 import { useState,useRef, useEffect } from "react";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+// import { Switch } from "@/components/ui/switch";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+// import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
+// import { cn } from "@/lib/utils"
+// import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command"
+// import { Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
+// import { Label } from "@/components/ui/label";
+// import { Input } from "@/components/ui/input";
 import { db } from "@/firebase/config";
-import { collection,addDoc,onSnapshot,updateDoc,deleteDoc,getDoc,getDocs } from "firebase/firestore";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { collection,addDoc, } from "firebase/firestore";
+// import { Separator } from "@/components/ui/separator";
+// import { ScrollArea } from "@/components/ui/scroll-area"
 
 const categoryCollectionRef = collection(db,'categories')
  const Brands = ({changeInterface,categoryList}) => {
