@@ -59,7 +59,7 @@ export const InputBox = ({label,placeholder,error,type,width,change,value,note,t
         :
       <input data-error={error} readOnly={readonly} className={`border data-[error=true]:border-red-400 w-full rounded-md p-2`} onChange={(e)=>change(e)} type={type} placeholder={placeholder} value={value}/>}
       {error?<p className=" pl-1 -mt-1 text-[10px] text-red-400 italic">{error}</p>:""}
-      {note?<p className=" pl-1 text-[10px] text-core_grey1 italic">{note}</p>:""}
+      {note?<p className=" pl-1 text-[10px] text-gray-400 italic">{note}</p>:""}
     </div>
   )
 }

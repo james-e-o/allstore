@@ -56,7 +56,7 @@ const AddCategory = () => {
     }
 
     useEffect(()=>{
-       getDoc(categoryCollectionRef).then((snapshot) => {
+       getDocs(categoryCollectionRef).then((snapshot) => {
           let data =[]
           snapshot.docs.forEach((doc)=>{
             data.push({              
@@ -66,24 +66,26 @@ const AddCategory = () => {
           })
           setCategoryList(data)
           console.log(data)
+       }).catch(error=>{
+        console.log(error)
        })
     },[category,parent])
   
     return (
-        <div className="bg-white flex flex-col h-full overflow-y-scroll flex-grow rounded-md">
+        <div className="flex flex-col  overflow-y-scroll h-full rounded-md">
           <Dialog>
-            <DialogContent className="w-5/6 sm:max-w-[425px]">
+            <DialogContent className="w-5/6 sm:w-3/6">
               <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
+                <DialogTitle>Category list</DialogTitle>
                 <DialogDescription>
-                  Make changes to your profile here. Click save when you're done.
+                  Select parent categories with checkboxes.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 Hello Buzz
               </div>
               <DialogFooter>
-                <Button type="submit">Save changes</Button>
+                <Button type="submit">Done</Button>
               </DialogFooter>
             </DialogContent>
             <div className="p-2 flex w-full justify-between items-center font-Inter ">
@@ -92,26 +94,30 @@ const AddCategory = () => {
             <div className="text-xs justify-end my-1 flex ">
                 <Link href={'/dashboard/inventory/categories/'}><Button className='p-2' variant='ghost'>
                     <MoveLeftIcon className="w-4 h-4 mr-1"/>
-                    <span className="text-gray-500 text-xs font-light">All categories</span>
+                    <span className="text-xs font-light">All categories</span>
                 </Button></Link>
             </div>
             <Separator />
-            <div className="">
-                <form id="category-form" onSubmit={createCategory}>
+            <div className="flex flex-col mt-1 bg-core_grey2 p-3 rounded-md flex-grow justify-between">
+                <form id="category-form" className="flex-col flex gap-2 md:gap-5 md:grid md:grid-cols-2 " onSubmit={createCategory}>
                     <InputBox placeholder={'category name...'} label={'Category name'} change={({target})=>{capitalize(target.value),convertToSlug(target.value)}} error={error==='name'} value={category}/>
 
-                    <DialogTrigger asChild>
-                      <InputBox placeholder={'select parent category...'} label={'Parent category'} change={({target})=>{}} readonly={true} value={parent}/>
-                    </DialogTrigger>
+                    <div className="flex-col mt-2 flex">
+                      <span className="pl-[2px] mb-1 ">Parent category</span>
+                      <DialogTrigger asChild>
+                        <Button className='p-2 justify-start bg-white text-sm' variant='secondary'>
+                         {parent?parent:'select parent category...'}
+                        </Button>
+                      </DialogTrigger>                   
+                    </div> 
 
                     <InputBox placeholder={'slug...'} label={'Slug'} change={({target})=>{capitalize(target.value),convertToSlug(target.value)}} error={error==='slug'} value={slug} note={`The 'slug' is the url friendly version of the name. it is usually all lowercase and contains only letters, numbers and hyphens`}/>
 
                     <InputBox placeholder={'description...'} textarea={true} row={3} label={'Description'} change={(e)=>{setDescription(e.target.value)}} error={error==='description'} value={description} note={`details about this category`}/>
-                
-                    <div className="flex gap-3 ">
-                        <Button className='mt-2 w-full border-none text-xs rounded-md bg-core_polish font-semibold'>Create</Button>
-                    </div>
                 </form>
+                <div className="flex gap-3 ">
+                    <Button onClick={createCategory} className='mt-2 w-full border-none text-xs rounded-md bg-core_polish font-semibold'>Create</Button>
+                </div>
             </div>
             </Dialog>
       </div>

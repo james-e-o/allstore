@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function CategoriesLayout({ children }) {
   
   return (   
-    <Tabs defaultValue="products" className='flex w-full flex-col p-5 overflow-hidden h-full'>
+    <Tabs defaultValue="products" className='flex w-full flex-col p-5 overflow-hidden flex-grow'>
           {children}
     </Tabs>    
   );

@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }) {
         <div className='flex bg-gray-50 h-full overflow-hidden'>
             <AppSidebar sidebarOpen={sidebarActive} activeMenu={activeMenu} toggleSidebar={()=>setSidebarActive(!sidebarActive)} closeSidebar={()=>setSidebarActive(false)} openSidebar={()=>setSidebarActive(true)}/>
             <main className='flex-grow bg-core_grey1 p-1 h-full'> 
-                <div className="bg-white overflow-y-hidden rounded-sm h-full">                    
+                <div className="bg-white flex flex-col overflow-y-hidden rounded-sm h-full">                    
                     <header className="bg-white rounded-md p-2 mb-1 flex w-full justify-between items-center font-Inter ">
                         <p className="font-bold px-1">All stock</p>
                         <nav className={`inline-grid w-fit mt-1 overflow-x-hidden gap-2 bg-blue-400-200 rounded-[3px] border-black py-2 h-fit grid-cols-1`}>
