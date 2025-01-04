@@ -111,3 +111,17 @@ liststyle-none{
 ._accordion{
   grid-template-rows: 1fr;
 }
+
+td[data-value='actions']{
+  /* background-color: lime; */
+  width: 40px;
+  text-align: right;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+td[data-value='responsive']{
+  /* background-color: yellow; */
+  max-width: 100px;
+  text-overflow: ellipsis;
+  padding-right: 0px;
+}

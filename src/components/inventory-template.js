@@ -1,68 +1,66 @@
-'use client'
-import { useState,useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import {ColumnDef,ColumnFiltersState,SortingState,VisibilityState,flexRender,getCoreRowModel,getFilteredRowModel,getPaginationRowModel,getSortedRowModel,useReactTable,} from "@tanstack/react-table"
-import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
-import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
-import { MoveLeftIcon, Plus, Search,Check, ChevronsUpDown, ChevronUp, Edit2,ArrowUpDown, ChevronDown, Columns3, Filter, MoreHorizontal, ListCollapse, LayoutList, LayoutGrid } from "lucide-react"
+"use client"
+import { useState,useEffect } from "react"
+import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { collection,addDoc,onSnapshot} from "firebase/firestore";
-import { Separator } from "@/components/ui/separator";
-import { Checkbox } from "@/components/ui/checkbox"
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import { db } from "@/firebase/config";
-import Link from "next/link";
+import { ArrowUpDown, ChevronDown, Columns3, Filter, MoreHorizontal } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 
 
 
-
-const Categories = () => {
-    const [search , setSearch]=useState('')
-    const [searchFilter,setSearchFilter] = useState()
-
-    
-    
-
-    return (
-      <div className="bg-white flex flex-col h-full overflow-y-scroll flex-grow rounded-md mt-2">
-        <header className="flex w-full justify-between items-center font-Inter ">
-          <p className="font-bold text-sm px-0 py-1">Categories</p>
-          <nav className={`inline-grid w-fit overflow-x-hidden gap-4 bg-blue-400-200 rounded-[3px] border-black py-2 h-fit grid-cols-2`}>
-                  <Link href={'/dashboard/inventory/categories/'}><button className='p-2 relative border-transparent rounded text-xs data-[state=active]:shadow-none data-[state=active]:border-t data-[state=active]:text-white bg-secondary data-[state=active]:bg-slate-800' value="products">Products</button></Link>
-                  <Link href={'/dashboard/inventory/categories/brands'}><button className='p-2 relative border-transparent rounded text-xs data-[state=active]:shadow-none data-[state=active]:border-t data-[state=active]:text-white bg-secondary data-[state=active]:bg-slate-800' value="brand">Brands</button></Link>
-          </nav>
-        </header>
-        <Dialog>
-          <DialogContent className="w-5/6 sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
-              <DialogDescription>
-                Make changes to your profile here. Click save when you're done.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              Hello Buzz
-            </div>
-            <DialogFooter>
-              <Button type="submit">Save changes</Button>
-            </DialogFooter>
-          </DialogContent>
-          <div className="">
-              <CategoryTable />           
-          </div>
-        </Dialog>
-      </div>
-    )
-  }
-  
-  export default Categories
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table"
 
 
 
-export function CategoryTable() {
+const data = [
+  {
+    id: "m5gr84i9",
+    amount: 316,
+    status: "success",
+    email: "ken99@yahoo.com",
+  },
+  {
+    id: "3u1reuv4",
+    amount: 242,
+    status: "success",
+    email: "Abe45@gmail.com",
+  },
+  {
+    id: "derv1ws0",
+    amount: 837,
+    status: "processing",
+    email: "Monserrat44@gmail.com",
+  },
+  {
+    id: "5kma53ae",
+    amount: 874,
+    status: "success",
+    email: "Silas22@gmail.com",
+  },
+  {
+    id: "bhqecj4p",
+    amount: 721,
+    status: "failed",
+    email: "carmella@hotmail.com",
+  },
+]
+
+
+
+export function DataTableDemo() {
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
   const [columnVisibility, setColumnVisibility] = useState({})
@@ -70,40 +68,109 @@ export function CategoryTable() {
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [responsive, setResponsive] = useState('amount');
-  const [data, setData] = useState([])
 
 
   
   const columns = [
 
     {
-      accessorKey: "name",
-      header: "Category",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          className='scale-90'
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
       ),
+      cell: ({ row }) => (
+        <Checkbox
+          className='scale-90'
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
       enableHiding: false,
+    },
+    {
+      accessorKey: "status",
+      header: "Brand",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("status")}</div>
+      ),
     },
 
    {
-      id: "subcategory",
-      header: ()=> {
-        return(
-          <Button variant="ghost" className="ml-auto rounded-lg text-xs md:text-[0.8175rem] px-2">
-          {!isMobile?'Sub category':''} <ListCollapse />
+      accessorKey: "email",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+            Email
+            <ArrowUpDown />
           </Button>
         )
       },
-      cell: ({ row }) => <Button variant='outline' className='border text-xs px-3 py-0 rounded-sm'>45</Button>,
+      cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
     },
-   {
-      id: "products",
-      header: ()=>{
-        return ( <Button variant="ghost" className="ml-auto rounded-lg text-xs md:text-[0.8175rem] px-2">
-        {!isMobile?'Products':''} <LayoutGrid />
-        </Button>)
+    {
+      accessorKey: "amount",
+      header: () => <div className="text-right">Amount</div>,
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("amount"))
+        
+        // Format the amount as a dollar amount
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount)
+        
+        return <div className="text-right font-medium">{formatted}</div>
       },
-      cell: ({ row }) => <Button variant='outline' className='border text-xs px-3 py-0 rounded-sm'>45</Button>,
+    },
+
+    {
+      id: "responsive",
+      header:({table,column})=>{
+
+        return (<DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto px-2 text-xs md:text-[0.8175rem] capitalize">
+              {responsive} <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) =>  (column.getCanHide()&&column.id!='responsive'&&column.id!=responsive))
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>{
+                      setResponsive(column.id)
+                      // column.toggleVisibility(!!value)
+                     }
+                    }
+                    >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>)
+      },
+      cell: ({ row }) => <div className="lowercase">{row.getValue(responsive)}</div>,
+      
     },
   
    
@@ -115,11 +182,11 @@ export function CategoryTable() {
         const payment = row.original
         
         return (
-
           <DropdownMenu className="text-right">
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" className="h-7 text-right rounded-lg w-fit p-2">
-                <Edit2 />
+              <Button variant="ghost" className="h-8 text-right w-fit p-2">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -161,22 +228,14 @@ export function CategoryTable() {
 
     // Detect screen size
     useEffect(() => {
-      const categoryCollectionRef = collection(db,'categories')
       const handleResize = () => {
         setIsMobile(window.innerWidth <= 768); // Mobile breakpoint at 768px
       };
-      const loadData = onSnapshot(categoryCollectionRef,(snapshot)=>{
-        const loaded = snapshot.docs.map(doc=>({
-          id:doc.id,
-          ...doc.data()
-        }))
-        setData(loaded)
-      })
   
       handleResize(); // Check initial size
       window.addEventListener('resize', handleResize); // Listen for resize events
   
-      return () => {loadData(),window.removeEventListener('resize', handleResize)};
+      return () => window.removeEventListener('resize', handleResize);
     }, [])
 
     useEffect(()=>{
@@ -190,16 +249,39 @@ export function CategoryTable() {
 
       })
       setIsClient(true)
-    },[])
+    },[isMobile])
     
   if(isClient)
   return (
     <div className="w-full">
       <div className="flex items-center justify-between gap-2 py-4">
-        <Input placeholder="Search product..." value={(table.getColumn("name")?.getFilterValue()) ?? ""}
-          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)} className="max-w-sm"
+        <Input placeholder="Search product..." value={(table.getColumn("email")?.getFilterValue()) ?? ""}
+          onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-sm"
         />
         <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto px-2">
+              {!isMobile?'Filter':''} <Filter />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table.getAllColumns().filter((column) => column.getCanHide()).map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
          {!isMobile? <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto px-2">
@@ -223,18 +305,23 @@ export function CategoryTable() {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>:""}
-          <Link href={'categories/new-product-category'}><Button className='px-2 text-xs bg-core_polish font-semibold' size='sm'><Plus className="w-4 h-4"/>Add category</Button></Link>
         </div>
       </div>
       <div className="rounded-md border md:border-none">
         <Table className={`text-xs md:text-[0.8175rem] w-full`}>
+          {/* <colgroup className="">
+            <col style={{backgroundColor: 'lightblue',width:'fit-content'}}/>
+            <col style={{backgroundColor:'lightyellow',width:'fit-content'}}/>
+            <col span={table.getAllColumns().length} style={{backgroundColor:'lightpink',}}/>
+            <col style={{backgroundColor: 'lightgreen'}}/>
+            <col style={{backgroundColor: 'orange',width:'30px',textAlign:'right'}} />
+          </colgroup> */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead data-value={header.id} 
-                      className={`w-fit data-[value=products]:text-center data-[value=subcategory]:text-center`} key={header.id}>
+                    <TableHead data-value={header.id} className={`w-fit`} key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -248,7 +335,7 @@ export function CategoryTable() {
             ))}
           </TableHeader>
           <TableBody>
-            {data&&table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -257,8 +344,9 @@ export function CategoryTable() {
                   {row.getVisibleCells().map((cell,index) => (
                     <TableCell 
                       data-value={row.getVisibleCells().indexOf(cell)==index&&cell.id.split('_')[1]}  
-                      className={`w-fit data-[value=products]:text-center data-[value=subcategory]:text-center`} key={cell.id}
+                      className={`w-fit`} key={cell.id}
                       >
+                      
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -282,8 +370,8 @@ export function CategoryTable() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {data&&table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {data&&table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
           <Button

@@ -9,14 +9,7 @@ import Link from "next/link";
 export default function CategoriesLayout({ children }) {
   
   return (   
-    <Tabs defaultValue="products" className='flex w-full flex-col pl-2 pr-1 pt-2 overflow-hidden h-full'>
-          <header className="bg-white rounded-md p-2 flex w-full justify-between items-center font-Inter ">
-            <p className="font-bold px-1">Categories</p>
-            <nav className={`inline-grid w-fit mt-1 overflow-x-hidden gap-2 bg-blue-400-200 rounded-[3px] border-black py-2 h-fit grid-cols-2`}>
-                    <Link href={'/dashboard/inventory/categories/'}><button className='py-1 px-2 relative border-transparent rounded-md data-[state=active]:shadow-none data-[state=active]:border-t data-[state=active]:text-white bg-secondary data-[state=active]:bg-slate-800' value="products">Products</button></Link>
-                    <Link href={'/dashboard/inventory/categories/brands'}><button className='py-1 px-2 relative border-transparent rounded-md data-[state=active]:shadow-none data-[state=active]:border-t data-[state=active]:text-white bg-secondary data-[state=active]:bg-slate-800' value="brand">Brands</button></Link>
-            </nav>
-          </header>
+    <Tabs defaultValue="products" className='flex w-full flex-col p-5 overflow-hidden h-full'>
           {children}
     </Tabs>    
   );

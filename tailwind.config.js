@@ -9,6 +9,10 @@ module.exports = {
   theme: {
   	extend: {
   		colors: {
+			core_grey1:'#e1e1e1',
+			core_grey2:'#f7f7f7',
+			core_polish:'#151515',
+			core_contrast:'#474747',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
