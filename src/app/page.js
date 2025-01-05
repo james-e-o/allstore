@@ -3,7 +3,7 @@ import { useState,useEffect } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Store } from "lucide-react";
+import { Store,XIcon } from "lucide-react";
 import Image from "next/image"
 
 import profilePix from '../../public/profilepix2.jpg'
@@ -50,7 +50,7 @@ export default function Home() {
         <div className="px-0 md:px-7 md:grid-cols-3 grid grid-cols-1">
           <div className="p-3 flex flex-col ">
             <p className="font-Madetommy p-1 text-lg font-semibold text-black">nexShelf</p>
-            <p className="text-sm px-1 font-extralight">Simplify your ecommerce with nexShelf.</p>
+            <p className="text-sm px-1 font-extralight">Simplify your commerce with nexShelf.</p>
             <p className="p-1">Copyright &copy; {new Date().getFullYear()} - All rights reserved.</p>
           </div>
         </div>
@@ -59,9 +59,11 @@ export default function Home() {
             <Image src={profilePix} className="" alt="@storeprobuilder"/>
             {/* <AvatarFallback>JO</AvatarFallback> */}
           </Avatar>
-          <p className="ml-2 text-base font-thin">Hello There &#128075;&#127997; I'm <span className="font-semibold text-[slateblue]">James,</span> builder of Storepro. You can view my work on <a href="https://profile-beige-one.vercel.app/">Profile</a></p>
+          <p className="ml-2 text-base font-thin">Hello There &#128075;&#127997; I'm <span className="font-semibold text-[slateblue]">James,</span> builder of Storepro. You can view my work on <a className="underline text-[slateblue]" href="https://profile-beige-one.vercel.app/">profile</a></p>
         </div>
       </footer>
     </div>
   );
 }
+
+export const menu = <svg data-name="Layer 1" className="w-5 h-5" id="Layer_1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M21.86,18.73H9.18a2,2,0,0,1,0-4H21.86a2,2,0,0,1,0,4Z"/><path d="M54.82,18.73H34.88a2,2,0,0,1,0-4H54.82a2,2,0,0,1,0,4Z"/><path d="M54.82,34H9.18a2,2,0,0,1,0-4H54.82a2,2,0,0,1,0,4Z"/><path d="M54.82,49.27H30.07a2,2,0,0,1,0-4H54.82a2,2,0,0,1,0,4Z"/></svg>
