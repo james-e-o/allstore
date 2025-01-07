@@ -4,14 +4,12 @@ import { Button } from "@/components/ui/button";
 import {ColumnDef,ColumnFiltersState,SortingState,VisibilityState,flexRender,getCoreRowModel,getFilteredRowModel,getPaginationRowModel,getSortedRowModel,useReactTable,} from "@tanstack/react-table"
 import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
-import { MoveLeftIcon, Plus, Search,Check, ChevronsUpDown, ChevronUp, Edit2,ArrowUpDown, ChevronDown, Columns3, Filter, MoreHorizontal, ListCollapse, LayoutList, LayoutGrid } from "lucide-react"
+import { Plus, Columns3, ListCollapse, LayoutGrid } from "lucide-react"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { collection,addDoc,onSnapshot} from "firebase/firestore";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox"
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input"
 import { db } from "@/firebase/config";
 import Link from "next/link";
@@ -20,17 +18,12 @@ import Link from "next/link";
 
 
 const Categories = () => {
-    const [search , setSearch]=useState('')
-    const [searchFilter,setSearchFilter] = useState()
-
-    
-    
 
     return (
       <div className="bg-white flex flex-col h-full overflow-y-scroll flex-grow rounded-md mt-2">
         <header className="flex w-full justify-between items-center font-Inter ">
           <p className="font-bold text-sm px-0 py-1">Categories</p>
-          <nav className={`inline-grid w-fit overflow-x-hidden gap-4 bg-blue-400-200 rounded-[3px] border-black py-2 h-fit grid-cols-2`}>
+          <nav className={`inline-flex justify-end w-fit overflow-x-hidden gap-4 bg-blue-400-200 rounded-[3px] border-black py-2 h-fit`}>
                   <Link href={'/dashboard/inventory/categories/'}><button className='p-2 relative border-transparent rounded text-xs data-[state=active]:shadow-none data-[state=active]:border-t data-[state=active]:text-white bg-secondary data-[state=active]:bg-slate-800' value="products">Products</button></Link>
                   <Link href={'/dashboard/inventory/categories/brands'}><button className='p-2 relative border-transparent rounded text-xs data-[state=active]:shadow-none data-[state=active]:border-t data-[state=active]:text-white bg-secondary data-[state=active]:bg-slate-800' value="brand">Brands</button></Link>
           </nav>

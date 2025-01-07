@@ -37,9 +37,9 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar}) => {
   }) 
 
   return (
-    <div id="sidebar" className={`z-30 md:w-fit w-[2.75rem] p-0 relative`}>
-      <div data-open={sidebarOpen} className={`flex flex-col justify-between p-0 relative transition-all ease-out duration-200 data-[open=true]:ease-in-out data-[open=true]:duration-300 overflow-x-hidden bg-core_polish h-full ${sidebarOpen ? "w-[65svw] md:w-56" : "w-[2.75rem] "}`}>
-        <SidebarHeader className={`p-6 h-fit  text-white ${sidebarOpen ? " " : "w-[2.75rem]"}`}>
+    <div id="sidebar" className={`z-30 md:w-fit w-[2.6rem] p-0 relative`}>
+      <div data-open={sidebarOpen} className={`flex flex-col justify-between p-0 relative transition-all ease-out duration-200 data-[open=true]:ease-in-out data-[open=true]:duration-300 overflow-x-hidden bg-core_polish h-full ${sidebarOpen ? "w-[65svw] md:w-56" : "w-[2.6rem] md:w-[2.75rem] "}`}>
+        <SidebarHeader className={`p-6 h-fit  text-white ${sidebarOpen ? " " : "w-[2.6rem]"}`}>
           <div className="flex justify-center items-center">
             <h1 className="font-bold font-Madetommy md:block hidden text-lg">nexShelf</h1>
           </div>

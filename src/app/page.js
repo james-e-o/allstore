@@ -29,24 +29,24 @@ export default function Home() {
             <Link href={'/signin'} className="decoration-none mx-auto mt-4 text-primary"><Button size='sm' className="rounded-lg px-8 font-Montserrat relative flex justify-center items-center mt-5 py-6 text-base bg-gradient-to-r from-gradient1 to-gradient2"><span>Sign in</span>
             </Button></Link>
       </div>
-      <header className="py-4 px-8 items-center flex justify-between md:px-5 md:pt-7 md:pb-5">
-          <Link href={'/'}  className={dropState?"z-40 decoration-none text-primary":"z-40 decoration-none text-white"}><h1 className="font-Madetommy text-2xl">nexShelf</h1></Link>
+      <header className="py-4 px-8 items-center flex justify-between md:px-10 md:pt-7 md:pb-5">
+          <Link href={'/'}  className={"z-40 decoration-none font-bold text-black"}><h1 className="font-Madetommy md:text-3xl text-2xl">nexShelf</h1></Link>
           <nav className="flex gap-3">
-            <Link href={'/signin'} className="decoration-none"><Button size='sm' className='bg-gray-100 decoration-none flex items-center justify-center text-black px-3 py-0'><span>Sign in</span></Button></Link>
+            <Link href={'/signin'} className="decoration-none"><Button size='sm' variant='outline' className=' md:text-base border-core_polish md:px-4 md:py-4 decoration-none flex items-center justify-center text-black px-3 py-0'><span>Sign in</span></Button></Link>
             <Button size='sm' onClick={()=>setDropState(!dropState)} className='border-white flex items-center justify-center border px-2 py-0'><span className="fill-white">{menu}</span></Button>
           </nav>
       </header>
       <Separator/>
-      <main className="min-h-[75svh] flex flex-col items-center justify-center">
+      <main className="min-h-[75svh] flex flex-col px-10 items-center justify-center">
         <div >
           <p className="text-4xl text-center font-bold text-core_contrast font-Clash md:text-6xl">Manage your store with ease.</p>
         </div>
         <div className=" text-center text-lg mt-5 font-light ">nexShelf gives you the complete control you need with <span className="font-semibold">effortless product management, categorization and pricing. </span></div>
       
-        <Link href={'/signup'} className="decoration-none mx-auto"><Button className="md:text-lg text-base mt-10 px-10 md:px-20 py-2" ><Store/> Get Started</Button></Link>
+        <Link href={'/signup'} className="decoration-none mx-auto"><Button className="md:text-lg bg-core_polish text-base mt-10 px-10 md:px-20 py-5" ><Store/> Get Started</Button></Link>
       </main>
       <Separator/>
-      <footer className="p-5">
+      <footer className="p-5 text-sm">
         <div className="px-0 md:px-7 md:grid-cols-3 grid grid-cols-1">
           <div className="p-3 flex flex-col ">
             <p className="font-Madetommy p-1 text-lg font-semibold text-black">nexShelf</p>
@@ -59,7 +59,7 @@ export default function Home() {
             <Image src={profilePix} className="" alt="@storeprobuilder"/>
             {/* <AvatarFallback>JO</AvatarFallback> */}
           </Avatar>
-          <p className="ml-2 text-base font-thin">Hello There &#128075;&#127997; I'm <span className="font-semibold text-[slateblue]">James,</span> builder of Storepro. You can view my work on <a className="underline text-[slateblue]" href="https://profile-beige-one.vercel.app/">profile</a></p>
+          <p className="ml-2 font-thin">Hello There &#128075;&#127997; I'm <span className="font-semibold text-[slateblue]">James,</span> builder of nexShelf. You can view my work on <a className="underline text-[slateblue]" href="https://profile-beige-one.vercel.app/">profile</a></p>
         </div>
       </footer>
     </div>

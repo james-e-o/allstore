@@ -141,8 +141,8 @@ export function DataTableDemo() {
       header:({table,column})=>{
 
         return (<DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto px-2 text-xs md:text-[0.8175rem] capitalize">
+          <DropdownMenuTrigger className='flex flex-row justify-end'  asChild>
+            <Button variant="outline" className="ml-auto px-2 min-w-10 text-xs md:text-[0.8175rem] capitalize">
               {responsive} <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -169,7 +169,7 @@ export function DataTableDemo() {
           </DropdownMenuContent>
         </DropdownMenu>)
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue(responsive)}</div>,
+      cell: ({ row }) => <div className="lowercase flex flex-row justify-end">{row.getValue(responsive)}</div>,
       
     },
   
@@ -226,6 +226,7 @@ export function DataTableDemo() {
     },
   })
 
+ 
     // Detect screen size
     useEffect(() => {
       const handleResize = () => {
@@ -309,13 +310,6 @@ export function DataTableDemo() {
       </div>
       <div className="rounded-md border md:border-none">
         <Table className={`text-xs md:text-[0.8175rem] w-full`}>
-          {/* <colgroup className="">
-            <col style={{backgroundColor: 'lightblue',width:'fit-content'}}/>
-            <col style={{backgroundColor:'lightyellow',width:'fit-content'}}/>
-            <col span={table.getAllColumns().length} style={{backgroundColor:'lightpink',}}/>
-            <col style={{backgroundColor: 'lightgreen'}}/>
-            <col style={{backgroundColor: 'orange',width:'30px',textAlign:'right'}} />
-          </colgroup> */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

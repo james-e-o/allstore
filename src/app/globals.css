@@ -123,5 +123,7 @@ td[data-value='responsive']{
   /* background-color: yellow; */
   max-width: 100px;
   text-overflow: ellipsis;
-  padding-right: 0px;
+}
+.transition-collapse {
+  transition: grid-template-rows 400ms ease-in-out;
 }

@@ -56,9 +56,9 @@ const AddCategory = () => {
       e.preventDefault()
   
       if (category === ''){
-        setError('name') 
-      }else if(slug === ''){
-        setError('slug')
+       return setError('name') 
+      } else if(slug === ''){
+        return setError('slug')
       } 
       
       console.log(category,parent,slug,description)
@@ -104,18 +104,18 @@ const AddCategory = () => {
     return (
         <div className="flex flex-col  overflow-y-scroll h-full rounded-md">
           <Dialog>
-            <DialogContent className="w-5/6 sm:w-3/6 text-xs">
+            <DialogContent className="w-5/6 p-2 rounded-md sm:w-3/6 text-xs">
               <DialogHeader>
-                <DialogTitle className='text-xs'>Category list</DialogTitle>
+                <DialogTitle className='text-xs'></DialogTitle>
                 <DialogDescription className='text-xs'>
-                  Select parent categories with checkboxes.
+                  {/* Select parent categories with checkboxes. */}
                 </DialogDescription>
               </DialogHeader>
               <div className="max-h-[70svh] overflow-y-scroll">
-                 {categoryList&& <CheckboxTree categories={categoryTree}/>}
+                 {categoryList&& <CheckboxTree handleCheckboxChange={(id)=>{setParent(id)}} checked={parent} categories={categoryTree}/>}
               </div>
-              <DialogFooter>
-                <Button type="submit">Done</Button>
+              <DialogFooter className={'flex flex-row justify-end'}>
+                <DialogClose asChild><Button size='sm' className='w-fit' type="submit">Done</Button></DialogClose>
               </DialogFooter>
             </DialogContent>
             <div className="p-2 flex w-full justify-between items-center font-Inter ">
@@ -129,7 +129,7 @@ const AddCategory = () => {
             </div>
             <Separator />
             <div className="flex flex-col mt-1 bg-core_grey2 p-3 rounded-md flex-grow justify-between">
-                <form id="category-form" className="flex-col text-xs flex gap-2 md:gap-5 md:grid md:grid-cols-2 " onSubmit={createCategory}>
+                <form id="category-form" className="flex-col text-xs flex gap-3 md:gap-5 md:grid md:grid-cols-2 " onSubmit={createCategory}>
                     <InputBox placeholder={'category name...'} label={'Category name'} change={({target})=>{capitalize(target.value),convertToSlug(target.value)}} error={error==='name'} value={category}/>
 
                     <div className="flex-col mt-2 flex">
@@ -160,23 +160,23 @@ const AddCategory = () => {
 
 
 
-export const CheckboxTree = ({ categories }) => {
-  const [checkedItems, setCheckedItems] = useState({});
+export const CheckboxTree = ({ categories,handleCheckboxChange,checked }) => {
+  // const [checkedItems, setCheckedItems] = useState({});
 
-  const handleCheckboxChange = (id) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+  // const handleCheckboxChange = (id) => {
+  //   setCheckedItems((prev) => ({
+  //     ...prev,
+  //     [id]: !prev[id],
+  //   }));
+  // };
 
   const renderCategories = (categories, level = 0) => {
     return categories.map((category) => (
       <div key={category.id} style={{ marginLeft: `${level * 20}px` }}>
-        <label className="my-[3px]">
+        <label className="my-1">
           <input
             type="checkbox"
-            checked={!!checkedItems[category.id]}
+            checked={checked==category.id}
             onChange={() => handleCheckboxChange(category.id)}
           />
           <span className="ml-1">{category.name}</span>
