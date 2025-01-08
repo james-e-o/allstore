@@ -10,7 +10,15 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Checkbox } from "@/components/ui/checkbox";
 
+const _VARIANT_TYPE = new Object()
+const _VARIANT = new Object()
+
 const AddProduct = () => {
+
+    function Submit(e){
+        e.preventDefault()
+    }
+
     return (
       <div className="px-1 md:px-5 flex h-full flex-col text-sm">
         <div className="px-1 flex w-full justify-between items-center font-Inter ">
@@ -23,7 +31,7 @@ const AddProduct = () => {
           </Button></Link>
         </div>
         
-        <form className="flex flex-col flex-grow overflow-y-scroll" action="">          
+        <form onSubmit={Submit} className="flex flex-col flex-grow overflow-y-scroll" action="">          
           <Separator className='my-1' />
           <p className=" text-xs mb-1">product information</p>
           <section className="flex flex-col md:flex-row gap-3">
@@ -72,7 +80,7 @@ export const Variant =({})=>{
   const [retailPrice,setRetailPrice]=useState()
   const [colorValues,setColorValues]=useState([])
   const [sizeValues,setSizeValues]=useState([])
-  const [customVariants,setCustomVariants]=useState(['color','size'])
+  const [customVariants,setCustomVariants]=useState([])
   const [holder,setHolder]=useState('')
 
   useEffect(()=>{
@@ -94,22 +102,22 @@ export const Variant =({})=>{
       {color:'red',price:"6000.00"},
     ])
   },[colorVariant])
-
   useEffect(()=>{
-    setHolder("")
+   console.log(customVariants)
   },[customVariants])
 
+  
 
   return(
     <div className="">
       <Dialog>
-        <DialogContent className="w-5/6 p-2 rounded-md sm:w-3/6 text-xs">
+        <DialogContent className="w-5/6 p-2 md:p-4  rounded-md sm:w-2/5 text-xs">
           <div className="max-h-[70svh] overflow-y-scroll">
              
             {
-                activeDialog.active === 'color'? <AddColorProp priceValue={retailPrice} />: 
-                activeDialog.active === 'size'?<AddSizeProp priceValue={retailPrice} /> :
-                activeDialog.active === 'custom'?<AddCustomProp priceValue={retailPrice} customProp={(name,price)=>{setCustomVariants(prev=>[...prev,prev[activeDialog.index].values.push({name,price})])}}/> : ""
+                activeDialog.active === 'color'? <AddColorProp retailValue={retailPrice} />: 
+                activeDialog.active === 'size'?<AddSizeProp retailValue={retailPrice} /> :
+                activeDialog.active === 'custom'?<AddCustomProp retailValue={retailPrice} customProp={(name,price)=>{setCustomVariants(prev=>[...prev,{...prev[activeDialog.index],values:[...prev[activeDialog.index].values,{name,price}]}]),console.log(activeDialog.index,customVariants)}}/> : ""
               
             }
 
@@ -120,7 +128,7 @@ export const Variant =({})=>{
             <div className='flex mt-1 w-full items-center'>
               <p data-variant={toggleVariant} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Enable price variants</p>
               <div className="inline-block">
-                  <Switch disabled={!retailPrice} checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
+                  <Switch disabled={!retailPrice} className='data-[state=unchecked]:bg-core_contrast/40' checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
               </div>
             </div>
         </div>
@@ -180,15 +188,17 @@ export const Variant =({})=>{
                         <Plus onClick={()=>{setActiveDialog({active:'custom',index})}} className="border p-[2px]  border-black/45 h-6 w-7 rounded-md inline-block"/>
                       </DialogTrigger>
                     </div>
-                    <Trash2 onClick={()=>{setSizeValues(customVariants.filter((_variant)=>customVariants[index]!==_variant))}} className=" h-5 w-6 mt-1 rounded-md inline-block"/>
+                    <Trash2 onClick={()=>{setCustomVariants(customVariants.filter((_variant)=>customVariants[index]!==_variant))}} className=" h-5 w-6 mt-1 rounded-md inline-block"/>
                   </div>
                 ))}
                 
                 <div className="flex flex-col mt-4 gap-0 items-start">
                   <p className="text-[11px] ">Add variant type:</p>
-                  <div className="flex items-center">
-                    <InputBox flexdir={'input-reverse'} change={(e)=>{setHolder(e.target.value)}} outline/>
-                    <Plus disabled={holder===""} onClick={()=>{setCustomVariants(prev=>[...prev,{type:holder.toLowerCase(),values:[]}])}} className="border bg-core_polish p-[3px] ml-1 border-black/35 h-6 w-6 text-white rounded-sm inline-block"/>
+                  <div className="flex justify-start gap-1 items-center">
+                    <InputBox value={holder} change={(e)=>{setHolder(e.target.value)}} outline/>
+                    <button className="mt-1 disabled:opacity-35 rounded-md border-core_contrast/40" disabled={!holder} onClick={()=>{setCustomVariants(prev=>[...prev,{type:holder.toLowerCase(),values:[]}]),setHolder("")}}>
+                      <Plus className="border bg-black p-1  h-7 w-8 text-white rounded-sm inline-block"/>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -202,7 +212,7 @@ export const Variant =({})=>{
 
 
 
-export const InputBox = ({label,placeholder,error,flexdir,type,width,margin,change,value,note,textarea,grow,row,icon,readonly,outline,shortInput,ghost,mt,fit,uppercase})=>{
+export const InputBox = ({label,placeholder,error,flexdir,type,width,margin,change,blurr,value,note,textarea,grow,row,icon,readonly,outline,shortInput,ghost,mt,fit,uppercase})=>{
   return(
     <div data-dir={!!flexdir} data-fit={fit} data-mt={mt} data-grow={grow} data-short={shortInput} style={{width:`${width}`,flexDirection:flexdir,margin:margin}} className={`relative w-full data-[mt=true]:mt-2 data-[grow=true]:flex-grow mt-0 data-[dir=true]:items-center data-[fit=true]:w-fit gap-1 flex flex-col`}>
       <label data-dir={!!flexdir} data-uppercase={uppercase} className="pl-1 data-[dir=true]:pl-0 data-[uppercase=true]:uppercase relative w-fit inline-flex items-center justify-start md:min-w-max text-xs" htmlFor="">{label}</label>
@@ -212,7 +222,7 @@ export const InputBox = ({label,placeholder,error,flexdir,type,width,margin,chan
           :
           <p data-error={error} data-dir={flexdir} data-fit={fit} data-ghost={ghost} data-short={shortInput} data-outline={!!outline} className="inline-flex items-center px-2 py-[6px] data-[fit=true]:w-fit data-[short=true]:py-1 data-[ghost=true]:border-none w-full bg-white border-border data-[error=true]:border-red-400 data-[dir='input-reverse']:flex-row-reverse data-[outline=true]:border-black/35 data-[outline=true]:bg-transparent  border rounded-md justify-start">
             {icon&&<span className="text-xs mr-1">{icon}</span>}
-            <input data-error={error} data-fit={fit} readOnly={readonly} className={`border-none text-xs outline-none w-full bg-transparent data-[fit=true]:w-fit `} onChange={(e)=>change(e)} type={type} placeholder={placeholder} value={value}/>
+            <input data-error={error} data-fit={fit} readOnly={readonly} className={`border-none text-xs outline-none w-full bg-transparent data-[fit=true]:w-fit `} onBlur={(e)=>blurr&&blurr(e)} onChange={(e)=>change(e)} type={type} placeholder={placeholder} value={value}/>
           </p>
         }
         {error?<p className=" pl-1 -mt-1 text-[10px] text-red-400 italic">{error}</p>:""}
@@ -222,32 +232,36 @@ export const InputBox = ({label,placeholder,error,flexdir,type,width,margin,chan
   )
 }
 
-const AddCustomProp =({priceValue,customProp})=> {
+const AddCustomProp =({retailValue,customProp})=> {
   const [name,setName] = useState('')
-  const [price,setPrice] = useState('')
+  const [price,setPrice] = useState(retailValue)
   return (
-    <form onSubmit={(e)=>{customProp(name,price)}} className="">
+    <form onSubmit={(e)=>{e.preventDefault(),customProp(name,price)}} className="">
       <DialogHeader>
         <DialogTitle className='text-xs p-0'></DialogTitle>
-        <DialogDescription className='text-xs'>
+        <DialogDescription className='text-xs ml-[2px]'>
           Add custom variant
         </DialogDescription>
       </DialogHeader>
-      <InputBox change={(e)=>{setName(e.target.value)}} mt outline label={'variant name: '}/> 
-      <InputBox change={(e)=>{setPrice(e.target.value)}} value={priceValue} mt outline label={'price: '}/> 
-      <DialogFooter className={'flex flex-row justify-end'}>
-        <DialogClose asChild><Button size='sm' className='w-fit px-3' type="submit">Add</Button></DialogClose>
+      <div className="flex justify-between items-center"><span className="text-sm">variant name:</span>
+        <InputBox width={'70%'} change={(e)=>{setName(e.target.value)}} mt outline /> 
+      </div>
+      <div className="flex justify-between items-center"><span className="text-sm">price: </span>
+        <InputBox width={'70%'} icon={'$'} change={(e)=>{setPrice(e.target.value)}} value={price} mt outline label={''}/> 
+      </div>
+      <DialogFooter className={'flex flex-row mt-2 justify-end'}>
+        <DialogClose asChild><Button size='sm' disabled={!name} className='w-fit px-5' type="submit">Add</Button></DialogClose>
       </DialogFooter>
     </form>
   )
 }
 
-const AddColorProp =({colorProp,priceValue})=> {
+const AddColorProp =({colorProp,retailValue})=> {
   const [colorValue,setColorValue] = useState('')
-  const [price,setPrice] = useState('')
+  const [price,setPrice] = useState(retailValue)
   const [color, setColor] = useColor("salmon");
   return (
-    <form onSubmit={(e)=>{colorProp(colorValue,price)}} className="">
+    <form onSubmit={(e)=>{e.preventDefault(),colorProp(colorValue,price)}} className="">
       <DialogHeader>
         <DialogTitle className='text-xs p-0'></DialogTitle>
         <DialogDescription className='text-xs'>
@@ -257,7 +271,7 @@ const AddColorProp =({colorProp,priceValue})=> {
       <div className="flex items-start gap-2">
         <ColorPicker color={color} hideInput={["rgb", "hsv"]} height={100} onChange={setColor} onChangeComplete={(col)=>setColorValue(col)} />
       </div>
-      <InputBox change={(e)=>{setPrice(e.target.value)}} value={priceValue} mt outline label={'price: '}/> 
+      <InputBox change={(e)=>{setPrice(e.target.value)}} value={price} mt outline label={'price: '}/> 
       <DialogFooter className={'flex flex-row justify-end'}>
         <DialogClose asChild><Button size='sm' className='w-fit px-3' type="submit">Add</Button></DialogClose>
       </DialogFooter>
@@ -265,12 +279,12 @@ const AddColorProp =({colorProp,priceValue})=> {
   )
 }
 
-const AddSizeProp =({sizeProp,priceValue})=> {
+const AddSizeProp =({sizeProp,retailValue})=> {
   const sizes = ['small','medium','large','xlarge','xxlarge']
   const [sizeData,setSizeData] = useState([])
-  const [price,setPrice] = useState('')
+  const [price,setPrice] = useState(retailValue)
   return (
-    <form onSubmit={(e)=>{sizeProp(color,price)}} className="">
+    <form onSubmit={(e)=>{e.preventDefault(),sizeProp(color,price)}} className="">
       <DialogHeader>
         <DialogTitle className='text-xs p-0'></DialogTitle>
         <DialogDescription className='text-xs'>
@@ -288,7 +302,7 @@ const AddSizeProp =({sizeProp,priceValue})=> {
           </label>
         </div>
       ))}
-      <InputBox change={(e)=>{setPrice(e.target.value)}} value={priceValue} mt outline label={'price: '}/> 
+      <InputBox change={(e)=>{setPrice(e.target.value)}} value={price} mt outline label={'price: '}/> 
       <DialogFooter className={'flex flex-row justify-end'}>
         <DialogClose asChild><Button size='sm' className='w-fit px-3' type="submit">Add</Button></DialogClose>
       </DialogFooter>
