@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {ColumnDef,ColumnFiltersState,SortingState,VisibilityState,flexRender,getCoreRowModel,getFilteredRowModel,getPaginationRowModel,getSortedRowModel,useReactTable,} from "@tanstack/react-table"
 import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
-import { Plus, Columns3, ListCollapse, LayoutGrid } from "lucide-react"
+import { Plus, Columns3, ListCollapse,Edit2,LayoutGrid } from "lucide-react"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { collection,addDoc,onSnapshot} from "firebase/firestore";
@@ -13,8 +13,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { db } from "@/firebase/config";
 import Link from "next/link";
-
-
 
 
 const Categories = () => {

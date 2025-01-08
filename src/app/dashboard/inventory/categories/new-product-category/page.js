@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button";
-import { MoveLeftIcon } from "lucide-react"
+import { MoveLeftIcon,Edit2 } from "lucide-react"
 import { useState,useRef, useEffect } from "react";
 import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
 import { InputBox } from "../../add-product/page";

@@ -1,15 +1,18 @@
 'use client'
-import { Edit, MoveLeftIcon, Plus, ScanBarcode, Trash, XIcon } from "lucide-react"
+import { Edit, MoveLeftIcon, Plus, ScanBarcode, Trash, Trash2, XIcon } from "lucide-react"
 import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
+import { ColorPicker, useColor,Saturation,IColor, Hue, Alpha } from "react-color-palette";
+import "react-color-palette/css";
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { Checkbox } from "@/components/ui/checkbox";
 
 const AddProduct = () => {
     return (
-      <div className="px-2 md:px-5 text-sm">
+      <div className="px-1 md:px-5 flex h-full flex-col text-sm">
         <div className="px-1 flex w-full justify-between items-center font-Inter ">
           <p className='font-bold'>Add product</p>
         </div> 
@@ -20,7 +23,7 @@ const AddProduct = () => {
           </Button></Link>
         </div>
         
-        <form action="">          
+        <form className="flex flex-col flex-grow overflow-y-scroll" action="">          
           <Separator className='my-1' />
           <p className=" text-xs mb-1">product information</p>
           <section className="flex flex-col md:flex-row gap-3">
@@ -62,47 +65,62 @@ export const Variant =({})=>{
   const [toggleVariant,setToggleVariant]=useState(false)
   const [colorVariant,setColorVariant]=useState(true)
   const [sizeVariant,setSizeVariant]=useState(true)
+  const [activeDialog, setActiveDialog]= useState({}) // Dialog content
+  
 
   //DATA
+  const [retailPrice,setRetailPrice]=useState()
   const [colorValues,setColorValues]=useState([])
   const [sizeValues,setSizeValues]=useState([])
   const [customVariants,setCustomVariants]=useState(['color','size'])
+  const [holder,setHolder]=useState('')
 
-
-  let holder="";
   useEffect(()=>{
     setSizeValues([
-      {index:1,name:'small',price:"1000.00"},
-      {index:2,name:'medium',price:"2000.00"},
-      {index:3,name:'large',price:"3000.00"},
-      {index:4,name:'xlarge',price:"4000.00"},
-      {index:5,name:'xxlarge',price:"5000.00"},
+      {size:'small',price:"1000.00"},
+      {size:'medium',price:"2000.00"},
+      {size:'large',price:"3000.00"},
+      {size:'xlarge',price:"4000.00"},
+      {size:'xxlarge',price:"5000.00"},
     ])
   },[sizeVariant])
+  useEffect(()=>{
+    setColorValues([
+      {color:'black',price:"1000.00"},
+      {color:'white',price:"2000.00"},
+      {color:'grey',price:"3000.00"},
+      {color:'#b76e79',price:"4000.00"},
+      {color:'#60a5fa',price:"5000.00"},
+      {color:'red',price:"6000.00"},
+    ])
+  },[colorVariant])
+
+  useEffect(()=>{
+    setHolder("")
+  },[customVariants])
+
 
   return(
     <div className="">
       <Dialog>
         <DialogContent className="w-5/6 p-2 rounded-md sm:w-3/6 text-xs">
-          <DialogHeader>
-            <DialogTitle className='text-xs'></DialogTitle>
-            <DialogDescription className='text-xs'>
-              {/* Select parent categories with checkboxes. */}
-            </DialogDescription>
-          </DialogHeader>
           <div className="max-h-[70svh] overflow-y-scroll">
-              hello tester
+             
+            {
+                activeDialog.active === 'color'? <AddColorProp priceValue={retailPrice} />: 
+                activeDialog.active === 'size'?<AddSizeProp priceValue={retailPrice} /> :
+                activeDialog.active === 'custom'?<AddCustomProp priceValue={retailPrice} customProp={(name,price)=>{setCustomVariants(prev=>[...prev,prev[activeDialog.index].values.push({name,price})])}}/> : ""
+              
+            }
+
           </div>
-          <DialogFooter className={'flex flex-row justify-end'}>
-            <DialogClose asChild><Button size='sm' className='w-fit' type="submit">Done</Button></DialogClose>
-          </DialogFooter>
         </DialogContent>
         <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
-            <InputBox width={'180px'} label={'Price'} flexdir={'row'} mt icon={'$'}/>
+            <InputBox width={'180px'} label={'Price'} change={(e)=>{setRetailPrice(e.target.value)}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
             <div className='flex mt-1 w-full items-center'>
               <p data-variant={toggleVariant} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Enable price variants</p>
               <div className="inline-block">
-                  <Switch checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
+                  <Switch disabled={!retailPrice} checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
               </div>
             </div>
         </div>
@@ -114,40 +132,63 @@ export const Variant =({})=>{
                 <InputBox width={'185px'} shortInput label={'Wholesale discount:'} flexdir={'row'} mt outline/>
               </div>
               <div className="flex mt-4 ml-[2px] flex-col">
-                <div className="flex ml-[1px] mb-2 gap-3">
-                  <p className="inline-flex items-center"><span>color: </span><Switch className='scale-75 rounded' checked={colorVariant} onCheckedChange={()=>setColorVariant(!colorVariant)} /></p>
-                  <p className="inline-flex items-center"><span>size: </span><Switch className='scale-75 rounded' checked={sizeVariant} onCheckedChange={()=>setSizeVariant(!sizeVariant)} /></p>
+                <div className="flex items-center ml-[1px] mb-2 gap-5">
+                  <p className="inline-flex items-center"><span>color: </span><Switch className='scale-[0.85] rounded ml-3' checked={colorVariant} onCheckedChange={()=>setColorVariant(!colorVariant)} /></p>
+                  <p className="inline-flex items-center"><span>size: </span><Switch className='scale-[0.85] rounded ml-3' checked={sizeVariant} onCheckedChange={()=>setSizeVariant(!sizeVariant)} /></p>
                 </div>
-                {colorVariant?<div className=" border-l mt-2 min-h-10 border-core_contrast/30 pl-3">
-                    <p className="capitalize inline-block mr-2">color: </p>
-                    <div className="border rounded-md inline-flex w-fit border-black/35 justify-center h-fit items-center">
-                      <div className="ml-2"><InputBox shortInput uppercase flexdir={'row'} width={'135px'} outline label={<button className="w-5 h-5 absolute border-none bg-blue-400"></button>} ghost icon={'$'} value={'1000.00'}/></div>
-                      <XIcon className="p-1"/>
-                    </div>
-                    <DialogTrigger asChild>                      
-                      <Plus className="border p-[2px] mt-[6px] ml-2 border-black/35 h-7 w-7 rounded-md inline-block"/>
-                    </DialogTrigger>
-                </div>:""}
-
-                {sizeVariant?<div className=" border-l mt-3 border-core_contrast/30 pl-3">
-                  <div className="">
-                    <p className="capitalize inline-block mr-2">size: </p>
-                    {sizeValues&&sizeValues.map((size,index)=>(
-                      <div key={index} className="border mr-2 mt-1 rounded-md inline-flex w-fit border-black/35 justify-center h-fit items-center">
-                        <div className="ml-2"><InputBox uppercase flexdir={'row'} width={'135px'} outline label={size.name} shortInput ghost icon={'$'} value={size.price}/></div>
-                       <XIcon onClick={()=>{setSizeValues(sizeValues.filter((sizeItem)=>sizeValues[index]!==sizeItem)),console.log(sizeValues[index])}} className="p-1"/>
+                {colorVariant?<div className=" border-l mt-2 min-h-9 border-core_contrast/30 pl-3">
+                  <div className="relative grid justify-items-start gap-1 grid-cols-[repeat(auto-fit,_minmax(170px,_1fr))] items-center">
+                    {/* <p className="capitalize inline-flex justify-self-start items-center w-fit h-7 mr-2"><span>color: </span></p> */}
+                    {colorValues&&colorValues.map((color,index)=>(
+                      <div key={index} className="border mr-2 rounded-md inline-flex w-fit border-black/40 justify-center h-fit items-center">
+                       <div className="ml-2"><InputBox shortInput uppercase flexdir={'row'} width={'140px'} outline label={<button style={{backgroundColor:color.color}} className="w-[1.2rem] h-[1.2rem] border "></button>} ghost icon={'$'} value={color.price}/></div>
+                       <XIcon onClick={()=>{setColorValues(colorValues.filter((sizeItem)=>colorValues[index]!==sizeItem)),colorValues.length==1?setColorVariant(false):""}} className="p-1"/>
                       </div>
                     ))}
                     <DialogTrigger asChild>                      
-                      <Plus className="border p-[2px] mt-1 border-black/35 h-7 w-7 rounded-md inline-block"/>
+                      <Plus onClick={()=>{setActiveDialog({active:'color',index:null})}} className="border p-[2px] border-black/45 h-6 w-7 rounded-md inline-block"/>
                     </DialogTrigger>
                   </div>
                 </div>:""}
 
+                {sizeVariant?<div className=" border-l mt-3 min-h-9 border-core_contrast/30 pl-3">
+                  <div className="">
+                    <p className="capitalize inline-flex items-center h-7 mr-2"><span>size: </span></p>
+                    {sizeValues&&sizeValues.map((size,index)=>(
+                      <div key={index} className="border mr-2 mb-1 rounded-md inline-flex w-fit border-black/40 justify-center h-fit items-center">
+                        <div className="ml-2"><InputBox uppercase flexdir={'row'} width={'140px'} outline label={size.size} shortInput ghost icon={'$'} value={size.price}/></div>
+                       <XIcon onClick={()=>{setSizeValues(sizeValues.filter((sizeItem)=>sizeValues[index]!==sizeItem)),console.log(sizeValues.length),sizeValues.length==1?setSizeVariant(false):""}} className="p-1"/>
+                      </div>
+                    ))}
+                    <DialogTrigger asChild>                      
+                      <Plus onClick={()=>{setActiveDialog({active:'size',index:null})}} className="border p-[2px]  border-black/45 h-7 w-7 rounded-md inline-block"/>
+                    </DialogTrigger>
+                  </div>
+                </div>:""}
+
+                {customVariants&&customVariants.map((customVariant,index)=>(
+                  <div key={index} className=" border-l mt-3 min-h-9 border-core_contrast/30 pl-3">
+                    <div className="">
+                      <p data-margin={!!customVariant.type} className="capitalize inline-flex items-center h-7 data-[margin=true]:mr-2"><span>{customVariant.type}</span></p>
+                      {customVariant.values&&customVariant.values.map((value,val_index)=>(
+                        <div key={val_index} className="border mr-2 mb-1 rounded-md inline-flex w-fit border-black/40 justify-center h-fit items-center">
+                          <div className="ml-2"><InputBox uppercase flexdir={'row'} width={'140px'} outline label={value.name} shortInput ghost icon={'$'} value={value.price}/></div>
+                        <XIcon onClick={()=>{setCustomVariants(prev=>[...prev,prev[index].values.filter(prop=>prop[val_index]!==prop)])}} className="p-1"/>
+                        </div>
+                      ))}
+                      <DialogTrigger asChild>                      
+                        <Plus onClick={()=>{setActiveDialog({active:'custom',index})}} className="border p-[2px]  border-black/45 h-6 w-7 rounded-md inline-block"/>
+                      </DialogTrigger>
+                    </div>
+                    <Trash2 onClick={()=>{setSizeValues(customVariants.filter((_variant)=>customVariants[index]!==_variant))}} className=" h-5 w-6 mt-1 rounded-md inline-block"/>
+                  </div>
+                ))}
+                
                 <div className="flex flex-col mt-4 gap-0 items-start">
                   <p className="text-[11px] ">Add variant type:</p>
                   <div className="flex items-center">
-                    <InputBox flexdir={'input-reverse'} shortInput change={(e)=>{holder=e.target.value}} outline icon={<Plus disabled={holder==""} onClick={()=>{setVariants(prev=>[...prev,{type:holder.toLowerCase(),values:[]}])}} className="border bg-core_polish p-[3px] ml-2 border-black/35 h-6 w-6 relative left-2 text-white rounded-sm inline-block"/>}/>
+                    <InputBox flexdir={'input-reverse'} change={(e)=>{setHolder(e.target.value)}} outline/>
+                    <Plus disabled={holder===""} onClick={()=>{setCustomVariants(prev=>[...prev,{type:holder.toLowerCase(),values:[]}])}} className="border bg-core_polish p-[3px] ml-1 border-black/35 h-6 w-6 text-white rounded-sm inline-block"/>
                   </div>
                 </div>
               </div>
@@ -163,7 +204,7 @@ export const Variant =({})=>{
 
 export const InputBox = ({label,placeholder,error,flexdir,type,width,margin,change,value,note,textarea,grow,row,icon,readonly,outline,shortInput,ghost,mt,fit,uppercase})=>{
   return(
-    <div data-dir={!!flexdir} data-fit={fit} data-mt={mt} data-grow={grow} data-short={shortInput} style={{width:`${width}`,flexDirection:flexdir,margin:margin}} className={`relative data-[short=true]:h-7 w-full data-[mt=true]:mt-2 data-[grow=true]:flex-grow mt-0 data-[dir=true]:items-center overflow-clip data-[fit=true]:w-fit gap-1 flex flex-col`}>
+    <div data-dir={!!flexdir} data-fit={fit} data-mt={mt} data-grow={grow} data-short={shortInput} style={{width:`${width}`,flexDirection:flexdir,margin:margin}} className={`relative w-full data-[mt=true]:mt-2 data-[grow=true]:flex-grow mt-0 data-[dir=true]:items-center data-[fit=true]:w-fit gap-1 flex flex-col`}>
       <label data-dir={!!flexdir} data-uppercase={uppercase} className="pl-1 data-[dir=true]:pl-0 data-[uppercase=true]:uppercase relative w-fit inline-flex items-center justify-start md:min-w-max text-xs" htmlFor="">{label}</label>
       <div className="flex-col w-full">
         {textarea?
@@ -178,5 +219,79 @@ export const InputBox = ({label,placeholder,error,flexdir,type,width,margin,chan
         {note?<p className=" pl-1 text-[10px] text-gray-400 italic">{note}</p>:""}
       </div>
     </div>
+  )
+}
+
+const AddCustomProp =({priceValue,customProp})=> {
+  const [name,setName] = useState('')
+  const [price,setPrice] = useState('')
+  return (
+    <form onSubmit={(e)=>{customProp(name,price)}} className="">
+      <DialogHeader>
+        <DialogTitle className='text-xs p-0'></DialogTitle>
+        <DialogDescription className='text-xs'>
+          Add custom variant
+        </DialogDescription>
+      </DialogHeader>
+      <InputBox change={(e)=>{setName(e.target.value)}} mt outline label={'variant name: '}/> 
+      <InputBox change={(e)=>{setPrice(e.target.value)}} value={priceValue} mt outline label={'price: '}/> 
+      <DialogFooter className={'flex flex-row justify-end'}>
+        <DialogClose asChild><Button size='sm' className='w-fit px-3' type="submit">Add</Button></DialogClose>
+      </DialogFooter>
+    </form>
+  )
+}
+
+const AddColorProp =({colorProp,priceValue})=> {
+  const [colorValue,setColorValue] = useState('')
+  const [price,setPrice] = useState('')
+  const [color, setColor] = useColor("salmon");
+  return (
+    <form onSubmit={(e)=>{colorProp(colorValue,price)}} className="">
+      <DialogHeader>
+        <DialogTitle className='text-xs p-0'></DialogTitle>
+        <DialogDescription className='text-xs'>
+          Add color variant
+        </DialogDescription>
+      </DialogHeader>
+      <div className="flex items-start gap-2">
+        <ColorPicker color={color} hideInput={["rgb", "hsv"]} height={100} onChange={setColor} onChangeComplete={(col)=>setColorValue(col)} />
+      </div>
+      <InputBox change={(e)=>{setPrice(e.target.value)}} value={priceValue} mt outline label={'price: '}/> 
+      <DialogFooter className={'flex flex-row justify-end'}>
+        <DialogClose asChild><Button size='sm' className='w-fit px-3' type="submit">Add</Button></DialogClose>
+      </DialogFooter>
+    </form>
+  )
+}
+
+const AddSizeProp =({sizeProp,priceValue})=> {
+  const sizes = ['small','medium','large','xlarge','xxlarge']
+  const [sizeData,setSizeData] = useState([])
+  const [price,setPrice] = useState('')
+  return (
+    <form onSubmit={(e)=>{sizeProp(color,price)}} className="">
+      <DialogHeader>
+        <DialogTitle className='text-xs p-0'></DialogTitle>
+        <DialogDescription className='text-xs'>
+          Add/remove size variant
+        </DialogDescription>
+      </DialogHeader>
+      {sizes.map((item,index)=>(
+        <div key={index} className="flex items-center space-x-2">
+          <Checkbox id="terms" />
+          <label
+            htmlFor="terms"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {item}
+          </label>
+        </div>
+      ))}
+      <InputBox change={(e)=>{setPrice(e.target.value)}} value={priceValue} mt outline label={'price: '}/> 
+      <DialogFooter className={'flex flex-row justify-end'}>
+        <DialogClose asChild><Button size='sm' className='w-fit px-3' type="submit">Add</Button></DialogClose>
+      </DialogFooter>
+    </form>
   )
 }
