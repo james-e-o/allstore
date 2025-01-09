@@ -127,3 +127,10 @@ td[data-value='responsive']{
 .transition-collapse {
   transition: grid-template-rows 400ms ease-in-out;
 }
+div.rcp-body{
+  padding: 6px;
+  gap: 15px;
+}
+label.rcp-field-label{
+  display: none;
+}
