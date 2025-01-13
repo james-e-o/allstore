@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import {CategoryTable} from "@/components/getAllCategories";
+import CategoryTable from "@/components/getAllCategories";
 
 
 const Categories = () => {
