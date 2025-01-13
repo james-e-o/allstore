@@ -1,5 +1,5 @@
 'use client'
-import { Calendar,Users, Home, ClipboardList,CircleDollarSign,ShoppingBag, Inbox, Search, Settings,Plus,ShoppingCart } from "lucide-react"
+import { Calendar,Users, Home,ChevronLeft,ChevronRight, ClipboardList,CircleDollarSign,ShoppingBag, Inbox, Search, Settings,Plus,ShoppingCart } from "lucide-react"
 import {Sidebar, SidebarContent, SidebarFooter, useSidebar, SidebarGroup, SidebarHeader,SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator, SidebarMenuSubButton,SidebarMenuSub,SidebarMenuSubItem, SidebarTrigger } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { DialogTitle } from "./ui/dialog"
@@ -11,7 +11,7 @@ import { Collapsible } from "@radix-ui/react-collapsible"
     {title: "Dashboard", url:"/dashboard", icon: Home, sub_content:''},
     {title: "Inventory", url:"/dashboard/inventory", icon:ClipboardList, sub_content:[
       {title: "All stock", url:"/dashboard/inventory", icon: Plus},
-      // {title: "Add product", url:"/dashboard/inventory/add-product", icon: Plus},
+      {title: "Products", url:"/dashboard/inventory/products/", icon: Plus},
       {title: "Categories", url:"/dashboard/inventory/categories/", icon: ''},
     ]},
     {title: "Purchases", url:"/dashboard/purchases", icon:ShoppingBag, sub_content:''},
@@ -37,42 +37,42 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar}) => {
   }) 
 
   return (
-    <div id="sidebar" className={`z-30 md:w-fit w-[2.6rem] p-0 relative`}>
-      <div data-open={sidebarOpen} className={`flex flex-col justify-between p-0 relative transition-all ease-out duration-200 data-[open=true]:ease-in-out data-[open=true]:duration-300 overflow-x-hidden bg-core_polish h-full ${sidebarOpen ? "w-[65svw] md:w-56" : "w-[2.6rem] md:w-[2.75rem] "}`}>
-        <SidebarHeader className={`p-6 h-fit  text-white ${sidebarOpen ? " " : "w-[2.6rem]"}`}>
+    <div id="sidebar" className={`z-30 md:w-fit w-0 p-0 relative`}>
+      <div data-open={sidebarOpen} className={`flex flex-col justify-between p-0 relative transition-all ease-out duration-200 data-[open=true]:ease-in-out data-[open=true]:duration-300 bg-core_polish h-full ${sidebarOpen ? "w-[60svw] sm:w-[35svw] md:w-56" : "w-0 md:w-[2.75rem] "}`}>
+        <SidebarHeader className={`p-6 h-fit overflow-x-hidden text-white ${sidebarOpen ? " " : "w-[2.7rem]"}`}>
           <div className="flex justify-center items-center">
             <h1 className="font-bold font-Madetommy md:block hidden text-lg">nexShelf</h1>
           </div>
         </SidebarHeader>
+        <button data-open={sidebarOpen} className='bg-green-500 z-50 pl-6 pr-2 py-[2px] left-[98%] absolute w-fit scale-90 top-12  rounded-r-full hover:bg-core_contrast/25' onClick={()=>{toggleSidebar(),setCollapsible(false)}}>{sidebarOpen?<ChevronLeft  className="text-white "/>:<ChevronRight className="text-white "/>}</button>
         
-        <div data-open={sidebarOpen} className="flex-grow py-8 data-[open=true]:px-3 px-0 flex flex-col justify-start liststyle-none transition-all duration-300 data-[openn=true]:duration-100 ease-in-out">
-          <Button className='bg-core_contrast hover:bg-core_contrast/25' onClick={()=>{toggleSidebar(),setCollapsible(false)}}>3ga</Button>
+        <div data-open={sidebarOpen} className="flex-grow py-8 data-[open=true]:px-3 px-0 flex flex-col justify-start liststyle-none transition-all duration-300 overflow-x-hidden data-[openn=true]:duration-100 ease-in-out">
         
-          <SidebarMenu className='text-xs flex flex-col gap-6'>
+          <SidebarMenu className='text-xs flex flex-col gap-4 md:gap-2'>
           {items.map((item,index) => (
                 <SidebarMenuItem className='flex-grow' key={item.title}>
                  {item.sub_content==''? <Link href={item.url}>
-                    <Button data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?setCollapsible(!collapsible):item.sub_content==''?setCollapsible(false):'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),setCollapsible(false)):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
-                      <span className=" flex md:text-xs text-sm w-full border-none font-semibold items-center">
-                        {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-4"/>}
+                    <Button size='sm' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?setCollapsible(!collapsible):item.sub_content==''?setCollapsible(false):'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),setCollapsible(false)):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
+                      <span className=" flex md:text-xs text-sm w-full border-none items-center">
+                        {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 ml-[3px] scale-105"/>}
                         <span className="w-fit ">{item.title}</span>
                       </span>
                     </Button>
                   </Link>
                   :
-                  <Button data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?setCollapsible(!collapsible):item.sub_content==''?setCollapsible(false):'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),setCollapsible(false)):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
-                    <span className=" flex text-sm w-full border-none font-semibold items-center">
-                      {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-4 scale-125"/>}
+                  <Button size='sm' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?setCollapsible(!collapsible):item.sub_content==''?setCollapsible(false):'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),setCollapsible(false)):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
+                    <span className=" flex text-xs w-full border-none items-center">
+                      {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 ml-[3px] scale-105"/>}
                       <span className="w-fit">{item.title}</span>
                     </span>
                 </Button>
                   }
-                  {item.sub_content ? <div className={`grid transition-all ease-out duration-200 border-none transition-collapse ${item.title==activeMenu&&collapsible? "grid-rows-[1fr]" : " grid-rows-[0fr] "}`}><SidebarMenuSub className={`border-none overflow-hidden ml-8 mr-0 items-start`}>
+                  {item.sub_content ? <div className={`grid transition-all ease-out duration-200 border-none transition-collapse ${item.title==activeMenu&&collapsible? "grid-rows-[1fr]" : " grid-rows-[0fr] "}`}><SidebarMenuSub data-margin={collapsible} className={`border-none overflow-hidden data-[margin=true]:mt-2 transition-all duration-500 ml-8 mr-0 items-start`}>
                   {item.sub_content.map((sub,index)=>(
-                      <SidebarMenuSubItem key={index} className='w-full '>
+                      <SidebarMenuSubItem key={index} className='w-full'>
                         <Link href={sub.url}>
-                          <Button variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black text-white hover:bg-white'>
-                            <span className="text-xs flex justify-start text-start px-2 font-semibold">
+                          <Button size='sm' variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black text-white hover:bg-white'>
+                            <span className="text-xs flex justify-start text-start px-2 ">
                               {/* {sub.icon && <sub.icon/>} */}
                               <span className="w-fit">{sub.title}</span>
                             </span>
@@ -87,7 +87,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar}) => {
               ))}
               </SidebarMenu>
         </div>
-        <SidebarFooter className='bg-core_grey1 min-h-8'>
+        <SidebarFooter className=' min-h-6'>
           <div className="p-1"></div>
         </SidebarFooter>
       </div>

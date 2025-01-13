@@ -32,7 +32,7 @@ export default function Home() {
       <header className="py-4 px-8 items-center flex justify-between md:px-10 md:pt-7 md:pb-5">
           <Link href={'/'}  className={"z-40 decoration-none font-bold text-black"}><h1 className="font-Madetommy md:text-3xl text-2xl">nexShelf</h1></Link>
           <nav className="flex gap-3">
-            <Link href={'/signin'} className="decoration-none"><Button size='sm' variant='outline' className=' md:text-base border-core_polish md:px-4 md:py-4 decoration-none flex items-center justify-center text-black px-3 py-0'><span>Sign in</span></Button></Link>
+            <Link href={'/signin'} className="decoration-none"><Button size='sm' variant='outline' className=' md:text-base border-core_polish md:px-4 md:py-4 decoration-none flex items-center justify-center text-black px-3 py-0'><span>Log in</span></Button></Link>
             <Button size='sm' onClick={()=>setDropState(!dropState)} className='border-white flex items-center justify-center border px-2 py-0'><span className="fill-white">{menu}</span></Button>
           </nav>
       </header>
@@ -43,7 +43,7 @@ export default function Home() {
         </div>
         <div className=" text-center text-lg mt-5 font-light ">nexShelf gives you the complete control you need with <span className="font-semibold">effortless product management, categorization and pricing. </span></div>
       
-        <Link href={'/signup'} className="decoration-none mx-auto"><Button className="md:text-lg bg-core_polish text-base mt-10 px-10 md:px-20 py-5" ><Store/> Get Started</Button></Link>
+        <Link href={'/signup'} className="decoration-none mx-auto"><Button className="md:text-lg bg-core_polish text-base mt-10 px-10 md:px-20 py-5" ><Store/>Open Store</Button></Link>
       </main>
       <Separator/>
       <footer className="p-5 text-sm">

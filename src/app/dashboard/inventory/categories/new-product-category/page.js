@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { MoveLeftIcon,Edit2 } from "lucide-react"
 import { useState,useRef, useEffect } from "react";
 import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
-import { InputBox } from "../../add-product/page";
+import { InputBox } from "../../products/add-product/page";
 import { Checkbox } from "@/components/ui/checkbox"
-import { db } from "@/firebase/config";
+import { db } from "@/config/firebaseApp";
 import { collection,addDoc,onSnapshot,updateDoc,deleteDoc,getDoc,getDocs,doc} from "firebase/firestore";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";

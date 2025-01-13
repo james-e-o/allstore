@@ -10,7 +10,7 @@ import { useState,useRef, useEffect } from "react";
 // import { Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 // import { Label } from "@/components/ui/label";
 // import { Input } from "@/components/ui/input";
-import { db } from "@/firebase/config";
+import { db } from "@/config/firebaseApp";
 import { collection,addDoc, } from "firebase/firestore";
 // import { Separator } from "@/components/ui/separator";
 // import { ScrollArea } from "@/components/ui/scroll-area"
