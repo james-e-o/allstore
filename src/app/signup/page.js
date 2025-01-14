@@ -2,7 +2,7 @@
 import {  Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent  } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Indiv,google,x } from "../login/page"
-import { InputBox } from "../dashboard/inventory/products/add-product/page"
+import InputBox from "@/components/input-box"
 import Link from "next/link"
 import { useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
@@ -12,17 +12,17 @@ const SignUp = () => {
   const [data, setData] = useState()
 
   return (
-    <div className='h-full flex font-Inter flex-col'>
+    <div className='h-full overflow-y-scroll flex font-Inter flex-col'>
       <header className="px-5 pt-5 pb-3 justify-start flex">
       <Link href={'/'}  className={"z-40 decoration-none font-bold text-black"}><h1 className="font-Madetommy md:text-3xl text-2xl">nexShelf</h1></Link>    
       </header>
-      <p className="pt-4 pb-0 px-5 text-center text-base ">Get Started!</p>
+      <p className="pt-3 pb-0 px-5 text-center text-base ">Get Started!</p>
       <div className="px-5 py-1 flex flex-col justify-start flex-grow">
 
         <Card className='border bg-core_grey2/25 border-white shadow-md'>
-          <CardContent className="space-y-2 p-5">
+          <CardContent className="space-y-2 py-3 px-5">
             <form method='post' >
-              <p className="inline-block text-gray-500 mt-4 data-[variant=true]:text-core_contrast text-[11px] mr-3">Business information</p>
+              <p className="inline-block text-gray-500 mt-2 data-[variant=true]:text-core_contrast text-[11px] mr-3">Business information</p>
               <InputBox  error={data && data.emailError} mt l_font={'sm'} font={'base'} label={'Store/Company name'}/>
               <div className="mt-1">
                 <InputBox  error={data && data.emailError} l_font={'sm'} font={'base'} label={'Business mail'}/>

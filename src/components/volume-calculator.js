@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
 import { ChevronDown } from "lucide-react"
-import { InputBox } from "@/app/dashboard/inventory/products/add-product/page"
+import InputBox from "./input-box";
 
 const VolumeCalculator =({sp})=> {
 
@@ -114,9 +114,8 @@ const VolumeCalculator =({sp})=> {
                               </p>                                  
                          </div>
                     </div>
-                    <div className="mt-1 py-1">
-                    <p className="">Price per minimum piece/measure</p>
-                   {sp? <p className="ml-4 text-sm mt-1">${output}/{baseUnitMeasurement.type}</p>:""}
+                    <div className="py-1">
+                         {sp? <p className="ml-4 text-sm mt-1">{`$${output} per ${baseUnitMeasurement.type}`}</p>:""}
                     </div>
                </Dialog>
           </div>
