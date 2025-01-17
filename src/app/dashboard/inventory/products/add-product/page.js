@@ -22,16 +22,14 @@ const AddProduct = () => {
 
     return (
       <div className="px-1 md:px-5 flex h-full w-full overflow-x-hidden flex-col text-sm">
-        <div className="px-1 flex w-full justify-between items-center font-Inter ">
-          <p className='font-bold'>Add product</p>
-        </div> 
-        <div className="text-xs justify-end flex border-b">
-          <Link href={'/dashboard/inventory/products'}><Button className='py-[2px] mb-1 px-3' variant='ghost'>
+        <div className="flex w-full justify-between border-b items-center font-Inter ">
+          <p className='font-bold text-xs'>Add product</p>
+          <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-[2px] mb-1 px-3' variant='ghost'>
               <MoveLeftIcon className="w-4 h-4 mr-1"/>
               <span className="text-core_polish text-xs font-light">All products</span>
           </Button></Link>
-        </div>
-        
+        </div> 
+              
         <form onSubmit={Submit} className="flex flex-col flex-grow w-full overflow-x-clip overflow-y-scroll" action="">          
           <section className="flex flex-col">
             <p className=" text-[11px] pl-[2px] mb-2">Product information</p>
