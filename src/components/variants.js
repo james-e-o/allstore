@@ -22,6 +22,7 @@ export default function Variant ({sellingPrice}){
      const [customVariants,setCustomVariants]=useState([])
      const [editHolder,setEditHolder]=useState({})
      const [combinations,setCombinations]=useState([])
+     const [selectedCombinations,setSelectedCombinations]=useState([])
 
      function generalPriceChange(e){
           setCustomVariants(prev=>prev.map((_customVariant,_index)=>(
@@ -62,16 +63,16 @@ export default function Variant ({sellingPrice}){
 
      useEffect(()=>{
           combineVariants()
-     },[customVariants])
+     },[customVariants,colorValues,sizeValues])
      
      return(
           <div className="flex mt-6 flex-col">
                <AlertDialog>
-                    <AlertDialogContent  className="w-fit min-w-[45%]  p-3 md:p-6 rounded-md sm:w-2/5 text-xs">
+                    <AlertDialogContent  className=" w-[80%] md:w-[40%]  p-3 md:p-6 rounded-lg text-xs">
                          <p className="p-1 h-fit flex -mb-8 relative -top-3 justify-end items-center">
                               <AlertDialogCancel className="h-fit right-1 shadow-none border-none p-1 m-0"><XIcon className='w-5 scale-125 h-5' /></AlertDialogCancel>
                          </p>
-                         <div className="max-h-[70svh]">
+                         <div className="max-h-[70svh] overflow-y-scroll">
                          
                               {
                                    activeDialog === 'color'? <AddColorProp colorProp={(color)=>{setColorValues(prev=>[...prev,{color}])}}/>: 
@@ -160,15 +161,19 @@ export default function Variant ({sellingPrice}){
                                    </div>
                               </div>
                          </div>
-                         <div className="flex flex-col mt-3 bg-white p-3 rounded-lg">
-                              <div className="flex mb-1 items-center justify-between">
-                                   <p className="p-1 relative top-[2px]">Variant combinations</p>
-                                   <AlertDialogTrigger asChild>
-                                        <Button size={'sm'} onClick={()=>{setActiveDialog('edit-variations')}} variant='secondary' className='py-1 px-2 relative border-transparent text-black rounded-md bg-secondary' value="products"><span className="">Choose combinations</span><Edit3/></Button>
-                                   </AlertDialogTrigger>
+                         <div className={`grid transition-collapse ${!selectedCombinations ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                              <div className="overflow-hidden w-full">           
+                                   <div className="flex flex-col mt-3 bg-white p-3 rounded-lg">
+                                        <div className="flex mb-1 items-center justify-between">
+                                             <p className="p-1 relative top-[2px]">Variant combinations</p>
+                                             <AlertDialogTrigger asChild>
+                                                  <Button size={'sm'} onClick={()=>{setActiveDialog('edit-variations')}} variant='secondary' className='py-1 px-2 relative border-transparent text-black rounded-md bg-secondary' value="products"><span className="">Choose combinations</span><Edit3/></Button>
+                                             </AlertDialogTrigger>
+                                        </div>
+                                        <Separator />
+                                   </div>              
                               </div>
-                              <Separator />
-                         </div>              
+                         </div>
                     </div>
                </AlertDialog>
           </div>
@@ -245,7 +250,7 @@ const AddCustomProp =({Prop,_variant,edit})=> {
      const [colorValue,setColorValue] = useState('')
      const [color, setColor] = useColor("darkturquoise");
      return (
-       <form onSubmit={(e)=>{e.preventDefault(),colorProp(colorValue)}} className="">
+       <form onSubmit={(e)=>{e.preventDefault(),colorProp(colorValue)}} className="w-[75%]">
          <AlertDialogHeader><AlertDialogTitle className='text-xs p-0'>
                <AlertDialogDescription className='text-xs'>Add color variant</  AlertDialogDescription></AlertDialogTitle>
          </AlertDialogHeader>
@@ -294,13 +299,13 @@ const AddCustomProp =({Prop,_variant,edit})=> {
                <AlertDialogHeader><AlertDialogTitle className='text-xs p-0'>
                          <AlertDialogDescription className='text-xs'>Choose variations</  AlertDialogDescription></AlertDialogTitle>
                </AlertDialogHeader>
-               <div className=" justify-center mt-4 items-start gap-2">
+               <div className=" flex flex-col mt-4 items-start gap-4">
                     {combinations.map((item,i)=>(
-                         <div key={i} className="flex flex-col gap-1">
-                              <div className="grid w-full grid-cols-2">
+                         <div key={i} className="flex flex-col ">
+                              <div className="grid w-full mb-1 grid-cols-[_1fr_5fr] gap-2">
                                    <p className="w-fit justify-items-start">
                                         <Checkbox
-                                             className='scale-90'
+                                             className=''
                                              checked={item.status}
                                              onCheckedChange={(value) => changed(value,i)}
                                         />

@@ -133,16 +133,16 @@ export const Pricing =({})=>{
   return(
     <div className="">
         <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
-          <div className="">
-            <div className="inline-block mr-5 md:mr-7">
+          <div className="grid gap-1 items-center w-full grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
+            <div className="inline-block">
               <InputBox width={'192px'} label={'Unit cost price'} value={costPrice?costPrice:""} change={(e)=>{setCostPrice(new Number(e.target.value))}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
             </div>
-            <div className="inline-flex  mt-1  items-center mr-7">
-              <InputBox width={'120px'} label={'Margin'} inputDir={'input-reverse'}  change={(e)=>{setMargin(new Number(e.target.value))}} flexdir={'row'} value={margin} type={'number'} icon={'%'}/>
+            <div className="inline-flex  items-center">
+              <InputBox width={'120px'} label={'Margin'} mt inputDir={'input-reverse'}  change={(e)=>{setMargin(new Number(e.target.value))}} flexdir={'row'} value={margin} type={'number'} icon={'%'}/>
             </div>
 
-            <div className="inline-block mt-1" >
-              <InputBox width={'180px'} label={'Profit'} value={profit?profit:""} change={(e)=>{setProfit(new Number(e.target.value)),computeSellingPrice(new Number(e.target.value)),e.target.value==""?computeSellingPrice(costPrice*(margin/100)):""}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
+            <div className="inline-block" >
+              <InputBox width={'180px'} label={'Profit'}  value={profit?profit:""} change={(e)=>{setProfit(new Number(e.target.value)),computeSellingPrice(new Number(e.target.value)),e.target.value==""?computeSellingPrice(costPrice*(margin/100)):""}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
             </div>           
           </div>
           <div className=" mt-1">

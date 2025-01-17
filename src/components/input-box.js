@@ -7,7 +7,7 @@ const InputBox = ({label,placeholder,error,flexdir,type,width,margin,change,inpu
         {textarea?
           <textarea data-error={error} value={value} placeholder={placeholder} onChange={(e)=>change(e)} className={`border data-[error=true]:border-red-400 rounded-md w-full p-2`} rows={row}></textarea>
           :
-          <p data-error={error} data-dir={inputDir} data-fit={fit} data-ghost={ghost} data-short={shortInput} data-outline={!!outline} className="inline-flex items-center px-2 py-[7px] data-[fit=true]:w-fit data-[short=true]:py-1 data-[ghost=true]:border-none w-full bg-white border-black/15 data-[error=true]:border-red-400 data-[dir='input-reverse']:flex-row-reverse data-[outline=true]:border-black/35 data-[outline=true]:bg-transparent  border rounded-md justify-start">
+          <p data-error={error} data-dir={inputDir} data-fit={fit} data-ghost={ghost} data-short={shortInput} data-outline={!!outline} className="inline-flex items-center px-2 py-2 data-[fit=true]:w-fit data-[short=true]:py-1 data-[ghost=true]:border-none w-full bg-white border-core_grey2 data-[error=true]:border-red-400 data-[dir='input-reverse']:flex-row-reverse data-[outline=true]:border-black/35 data-[outline=true]:bg-transparent  border rounded-md justify-start">
             {icon&&<span className="text-xs mr-1">{icon}</span>}
             <input data-error={error} data-uppercase={input_uppercase} data-font={font} data-fit={fit} readOnly={readonly} className={`border-none px-1 text-xs outline-none w-full bg-transparent data-[uppercase=true]:uppercase data-[fit=true]:w-fit data-[font=base]:text-base data-[font=sm]:text-sm`} onBlur={(e)=>blurr&&blurr(e)} onChange={(e)=>change&&change(e)} type={type} placeholder={placeholder} value={value}/>
           </p>

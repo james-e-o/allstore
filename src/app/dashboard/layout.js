@@ -14,6 +14,7 @@ export default function DashboardLayout({ children }) {
     const commonTitle = items.map(item=>item.title.toLowerCase())
 
     const[sidebarActive,setSidebarActive]=useState(false)
+    const [collapsible,setCollapsible]= useState(false)
     
     useEffect(()=>{
        let Heading = commonTitle.filter(value => split.includes(value))
@@ -22,8 +23,9 @@ export default function DashboardLayout({ children }) {
    
     return (   
         <div className='flex h-full overflow-hidden'>
-            <AppSidebar sidebarOpen={sidebarActive} activeMenu={activeMenu} toggleSidebar={()=>setSidebarActive(!sidebarActive)} closeSidebar={()=>setSidebarActive(false)} openSidebar={()=>setSidebarActive(true)}/>
-            <main className='flex-grow bg-core_grey2/80 p-2 md:px-4 py-2 h-full w-svw overflow-x-hidden'> 
+            <AppSidebar sidebarOpen={sidebarActive} activeMenu={activeMenu} toggleSidebar={()=>setSidebarActive(!sidebarActive)} closeSidebar={()=>setSidebarActive(false)} openSidebar={()=>setSidebarActive(true)} collapsible={collapsible} toggleDrop={()=>setCollapsible(!collapsible)} wrap={()=>setCollapsible(false)} drop={()=>setCollapsible(false)}/>
+            <main className='flex-grow bg-core_grey2/80 p-2 md:px-4 py-2 h-full relative w-svw overflow-x-hidden'>
+            <button data-open={sidebarOpen} className='bg-green-500 z-50 pl-3 shadow-md md:hidden inline-block pr-3 py-[2px] right-0 bottom-9 absolute w-fit scale-90 top-12  rounded-l-full hover:bg-core_contrast/25' onClick={()=>{toggleSidebar(),wrap()}}>{sidebarOpen?<ChevronLeft  className="text-white "/>:<ChevronRight className="text-white "/>}</button> 
                 <div className="bg-white flex flex-col overflow-y-hidden rounded-lg h-full">                    
                     <header className=" rounded-md px-2 mb-1 text-xs flex w-full justify-between items-center font-Inter ">
                         <p className="font-bold px-1">All stock</p>

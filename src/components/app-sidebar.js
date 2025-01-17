@@ -22,17 +22,17 @@ import { Collapsible } from "@radix-ui/react-collapsible"
 
  
 
-const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar}) => {
+const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsible,toggleDrop,drop,wrap}) => {
 
   const [innerWidth, setInnerWidth] = useState('')
   const [activeMenu,setActiveMenu]= useState(items[0].title)
-  const [collapsible,setCollapsible]= useState(false)
+  
   useEffect(()=>{
     setInnerWidth(window.innerWidth>=768)
     const sideBar = document.getElementById('sidebar')
     document.onpointerdown =(e)=> {      
       if(sidebarOpen&&e.target.closest('div#sidebar'))return
-      else  if(sidebarOpen&&!innerWidth){closeSidebar(),setCollapsible(false)}
+      else  if(sidebarOpen&&!innerWidth){closeSidebar(),wrap()}
     }
   }) 
 
@@ -44,7 +44,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar}) => {
             <h1 className="font-bold font-Madetommy md:block hidden text-lg">nexShelf</h1>
           </div>
         </SidebarHeader>
-        <button data-open={sidebarOpen} className='bg-green-500 z-50 pl-1 pr-2 py-[2px] left-[98%] absolute w-fit scale-90 top-12  rounded-r-full hover:bg-core_contrast/25' onClick={()=>{toggleSidebar(),setCollapsible(false)}}>{sidebarOpen?<ChevronLeft  className="text-white "/>:<ChevronRight className="text-white "/>}</button>
+        <button data-open={sidebarOpen} className='bg-green-500 z-50 pl-1 hidden md:inline-block pr-2 py-[2px] left-[98%] absolute w-fit scale-90 top-12  rounded-r-full hover:bg-core_contrast/25' onClick={()=>{toggleSidebar(),wrap()}}>{sidebarOpen?<ChevronLeft  className="text-white "/>:<ChevronRight className="text-white "/>}</button>
         
         <div data-open={sidebarOpen} className="flex-grow py-8 data-[open=true]:px-3 px-0 flex flex-col justify-start liststyle-none transition-all duration-300 overflow-x-hidden data-[openn=true]:duration-100 ease-in-out">
         
@@ -52,7 +52,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar}) => {
           {items.map((item,index) => (
                 <SidebarMenuItem className='flex-grow' key={item.title}>
                  {item.sub_content==''? <Link href={item.url}>
-                    <Button size='sm' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?setCollapsible(!collapsible):item.sub_content==''?setCollapsible(false):'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),setCollapsible(false)):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
+                    <Button size='sm' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?toggleDrop():item.sub_content==''?wrap():'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),wrap()):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
                       <span className=" flex md:text-xs text-sm w-full border-none items-center">
                         {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 ml-[3px] scale-105"/>}
                         <span className="w-fit ">{item.title}</span>
@@ -60,7 +60,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar}) => {
                     </Button>
                   </Link>
                   :
-                  <Button size='sm' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?setCollapsible(!collapsible):item.sub_content==''?setCollapsible(false):'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),setCollapsible(false)):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
+                  <Button size='sm' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?toggleDrop():item.sub_content==''?wrap():'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),wrap()):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
                     <span className=" flex md:text-xs text-sm w-full border-none items-center">
                       {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 ml-[3px] scale-105"/>}
                       <span className="w-fit">{item.title}</span>
@@ -71,7 +71,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar}) => {
                   {item.sub_content.map((sub,index)=>(
                       <SidebarMenuSubItem key={index} className='w-full'>
                         <Link href={sub.url}>
-                          <Button size='sm' variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black text-white hover:bg-white'>
+                          <Button size='sm' onClick={()=>{closeSidebar()}} variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black text-white hover:bg-white'>
                             <span className="text-xs flex justify-start text-start px-2 ">
                               {/* {sub.icon && <sub.icon/>} */}
                               <span className="w-fit">{sub.title}</span>
