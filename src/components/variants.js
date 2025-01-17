@@ -55,7 +55,7 @@ export default function Variant ({sellingPrice}){
                }
                result = temp; // Update result with new combinations
           }  
-          setCombinations(result.map((item,_index)=>({variant:result,status:false})))
+          setCombinations(result.map((item,_index)=>({variant:item,status:false})))
           console.log(result)
           return result;          
      }
