@@ -32,7 +32,7 @@ const AddProduct = () => {
               
         <form onSubmit={Submit} className="flex flex-col flex-grow w-full overflow-x-clip overflow-y-scroll" action="">          
           <section className="flex flex-col">
-            <p className=" text-[11px] pl-[2px] mb-2">Product information</p>
+            <p className=" text-[10px] pl-[2px] mb-1">Product information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
                 <div className="p-2 bg-core_grey2/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-lg w-full">
@@ -63,8 +63,8 @@ const AddProduct = () => {
             </div>
           </section>
 
-          <Separator className='my-1' />
-          <p className=" text-[11px] mb-1">Store information</p>
+          <Separator className='mt-1' />
+          <p className=" text-[10px] mb-1">Store information</p>
           <section className="flex flex-col md:flex-row gap-3">
             <div className="flex md:w-4/6 w-full p-2 md:p-3 bg-core_grey2 rounded-lg flex-col">
               <p className=" text-[11px] text-gray-500 mt-2">Created by {'user id'}</p>
@@ -78,13 +78,16 @@ const AddProduct = () => {
 
           <Separator className='my-1' />
           <section className="flex flex-col">
-            <p className=" text-[11px] mb-1">Eshop information</p>
+            <p className=" text-[11px] mb-1">E-Shop information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
 
                 <div className="p-2 bg-core_grey2/60 flex-col md:pt-4 md:px-5 md:pb-5 mt-3 rounded-lg w-full">
                   <p className=" text-sm font-Voces font-semibold ">Add image</p>
-                  <div className="w-full mx-3 bg-blue-300 rounded-lg h-9 "></div>
+                  <div className="w-full mt-1 md:flex-row flex-col gap-3 h-fit flex ">
+                    <div className="w-full bg-blue-300 rounded-lg h-72 "></div>
+                    <div className="w-full bg-blue-300 rounded-lg h-72 "></div>
+                  </div>
                 </div>
 
               </div>
@@ -110,7 +113,7 @@ export const Pricing =({})=>{
   const [wholesaleDiscount,setWholesaleDiscount]=useState(0)
   const [margin,setMargin]=useState('50')
   const [profit,setProfit]=useState('')
-  const [sellingPrice,setSellingPrice]=useState('')
+  const [sellingPrice,setSellingPrice]=useState(0)
 
   function computeCostPriceMargin(){
     const computedMargin = margin/100
@@ -121,7 +124,7 @@ export const Pricing =({})=>{
 
   function computeSellingPrice(value){
     let _SP = value + costPrice
-    setSellingPrice(_SP)
+    setSellingPrice(new Number(_SP).toFixed())
   }
 
   
@@ -135,7 +138,7 @@ export const Pricing =({})=>{
         <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
           <div className="grid gap-1 items-center w-full grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
             <div className="inline-block">
-              <InputBox width={'192px'} label={'Unit cost price'} value={costPrice?costPrice:""} change={(e)=>{setCostPrice(new Number(e.target.value))}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
+              <InputBox width={'195px'} label={'Unit cost price'} value={costPrice?costPrice:""} change={(e)=>{setCostPrice(new Number(e.target.value))}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
             </div>
             <div className="inline-flex  items-center">
               <InputBox width={'120px'} label={'Margin'} mt inputDir={'input-reverse'}  change={(e)=>{setMargin(new Number(e.target.value))}} flexdir={'row'} value={margin} type={'number'} icon={'%'}/>
@@ -177,7 +180,7 @@ export const Pricing =({})=>{
 
         <div className={`grid transition-collapse ${toggleVariant ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
           <div className="overflow-hidden text-xs">
-            <Variant sellingPrice={sellingPrice}/>
+            <Variant costPrice={costPrice.toString()} sellingPrice={sellingPrice.toString()}/>
           </div>
         </div>
     </div>

@@ -27,18 +27,27 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
   const [innerWidth, setInnerWidth] = useState('')
   const [activeMenu,setActiveMenu]= useState(items[0].title)
   
+ 
   useEffect(()=>{
     setInnerWidth(window.innerWidth>=768)
-    const sideBar = document.getElementById('sidebar')
+    const mobile_trigger = document.getElementById('mobile_trigger')
     document.onpointerdown =(e)=> {      
       if(sidebarOpen&&e.target.closest('div#sidebar'))return
-      else  if(sidebarOpen&&!innerWidth){closeSidebar(),wrap()}
+      else  if(sidebarOpen&&e.target.closest('button#mobile_trigger'))return
+      if(sidebarOpen&&innerWidth)return
+      else  if(sidebarOpen&&!innerWidth&&!e.target.closest('button#mobile_trigger')){closeSidebar(),wrap()}
     }
   }) 
 
+  useEffect(()=>{
+    window.onresize = () => {
+      setInnerWidth(window.innerWidth>=768)
+    }
+  },[])
+
   return (
     <div id="sidebar" className={`z-30 md:w-fit w-0 p-0 relative`}>
-      <div data-open={sidebarOpen} className={`flex flex-col justify-between p-0 relative transition-all ease-out duration-200 data-[open=true]:ease-in-out data-[open=true]:duration-300 bg-core_polish h-full ${sidebarOpen ? "w-[60svw] sm:w-[35svw] md:w-56" : "w-0 md:w-[2.75rem] "}`}>
+      <div data-open={sidebarOpen} className={`flex flex-col justify-between p-0 relative transition-all ease-out duration-200 data-[open=true]:ease-in-out data-[open=true]:duration-300 bg-core_polish h-full ${sidebarOpen ? "w-[60svw] sm:w-[35svw] md:w-48" : "w-0 md:w-[2.75rem] "}`}>
         <SidebarHeader className={`p-6 h-fit overflow-x-hidden text-white ${sidebarOpen ? " " : "w-[2.7rem]"}`}>
           <div className="flex justify-center items-center">
             <h1 className="font-bold font-Madetommy md:block hidden text-lg">nexShelf</h1>
@@ -71,7 +80,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
                   {item.sub_content.map((sub,index)=>(
                       <SidebarMenuSubItem key={index} className='w-full'>
                         <Link href={sub.url}>
-                          <Button size='sm' onClick={()=>{closeSidebar()}} variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black text-white hover:bg-white'>
+                          <Button size='sm' onClick={()=>{innerWidth?"":(closeSidebar(),wrap())}} variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black text-white hover:bg-white'>
                             <span className="text-xs flex justify-start text-start px-2 ">
                               {/* {sub.icon && <sub.icon/>} */}
                               <span className="w-fit">{sub.title}</span>

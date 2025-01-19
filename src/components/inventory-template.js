@@ -96,6 +96,7 @@ export function DataTableDemo() {
       ),
       enableSorting: false,
       enableHiding: false,
+      size:30
     },
     {
       accessorKey: "status",
@@ -315,7 +316,7 @@ export function DataTableDemo() {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead data-value={header.id} className={`w-fit`} key={header.id}>
+                    <TableHead data-value={header.id} width={header.getSize()} key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -338,7 +339,7 @@ export function DataTableDemo() {
                   {row.getVisibleCells().map((cell,index) => (
                     <TableCell 
                       data-value={row.getVisibleCells().indexOf(cell)==index&&cell.id.split('_')[1]}  
-                      className={`w-fit`} key={cell.id}
+                      width={cell.column.getSize()} key={cell.id}
                       >
                       
                       {flexRender(

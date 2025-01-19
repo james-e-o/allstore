@@ -7,11 +7,12 @@ import { ColorPicker, useColor,Saturation,IColor, Hue, Alpha } from "react-color
 import "react-color-palette/css";
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import SelectedVariantCombinationsTable from "./selected-variants"
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox";
 
 
-export default function Variant ({sellingPrice}){
+export default function Variant ({sellingPrice,costPrice}){
 
      const [colorVariant,setColorVariant]=useState(true)
      const [sizeVariant,setSizeVariant]=useState(true)
@@ -36,31 +37,50 @@ export default function Variant ({sellingPrice}){
           )))
      }
 
-     function combineVariants(){
-          let colors = colorValues&&colorValues.map(col=>(col.color))
-          let sizes = sizeValues&&sizeValues.map(size=>(size.size))
-          let customArray = customVariants&&customVariants.map((_item,_i)=>(
-               _item.options
-          ))
-          let arrays = [colors&&colors,sizes&&sizes,...customArray&&customArray]
-          if (arrays.length === 0) return []; // Handle empty input
-   
-          let result = ['']; // Start with an empty combination
-     
-          for (const array of arrays) {
-               const temp = []; // Temporary storage for new combinations
-               for (const prefix of result) {
-                    for (const element of array) {
-                         temp.push(`${prefix}${prefix ? '/' : ''}${element}`); // Build combinations
-                    }
-               }
-               result = temp; // Update result with new combinations
-          }  
-          setCombinations(result.map((item,_index)=>({variant:item,status:false})))
-          console.log(result)
-          return result;          
+     function combineArrays(arrays, prefix = '', result = []) {
+
+          arrays = arrays.filter(array=>array.length>0)
+
+          if (arrays.length === 0) {
+            // Base case: Add the combination to the result
+            result.push(prefix.slice(1)); // Remove the leading slash
+            return result;
+          }
+        
+          const [firstArray, ...restArrays] = arrays; // Destructure the arrays
+          for (const element of firstArray) {
+            combineArrays(restArrays, `${prefix}/${element}`, result); // Recursive call
+          }
+        
+          return result;
      }
 
+     function combineVariants(){
+          let colors = colorValues?colorValues.map(col=>(col.color)):[' ']
+          let sizes = sizeValues?sizeValues.map(size=>(size.size)):[' ']
+          let customArray = customVariants?customVariants.map((_item,_i)=>(
+               _item.options
+          )):[' ']
+          let arrays = [colors,sizes,...customArray]
+                
+          const combinedArray = combineArrays(arrays);
+          setCombinations(combinedArray.map((item,_index)=>({variant:item,status:false})))
+             console.log(combinedArray,arrays);
+     }
+
+     function createSelection(){
+          setSelectedCombinations(combinations.filter((item)=>item.status===true).map((_item,_index)=>({
+               combination:_item.variant,
+               sp:sellingPrice,
+               cp:costPrice,
+               sku:`SKU-${_index}`
+          })))
+          
+     }
+
+     useEffect(()=>{
+          console.log(selectedCombinations)
+     },[selectedCombinations])
      useEffect(()=>{
           combineVariants()
      },[customVariants,colorValues,sizeValues])
@@ -75,9 +95,9 @@ export default function Variant ({sellingPrice}){
                          <div className="max-h-[70svh] overflow-y-scroll">
                          
                               {
-                                   activeDialog === 'color'? <AddColorProp colorProp={(color)=>{setColorValues(prev=>[...prev,{color}])}}/>: 
+                                   activeDialog === 'color'? <AddColorProp colorProp={(color,url)=>{setColorValues(prev=>[...prev,{color}])}}/>: 
                                    activeDialog === 'size'?<AddSizeProp sizeProp={(val)=>{setSizeValues(val)}}/> :
-                                   activeDialog === 'edit-variations'?<EditVariantCombinations changed={(val,index)=>{setCombinations(prev=>prev.map((variant,_index)=>(_index === index?{...variant,status:val}:variant)))}} combinations={combinations}/> :
+                                   activeDialog === 'edit-variations'?<EditVariantCombinations log={createSelection} changed={(val,index)=>{setCombinations(prev=>prev.map((variant,_index)=>(_index === index?{...variant,status:val}:variant)))}} combinations={combinations}/> :
                                    activeDialog === 'custom'?<AddCustomProp Prop={(type,badges)=>{setCustomVariants(prev=>[...prev,{type,options:badges}])}}/> :
                                    activeDialog === 'edit-custom'?<AddCustomProp edit={true} _variant={editHolder} Prop={(type,badges)=>{setCustomVariants(prev=>prev.map((_variant,_i)=>(_variant===editHolder?{type,options:badges}:_variant))),setEditHolder({})}}/> :
                                     ""     
@@ -131,18 +151,18 @@ export default function Variant ({sellingPrice}){
                                                   <div key={index} className="flex gap-2 justify-start items-center">
                                                        <p className=" flex gap-2">
                                                             <button>
-                                                                 <Trash2 onClick={()=>{setCustomVariants(prev=>prev.filter((_variant)=>customVariants[index]!==_variant))}} className=" h-5 w-6 mt-1 rounded-md inline-block"/>
+                                                                 <Trash2 onClick={()=>{setCustomVariants(prev=>prev.filter((_variant)=>customVariants[index]!==_variant))}} className="p-[2px] h-5 w-6 mt-1 rounded-md inline-block"/>
                                                             </button>
                                                             <AlertDialogTrigger asChild>                              
                                                                  <button>
-                                                                      <Edit onClick={()=>{setEditHolder(customVariant),setActiveDialog('edit-custom')}} className=" h-5 w-6 mt-1 rounded-md inline-block"/>
+                                                                      <Edit onClick={()=>{setEditHolder(customVariant),setActiveDialog('edit-custom')}} className="p-[2px] h-5 w-6 mt-1 rounded-md inline-block"/>
                                                                  </button>
                                                             </AlertDialogTrigger>
                                                        </p>
                                                        <div className="mr-3 inline-block gap-2 items-center h-fit border-core_contrast/30">
                                                             <p className="inline-block mr-2 mt-2">{customVariant.type} :</p>
                                                             {customVariant.options.map((option,_index)=>(
-                                                                 <p key={_index} className="py-[1px] mt-2 px-2 mr-2 rounded-2xl border-core_contrast border gap-1 items-center inline-flex relative text-black text-xs cursor-pointer">
+                                                                 <p key={_index} className="py-0 mt-2 px-2 mr-2 rounded-2xl border-core_contrast border gap-1 items-center inline-flex relative text-black text-xs cursor-pointer">
                                                                       <span className="ml-[2px] leading-tight mr-1">{option}</span>
                                                                       <button className="w-fit h-fit" onClick={()=>{setCustomVariants(prev=>prev.map((_variant,_i)=>(_i===index?{..._variant,options:_variant.options.filter(item=>item!==option)}:_variant)))}}>
                                                                            <XIcon className="p-1"/>                                   
@@ -160,17 +180,23 @@ export default function Variant ({sellingPrice}){
                                         </AlertDialogTrigger>
                                    </div>
                               </div>
+                              <p className="flex mt-1 justify-end">
+                                   <AlertDialogTrigger asChild>
+                                        <Button size={'sm'} onClick={()=>{setActiveDialog('edit-variations')}} variant='secondary' className='py-1 px-2 relative border-transparent text-black rounded-md bg-secondary' value="products"><span className="">Choose combinations</span><Edit3/></Button>
+                                   </AlertDialogTrigger>
+                              </p>
                          </div>
-                         <div className={`grid transition-collapse ${!selectedCombinations ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                         <div className={`grid transition-collapse ${!selectedCombinations.length<=0 ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
                               <div className="overflow-hidden w-full">           
-                                   <div className="flex flex-col mt-3 bg-white p-3 rounded-lg">
+                                   <div className="flex w-full flex-col mt-3 bg-white p-3 rounded-lg">
                                         <div className="flex mb-1 items-center justify-between">
                                              <p className="p-1 relative top-[2px]">Variant combinations</p>
-                                             <AlertDialogTrigger asChild>
-                                                  <Button size={'sm'} onClick={()=>{setActiveDialog('edit-variations')}} variant='secondary' className='py-1 px-2 relative border-transparent text-black rounded-md bg-secondary' value="products"><span className="">Choose combinations</span><Edit3/></Button>
-                                             </AlertDialogTrigger>
+                                             
                                         </div>
                                         <Separator />
+                                        <div className="flex w-full flex-col">
+                                             <SelectedVariantCombinationsTable table_data={selectedCombinations}/>
+                                        </div>
                                    </div>              
                               </div>
                          </div>
@@ -180,13 +206,6 @@ export default function Variant ({sellingPrice}){
      )
 }
 
-// onClick={()=>{setCustomVariants(prev=>[...prev,{type:holder.toLowerCase(),values:[]}]),setHolder("")}}
-// toggle={(item,_status)=>{setSizeValues(prev=>prev.map((sizeValue,_index)=>(item == sizeValue.size?{...sizeValue,status:_status}:sizeValue))),console.log(item,_status,sizeValues)}} 
-// change={(e)=>{setColorValues(prev=>prev.map((colorValue,_index)=>(_index === index?{...colorValue,price:e.target.value}:colorValue)))}}
-// {setCustomVariants(prev=>prev.map((customVariant,index)=>(
-//      index == activeDialog.index?
-//      {...customVariant,values:[...customVariant.values,{name}]}:customVariant
-// ))),console.log(activeDialog.index,customVariants)}
 
 const AddCustomProp =({Prop,_variant,edit})=> {
      const [type,setType] = useState(edit&&_variant.type?_variant.type:'')
@@ -240,7 +259,7 @@ const AddCustomProp =({Prop,_variant,edit})=> {
                <p className="italic md:text-end text-core_contrast/70 text-[10px]">use Enter key to add variant option</p>
          </div>
          <AlertDialogFooter className={'flex flex-row mt-4 justify-end'}>
-           <AlertDialogCancel asChild><Button size='sm' onClick={CreateOrUpdate} variant='outline' disabled={badges.length<=0} className='w-fit text-white bg-black cursor-pointer px-5' type="submit">{edit?"Update":"Add"} custom variant</Button></AlertDialogCancel>
+           <AlertDialogCancel asChild><Button size='sm' onClick={CreateOrUpdate} variant='outline' disabled={badges.length<=0} className='w-fit text-white bg-black cursor-pointer px-4' type="submit">{edit?"Update":"Add"} custom variant</Button></AlertDialogCancel>
          </AlertDialogFooter>
        </div>
      )
@@ -248,17 +267,32 @@ const AddCustomProp =({Prop,_variant,edit})=> {
    
    const AddColorProp =({colorProp})=> {
      const [colorValue,setColorValue] = useState('')
+     const [colorUrl,setColorUrl] = useState('')
      const [color, setColor] = useColor("darkturquoise");
+
+     function convertToImg (pickedColor){
+         const canvas = document.createElement('canvas')
+         canvas.width = 18
+         canvas.height = 18
+         const context = canvas.getContext('2d')
+         context.fillStyle = pickedColor
+         context.fillRect(0,0,canvas.width,canvas.height)
+
+         const canvasUrl = canvas.toDataURL(`${pickedColor}/png`)
+         setColorUrl(canvasUrl)
+         console.log(canvasUrl)
+     }
+
      return (
-       <form onSubmit={(e)=>{e.preventDefault(),colorProp(colorValue)}} className="w-[75%]">
+       <form onSubmit={(e)=>{e.preventDefault(),colorProp(colorValue,colorUrl)}} className="w-[75%]">
          <AlertDialogHeader><AlertDialogTitle className='text-xs p-0'>
                <AlertDialogDescription className='text-xs'>Add color variant</  AlertDialogDescription></AlertDialogTitle>
          </AlertDialogHeader>
-         <div className="flex justify-center items-start gap-2">
-           <ColorPicker color={color} hideInput={["rgb", "hsv"]} height={100} onChange={setColor} onChangeComplete={(col)=>setColorValue(col.hex)} />
+         <div className="flex justify-center w-full items-start gap-2">
+           <ColorPicker color={color} hideInput={["rgb", "hsv"]} height={100} onChange={setColor} onChangeComplete={(col)=>{setColorValue(col.hex),convertToImg(col.hex)}} />
          </div>
          <AlertDialogFooter className={'flex mx-1 flex-row mt-2 items-center justify-end'}>
-           <AlertDialogCancel asChild><Button size='sm' disabled={!colorValue} className='w-fit text-core_contrast px-5' type="submit">Add color</Button></AlertDialogCancel>
+           <AlertDialogCancel asChild><Button size='sm' disabled={!colorValue} className='w-fit text-core_contrast px-4' type="submit">Add color</Button></AlertDialogCancel>
          </AlertDialogFooter>
        </form>
      )
@@ -292,16 +326,15 @@ const AddCustomProp =({Prop,_variant,edit})=> {
      )
    }
 
-   const EditVariantCombinations = ({combinations,changed}) => {
-     console.log(combinations)
+   const EditVariantCombinations = ({combinations,changed,log}) => {
      return (
-          <div className="overflow-y-scroll">
+          <div className="">
                <AlertDialogHeader><AlertDialogTitle className='text-xs p-0'>
                          <AlertDialogDescription className='text-xs'>Choose variations</  AlertDialogDescription></AlertDialogTitle>
                </AlertDialogHeader>
-               <div className=" flex flex-col mt-4 items-start gap-4">
+               <div className=" flex flex-col mt-4 items-start gap-3">
                     {combinations.map((item,i)=>(
-                         <div key={i} className="flex flex-col ">
+                         <div key={i} className="flex w-full flex-col ">
                               <div className="grid w-full mb-1 grid-cols-[_1fr_5fr] gap-2">
                                    <p className="w-fit justify-items-start">
                                         <Checkbox
@@ -310,15 +343,15 @@ const AddCustomProp =({Prop,_variant,edit})=> {
                                              onCheckedChange={(value) => changed(value,i)}
                                         />
                                    </p>
-                                   <p className="uppercase text-sm">{item.variant}</p>
+                                   <p className="uppercase text-xs">{item.variant}</p>
                               </div>
                               <Separator />
                          </div>
                     ))}
                </div>
-               {/* <AlertDialogFooter className={'flex mx-1 flex-row mt-2 items-center justify-end'}>
-                    <AlertDialogCancel asChild><Button size='sm' className='w-fit text-core_contrast px-5' type="submit">Add color</Button></AlertDialogCancel>
-               </AlertDialogFooter> */}
+               <AlertDialogFooter className={'flex  mx-1 flex-row mt-2 items-center justify-end'}>
+                    <AlertDialogCancel asChild><Button size='sm' onClick={()=>{log()}} className='w-fit text-core_contrast px-3' type="submit">Done</Button></AlertDialogCancel>
+               </AlertDialogFooter>
           </div>
      )
    }
@@ -332,3 +365,5 @@ const AddCustomProp =({Prop,_variant,edit})=> {
      )
    }
 
+
+   
