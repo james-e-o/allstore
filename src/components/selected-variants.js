@@ -10,7 +10,23 @@ import { Checkbox } from "@/components/ui/checkbox"
 import {ColumnDef,ColumnFiltersState,SortingState,VisibilityState,flexRender,getCoreRowModel,getFilteredRowModel,getPaginationRowModel,getSortedRowModel,useReactTable,} from "@tanstack/react-table"
 import InputBox from "./input-box"
 
-
+export const DisplayVariant =({string})=> {
+    let data = string.toString()
+    let splitcolor =  data.startsWith('#')&&data.split('/')[0]
+    let stringArray = data.split('/')
+    stringArray.shift()
+    let otherStrings = stringArray.join("/")
+    
+    if (data.startsWith('#')){
+    return (
+          <p className="inline-flex items-center" >
+              <button  style={{backgroundColor:splitcolor}} className="w-4 shadow-sm  h-4 border "></button>
+              <span>/{otherStrings}</span>
+          </p>
+    )} else return (
+          <p className="inline-flex items-center" >{string}</p>
+    )
+}
 
 export default function SelectedVariantCombinationsTable({table_data,updateCP,updateSP}) {
       const [data,setData]=useState(table_data)
@@ -36,19 +52,19 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
           },
           {
             accessorKey: "combination",
-            header: "Variant",
-            cell: ({ row }) => (<div className="uppercase text-xs">{row.getValue("combination")}</div>),
+            header:()=><div className="text-center">{isMobile ?"Variant":"Variant combinations"}</div>,
+            cell: ({ row }) => (<div className="uppercase text-xs"><DisplayVariant string={row.getValue("combination")} /></div>),
             enableHiding: false,
           },
           {
             accessorKey: "sp",
             header: "Selling price",
-            cell: EditableSellingPrice,
+            cell: EditableCell,
           },
           {
             accessorKey: "cp",
             header: "Cost price",
-            cell: EditableCostPrice,
+            cell: EditableCell,
           },
           {
             accessorKey: "sku",
@@ -62,7 +78,7 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
               return (<DropdownMenu>
                 <DropdownMenuTrigger className='flex flex-row justify-end'  asChild>
                   <Button variant="outline" className="ml-auto px-2 min-w-10 text-xs md:text-[0.8175rem] capitalize">
-                    {responsive} <ChevronDown />
+                    {responsive==='cp'?'cost pr.':responsive==='sp'?'selling pr.':responsive} <ChevronDown />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
@@ -81,7 +97,15 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
                 </DropdownMenuContent>
               </DropdownMenu>)
             },
-            cell: ({ row }) => <div className="lowercase flex flex-row justify-end">{row.getValue(responsive)}</div>,
+            cell: ({getValue,row,column,table}) => {
+              const updateData = (rowIndex,columnId,value) => table.options.meta?.updateState(rowIndex,columnId,value)
+              return (<div className="lowercase flex flex-row justify-end">
+                {
+                  responsive==='cp'?<ResponsiveEditableCell  updateData={(rowIndex,columnId,value)=>{updateData(rowIndex,columnId,value)}} row={row} column={column} table={table} getValue={row.getValue(responsive)} /> : 
+                  responsive==='sp'?<ResponsiveEditableCell  updateData={(rowIndex,columnId,value)=>{updateData(rowIndex,columnId,value)}} row={row} column={column} table={table} getValue={row.getValue(responsive)} /> : 
+                  row.getValue(responsive)
+                }
+              </div>)},
             
           },
       ]
@@ -141,6 +165,10 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
          })
          setIsClient(true)
        },[isMobile])
+
+       useEffect(()=>{
+         console.log(data)
+       },[data])
        
      if(isClient)
      return (
@@ -281,24 +309,22 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
    }
   //  ₦₦₦₦₦
 
-   const EditableCostPrice =({getValue,row,column,table})=> {
+   const EditableCell =({getValue,row,column,table})=> {
     const initialValue = getValue
     const [value,setValue]=useState(initialValue)
-    const updateCP = () => table.options.meta?.updateState(row.index,column.id,value)
-
+    const updateData = () => table.options.meta?.updateState(row.index,column.id,value)
     return (
-         <Input value={value} onBlur={updateCP} className=" h-8" onChange={({target})=>{setValue(target.value)}} />
+         <Input value={value} onBlur={updateData} className=" md:text-xs text-xs h-8" onChange={({target})=>{setValue(target.value)}} />
     )
   }
 
-   const EditableSellingPrice =({getValue,row,column,table})=> {
+  const ResponsiveEditableCell =({getValue,updateData,column,table,row})=> {
     const initialValue = getValue
     const [value,setValue]=useState(initialValue)
-    const updateSP = () => table.options.meta?.updateState(row.index,column.id,value)
-
+   
     return (
       <div className="text-xs">
-        <Input value={value} onBlur={updateSP} className=" h-8" onChange={({target})=>{setValue(target.value)}} />
+        <Input value={value} onBlur={()=>{updateData(value,column.id,row.index)}} className=" h-8" onChange={({target})=>{setValue(target.value)}} />
         {/* <InputBox value={value} blurr={updateSP} change={({target})=>{setValue(target.value)}} /> */}
       </div>
     )

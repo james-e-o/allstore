@@ -7,10 +7,12 @@ import { ColorPicker, useColor,Saturation,IColor, Hue, Alpha } from "react-color
 import "react-color-palette/css";
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
-import SelectedVariantCombinationsTable from "./selected-variants"
+import SelectedVariantCombinationsTable, { DisplayVariant } from "./selected-variants"
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox";
 
+// let b =['h','i']
+// b.s
 
 export default function Variant ({sellingPrice,costPrice}){
 
@@ -65,7 +67,7 @@ export default function Variant ({sellingPrice,costPrice}){
                 
           const combinedArray = combineArrays(arrays);
           setCombinations(combinedArray.map((item,_index)=>({variant:item,status:false})))
-             console.log(combinedArray,arrays);
+          console.log(combinedArray);
      }
 
      function createSelection(){
@@ -114,12 +116,12 @@ export default function Variant ({sellingPrice,costPrice}){
                                         <div className="inline-flex items-center text-xs">
                                              {colorValues&&colorValues.map((color,index)=>(
                                                   <p key={index} className="inline-flex items-center mr-4 gap-[2px]">
-                                                       <button  style={{backgroundColor:color.color}} className="w-[1.2rem]  h-[1.2rem] border "></button>
+                                                       <button  style={{backgroundColor:color.color}} className="w-[1.2rem] shadow-sm  h-[1.2rem] border "></button>
                                                        <XIcon onClick={()=>{setColorValues(colorValues.filter((_Item)=>colorValues[index]!==_Item))}} className="p-1"/>
                                                   </p>
                                              ))}
                                              <AlertDialogTrigger asChild>                                            
-                                                  <button className="mt-1 disabled:opacity-35 border-core_contrast/40" onClick={()=>{setActiveDialog('color')}}>
+                                                  <button className="mt-1 disabled:opacity-35 shadow" onClick={()=>{setActiveDialog('color')}}>
                                                        <Plus className="border bg-black relative -top-[1px] rounded-lg p-1  h-6 w-9 text-white inline-block"/>
                                                   </button>
                                              </AlertDialogTrigger>                                       
@@ -136,7 +138,7 @@ export default function Variant ({sellingPrice,costPrice}){
                                                   </p>
                                              ))} 
                                              <AlertDialogTrigger asChild>                                            
-                                                  <button className="mt-1 disabled:opacity-35 border-core_contrast/40" onClick={()=>{setActiveDialog('size')}}>
+                                                  <button className="mt-1 disabled:opacity-35 shadow" onClick={()=>{setActiveDialog('size')}}>
                                                        <Plus className="border bg-black relative -top-[1px] rounded-lg p-1  h-6 w-9 text-white inline-block"/>
                                                   </button>
                                              </AlertDialogTrigger>                                      
@@ -162,7 +164,7 @@ export default function Variant ({sellingPrice,costPrice}){
                                                        <div className="mr-3 inline-block gap-2 items-center h-fit border-core_contrast/30">
                                                             <p className="inline-block mr-2 mt-2">{customVariant.type} :</p>
                                                             {customVariant.options.map((option,_index)=>(
-                                                                 <p key={_index} className="py-0 mt-2 px-2 mr-2 rounded-2xl border-core_contrast border gap-1 items-center inline-flex relative text-black text-xs cursor-pointer">
+                                                                 <p key={_index} className="py-0 mt-2 px-2 mr-2 rounded-2xl border-border border shadow gap-1 items-center inline-flex relative text-black text-xs cursor-pointer">
                                                                       <span className="ml-[2px] leading-tight mr-1">{option}</span>
                                                                       <button className="w-fit h-fit" onClick={()=>{setCustomVariants(prev=>prev.map((_variant,_i)=>(_i===index?{..._variant,options:_variant.options.filter(item=>item!==option)}:_variant)))}}>
                                                                            <XIcon className="p-1"/>                                   
@@ -174,7 +176,7 @@ export default function Variant ({sellingPrice,costPrice}){
                                              ))}
                                         </div>
                                         <AlertDialogTrigger asChild>                                            
-                                             <button className="mt-1 w-fit disabled:opacity-35 border-core_contrast/40" onClick={()=>{setActiveDialog('custom')}}>
+                                             <button className="mt-1 w-fit disabled:opacity-35 shadow" onClick={()=>{setActiveDialog('custom')}}>
                                                   <Plus className="border bg-black rounded-lg p-1  h-6 w-9 text-white inline-block"/>
                                              </button>
                                         </AlertDialogTrigger>
@@ -182,7 +184,7 @@ export default function Variant ({sellingPrice,costPrice}){
                               </div>
                               <p className="flex mt-1 justify-end">
                                    <AlertDialogTrigger asChild>
-                                        <Button size={'sm'} onClick={()=>{setActiveDialog('edit-variations')}} variant='secondary' className='py-1 px-2 relative border-transparent text-black rounded-md bg-secondary' value="products"><span className="">Choose combinations</span><Edit3/></Button>
+                                        <Button size={'sm'} onClick={()=>{setActiveDialog('edit-variations')}} variant='secondary' className='py-1 px-2 relative shadow border-transparent text-black rounded-md bg-secondary' value="products"><span className="">Choose combinations</span><Edit3/></Button>
                                    </AlertDialogTrigger>
                               </p>
                          </div>
@@ -284,14 +286,14 @@ const AddCustomProp =({Prop,_variant,edit})=> {
      }
 
      return (
-       <form onSubmit={(e)=>{e.preventDefault(),colorProp(colorValue,colorUrl)}} className="w-[75%]">
+       <form onSubmit={(e)=>{e.preventDefault(),colorProp(colorValue,colorUrl)}} className="w-full">
          <AlertDialogHeader><AlertDialogTitle className='text-xs p-0'>
                <AlertDialogDescription className='text-xs'>Add color variant</  AlertDialogDescription></AlertDialogTitle>
          </AlertDialogHeader>
-         <div className="flex justify-center w-full items-start gap-2">
+         <div className="flex justify-center mt-4 w-full items-start gap-2">
            <ColorPicker color={color} hideInput={["rgb", "hsv"]} height={100} onChange={setColor} onChangeComplete={(col)=>{setColorValue(col.hex),convertToImg(col.hex)}} />
          </div>
-         <AlertDialogFooter className={'flex mx-1 flex-row mt-2 items-center justify-end'}>
+         <AlertDialogFooter className={'flex mx-1 flex-row mt-3 items-center justify-end'}>
            <AlertDialogCancel asChild><Button size='sm' disabled={!colorValue} className='w-fit text-core_contrast px-4' type="submit">Add color</Button></AlertDialogCancel>
          </AlertDialogFooter>
        </form>
@@ -327,6 +329,9 @@ const AddCustomProp =({Prop,_variant,edit})=> {
    }
 
    const EditVariantCombinations = ({combinations,changed,log}) => {
+
+     
+    
      return (
           <div className="">
                <AlertDialogHeader><AlertDialogTitle className='text-xs p-0'>
@@ -343,7 +348,9 @@ const AddCustomProp =({Prop,_variant,edit})=> {
                                              onCheckedChange={(value) => changed(value,i)}
                                         />
                                    </p>
-                                   <p className="uppercase text-xs">{item.variant}</p>
+                                   <div className="uppercase inline-flex text-xs">
+                                        <DisplayVariant string={item.variant} />
+                                   </div>
                               </div>
                               <Separator />
                          </div>
