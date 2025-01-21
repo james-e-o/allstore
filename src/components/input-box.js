@@ -5,7 +5,7 @@ const InputBox = ({label,placeholder,error,flexdir,type,width,margin,change,inpu
       <label data-dir={!!flexdir} data-font={l_font} data-uppercase={uppercase} className="pl-1 data-[dir=true]:pl-0 data-[uppercase=true]:uppercase relative inline-flex items-center w-fit justify-start data-[font=base]:text-base data-[font=sm]:text-sm text-ellipsis md:min-w-max text-xs" htmlFor="">{label}</label>
       <div className="flex-col w-full">
         {textarea?
-          <textarea data-error={error} value={value} placeholder={placeholder} onChange={(e)=>change(e)} className={`border data-[error=true]:border-red-400 rounded-md w-full p-2`} rows={row}></textarea>
+          <textarea data-error={error} value={value} data-ghost={ghost} placeholder={placeholder} onChange={(e)=>change(e)} className={`border shadow outline-none data-[error=true]:border-red-400 rounded-md data-[ghost=true]:border-none w-full p-2`} rows={row}></textarea>
           :
           <p data-error={error} data-dir={inputDir} data-fit={fit} data-ghost={ghost} data-short={shortInput} data-outline={!!outline} className="inline-flex shadow-sm items-center px-2 py-2 data-[fit=true]:w-fit data-[short=true]:py-1 data-[ghost=true]:border-none w-full bg-white data-[error=true]:border-red-400 data-[dir='input-reverse']:flex-row-reverse data-[outline=true]:border-black/35 data-[outline=true]:bg-transparent  border rounded-md justify-start">
             {icon&&<span className="text-xs mr-1">{icon}</span>}

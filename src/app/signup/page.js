@@ -38,7 +38,7 @@ const SignUp = () => {
               <Indiv icon={true} error ={data && (data.passwordError || data.passwordError2)} type={'password'} altType={'text'} name={"password"} placehold={"Password"}/> 
               <Indiv icon={true} error ={data && (data.passwordError || data.passwordError2)} type={'password'} altType={'text'} name={"password"} placehold={"re-enter Password"}/>
                  
-              <Button className="text-sm mt-4 font-semibold w-full p rounded-md" >Launch store</Button>  
+              <Button className="text-sm mt-4 font-semibold w-full rounded-md" >Launch store</Button>  
               <p className="w-full pl-1 mt-1"><Link className="text-gray-400 text-[0.73rem] decoration-none" href={'/signin'}>already have a store?  <span className="text-gray-900 text-xs">Login</span></Link></p>              
             </form>
           </CardContent>

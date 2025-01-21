@@ -97,12 +97,14 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
                 </DropdownMenuContent>
               </DropdownMenu>)
             },
-            cell: ({getValue,row,column,table}) => {
-              const updateData = (rowIndex,columnId,value) => table.options.meta?.updateState(rowIndex,columnId,value)
+            cell: ({row,column,table}) => {
+
+              const id = responsive
+              
               return (<div className="lowercase flex flex-row justify-end">
                 {
-                  responsive==='cp'?<ResponsiveEditableCell  updateData={(rowIndex,columnId,value)=>{updateData(rowIndex,columnId,value)}} row={row} column={column} table={table} getValue={row.getValue(responsive)} /> : 
-                  responsive==='sp'?<ResponsiveEditableCell  updateData={(rowIndex,columnId,value)=>{updateData(rowIndex,columnId,value)}} row={row} column={column} table={table} getValue={row.getValue(responsive)} /> : 
+                  responsive==='cp'?<ResponsiveEditableCell row={row} responsive={id} column={column} table={table} getValue={row.getValue(id)} /> : 
+                  responsive==='sp'?<ResponsiveEditableCell row={row} responsive={id} column={column} table={table} getValue={row.getValue(id)} /> : 
                   row.getValue(responsive)
                 }
               </div>)},
@@ -318,13 +320,14 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
     )
   }
 
-  const ResponsiveEditableCell =({getValue,updateData,column,table,row})=> {
+  const ResponsiveEditableCell =({getValue,row,column,table,responsive})=> {
     const initialValue = getValue
     const [value,setValue]=useState(initialValue)
-   
+    const updateSP = () => table.options.meta?.updateState(row.index,responsive,value)
+
     return (
       <div className="text-xs">
-        <Input value={value} onBlur={()=>{updateData(value,column.id,row.index)}} className=" h-8" onChange={({target})=>{setValue(target.value)}} />
+        <Input value={value} onBlur={updateSP} className=" h-8" onChange={({target})=>{setValue(target.value)}} />
         {/* <InputBox value={value} blurr={updateSP} change={({target})=>{setValue(target.value)}} /> */}
       </div>
     )

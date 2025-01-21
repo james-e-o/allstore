@@ -10,9 +10,8 @@ import InputBox from "@/components/input-box";
 import VolumeCalculator from "@/components/volume-calculator";
 import WholesaleDiscount from "@/components/wholesale-discount";
 import Variant from "@/components/variants"
-
-const _VARIANT_TYPE = new Object()
-const _VARIANT = new Object()
+import AddImage from "@/components/add-image"
+import CollapseBox from "@/components/collapse-box"
 
 const AddProduct = () => {
 
@@ -23,7 +22,7 @@ const AddProduct = () => {
     return (
       <div className="px-1 md:px-5 flex h-full w-full overflow-x-hidden flex-col text-sm">
         <div className="flex w-full justify-between border-b items-center font-Inter ">
-          <p className='font-bold text-xs'>Add product</p>
+          <p className='font-bold text-sm'>Add product</p>
           <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-[2px] mb-1 px-3' variant='ghost'>
               <MoveLeftIcon className="w-4 h-4 mr-1"/>
               <span className="text-core_polish text-xs font-light">All products</span>
@@ -35,8 +34,8 @@ const AddProduct = () => {
             <p className=" text-[10px] pl-[2px] mb-1">Product information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
-                <div className="p-2 bg-core_grey2/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-lg w-full">
-                  <p className=" text-sm font-Voces font-semibold ">Product details</p>
+                <div className="p-2 bg-core_grey2/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-md w-full">
+                  <p className=" text-xs font-Voces font-semibold ">Product details</p>
                   <div className="flex flex-col md:flex-row md:gap-2 md:items-center">                
                     <InputBox margin={'8px 0px 0px'} label={'Brand:'} mt flexdir={'row'} placeholder={'Brand...'} />               
                     <div className="flex gap-2 items-center w-full flex-grow">
@@ -49,12 +48,12 @@ const AddProduct = () => {
                   <InputBox flexdir={'row'} mt placeholder={'Product name...'} label={'Product name:'} />
                 </div>
 
-                <div className="p-2 bg-core_grey2/60 mt-3 md:mt-5 flex-col md:p-5 rounded-lg w-full">
-                  <p className=" text-sm font-Voces font-semibold ">Pricing</p>
+                <div className="p-2 bg-core_grey2/60 mt-3 md:mt-5 flex-col md:p-5 rounded-md w-full">
+                  <p className=" text-xs font-Voces font-semibold ">Pricing</p>
                   <Pricing />
                 </div>
               </div>
-              <div className="flex md:w-[31%] w-full bg-core_grey2 rounded-lg h-fit p-2 md:p-3 flex-col">
+              <div className="flex md:w-[31%] w-full bg-core_grey2 rounded-md h-fit p-2 md:p-3 flex-col">
                 <p className=" text-xs p-1  mb-1">Product categorization</p>
                 <div className="">
                   <InputBox placeholder={''} label={'Product category'} />
@@ -63,10 +62,10 @@ const AddProduct = () => {
             </div>
           </section>
 
-          <Separator className='mt-1' />
-          <p className=" text-[10px] mb-1">Store information</p>
+          {/* <Separator className='mt-1' /> */}
+          <p className=" text-[10px] my-1">Store information</p>
           <section className="flex flex-col md:flex-row gap-3">
-            <div className="flex md:w-4/6 w-full p-2 md:p-3 bg-core_grey2 rounded-lg flex-col">
+            <div className="flex md:w-4/6 w-full p-2 md:p-3 bg-core_grey2 rounded-md flex-col">
               <p className=" text-[11px] text-gray-500 mt-2">Created by {'user id'}</p>
               <div className="flex flex-col md:flex-row md:gap-4 md:items-center">                
                 <InputBox label={'Bulk quantity:'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>               
@@ -76,20 +75,34 @@ const AddProduct = () => {
 
           </section>
 
-          <Separator className='my-1' />
           <section className="flex flex-col">
-            <p className=" text-[11px] mb-1">E-Shop information</p>
+            {/* <Separator className='mt-1' /> */}
+            <p className=" text-[10px] my-1">E-Shop information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
 
-                <div className="p-2 bg-core_grey2/60 flex-col md:pt-4 md:px-5 md:pb-5 mt-3 rounded-lg w-full">
-                  <p className=" text-sm font-Voces font-semibold ">Add image</p>
-                  <div className="w-full mt-1 md:flex-row flex-col gap-3 h-fit flex ">
-                    <div className="w-full bg-blue-300 rounded-lg h-72 "></div>
-                    <div className="w-full bg-blue-300 rounded-lg h-72 "></div>
+                <div className="p-2 bg-core_grey2/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-md w-full">
+                  <p className=" text-xs font-Voces font-semibold ">Add image</p>
+                  <AddImage />
+                  <div className="bg-white shadow rounded-lg p-4 md:px-5">
+                    <p className=" text-xs  mb-1">Description</p>              
+                    <InputBox textarea mt row={4}/>                
                   </div>
                 </div>
 
+              </div>
+              <div className="flex md:w-[31%] w-full bg-core_grey2 rounded-md h-fit p-2 md:p-4 flex-col">
+                <CollapseBox subject={"Warranty"}>
+                  <div className="h-fit mt-1">
+                    <InputBox textarea row={4} ghost />
+                  </div>
+                </CollapseBox>
+                <div className="mt-3">
+                  <p className="inline-block font-semibold text-xs mr-3">Return policy</p>
+                  <div className="h-fit mt-1">
+                    <InputBox textarea row={4} ghost />
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -154,7 +167,7 @@ export const Pricing =({})=>{
             
           <div className='flex mt-2 w-full items-center'>
             <p data-variant={bulkDiscount} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Wholesale discount</p>
-            <Switch disabled={!sellingPrice} className='data-[state=unchecked]:bg-core_contrast/40' checked={bulkDiscount} onCheckedChange={()=>setBulkDiscount(!bulkDiscount)} />
+            <Switch disabled={!sellingPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={bulkDiscount} onCheckedChange={()=>setBulkDiscount(!bulkDiscount)} />
           </div>
           <div className={`grid transition-collapse ${bulkDiscount ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
             <div className="overflow-hidden w-full text-xs">           
@@ -164,7 +177,7 @@ export const Pricing =({})=>{
 
           <div className='flex mt-2 w-full items-center'>
             <p data-variant={piecePrice} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Sell in measurable quantity/pieces</p>
-            <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40' checked={piecePrice} onCheckedChange={()=>setPiecePrice(!piecePrice)} />
+            <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={piecePrice} onCheckedChange={()=>setPiecePrice(!piecePrice)} />
           </div>
           <div className={`grid transition-collapse ${piecePrice ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
             <div className="overflow-hidden w-full text-xs">
@@ -174,7 +187,7 @@ export const Pricing =({})=>{
 
           <div className='flex mt-2 w-full items-center'>
             <p data-variant={toggleVariant} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Manage product variants</p>
-            <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40' checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
+            <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
           </div>
         </div>
 
