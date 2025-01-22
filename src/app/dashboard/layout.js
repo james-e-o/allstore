@@ -36,24 +36,24 @@ export default function DashboardLayout({ children }) {
             <main className='flex-grow bg-core_grey2/80 p-2 md:px-4 py-2 h-full relative w-svw overflow-hidden'>
             <button id="mobile_trigger" data-open={sidebarActive} className='bg-green-500 z-50 pl-3 shadow-md md:hidden inline-block pr-4 py-3 right-0 bottom-16 absolute w-fit scale-90 rounded-l-full hover:bg-core_contrast/25' onClick={()=>{setSidebarActive(!sidebarActive),setCollapsible(false)}}>{sidebarActive?<ChevronLeft  className="text-white "/>:<ChevronRight className="text-white "/>}</button> 
                 <div className="bg-white flex flex-col overflow-y-hidden rounded-lg h-full">                    
-                    <header className=" rounded-md px-3 py-2 mb-3 border-b  text-xs flex w-full justify-end items-center font-Inter ">
+                    <header className=" rounded-md px-3 pt-2  text-xs flex w-full justify-end items-center font-Inter ">
                         <div className="flex gap-2 items-center">
                             <div className="p-1">
-                                <MessageSquare className="p-[2px]" />
+                                <MessageSquare className="p-1" />
                             </div>
                             <div className="p-1">
-                                <Bell className="p-[2px]" />
+                                <Bell className="p-1" />
                             </div>
                             <DropdownMenu className="text-right hidden md:block">
                                 <DropdownMenuTrigger asChild>
-                                    <div className="md:flex hidden gap-2 items-center px-2">
-                                        <Avatar className='items-center inline-flex rounded-full w-8 h-8 justify-center'>
+                                    <div className="md:flex scale-90 hidden gap-2 items-center">
+                                        <Avatar className='items-center inline-flex rounded-full w-7 h-7 justify-center'>
                                             <Image src={DefaultUser} className=" w-full " alt="@storeprobuilder"/>
                                             {/* <AvatarFallback>JO</AvatarFallback> */}
                                         </Avatar>
-                                        <div className="flex-col gap-[1px] flex">
-                                            <p className="text-xs font-semibold">Staff full name</p>
-                                            <p className="text-[11px] italic font-semibold text-core_contrast/50">Staff role</p>
+                                        <div className="flex-col leading-tight flex">
+                                            <p className="text-[11px] font-semibold">Staff full name</p>
+                                            <p className="text-[10px] italic font-semibold text-core_contrast/50">Staff role</p>
                                         </div>
                                     </div>
                                 </DropdownMenuTrigger>
@@ -71,7 +71,7 @@ export default function DashboardLayout({ children }) {
                             </DropdownMenu>
                             <DrawerTrigger className="md:hidden">
                                 <div className="flex md:hidden gap-2 items-center px-2">
-                                    <Avatar className='items-center inline-flex rounded-full w-9 h-9 justify-center'>
+                                    <Avatar className='items-center inline-flex rounded-full w-7 h-7 justify-center'>
                                         <Image src={DefaultUser} className=" w-full " alt="@storeprobuilder"/>
                                         {/* <AvatarFallback>JO</AvatarFallback> */}
                                     </Avatar>

@@ -43,7 +43,7 @@ export default function Home() {
         </div>
         <div className=" text-center text-lg mt-5 font-light ">nexShelf gives you the complete control you need with <span className="font-semibold">effortless product management, categorization and pricing. </span></div>
       
-        <Link href={'/signup'} className="decoration-none mx-auto"><Button className="md:text-lg bg-core_polish text-base mt-10 px-10 md:px-20 py-5" ><Store/>Open Store</Button></Link>
+        <Link href={'signup'} className="decoration-none mx-auto"><Button className="md:text-lg bg-core_polish text-base mt-10 px-10 md:px-20 py-5" ><Store/>Open Store</Button></Link>
       </main>
       <Separator/>
       <footer className="p-5 text-sm">

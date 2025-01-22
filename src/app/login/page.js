@@ -46,15 +46,15 @@ export default Login
 
 
 
-export const Indiv = ({name, value, placehold, type, error, icon, altType}) => {
+export const Indiv = ({name, change,input, placehold, type, error, icon, altType}) => {
   const [inputFocus, setInputFocus] = useState(false)
   const [hide, setHide] =useState(true)
   return (
-    <div id='inputdiv' className={inputFocus?"mt-3 w-full z-0 bg-transparent py-1 px-2 h-fit border-gray-400 relative border rounded-[0.2rem] ":"mt-3 w-full z-0 bg-transparent py-1 px-2 h-fit border-gray-300 relative border rounded-[0.2rem]"}>
+    <div id='inputdiv' className={inputFocus?"mb-5 mt-3 w-full z-0 bg-transparent py-1 px-2 h-fit border-gray-400 relative border rounded-[0.2rem] ":"mt-3 w-full z-0 bg-transparent py-1 px-2 h-fit border-gray-300 relative border rounded-[0.2rem]"}>
       <p aria-disabled className={inputFocus?"bg-white inline-block rounded ml-1 absolute text-gray-500 text-[0.65rem] transition-all -top-2 px-1 py-0 -z-[1]":"bg-white inline-block rounded ml-1 absolute text-gray-500 text-sm transition-all top-3 px-1 py-0 -z-[1]"}>{placehold}</p>
       {/* {icon && inputFocus?<div className="left-[88%] top-2 absolute inline-block z-20" onClick={()=>setHide(!hide)}>{hide?<Eye className='w-4 h-4'/>:<EyeOff className='w-4 h-4'/>}</div>:""} */}
-      <input className="border-none outline-none bg-transparent h-9 top-[0.54rem] w-full z-20 pl-1" name={name} onInput={(e)=>{e.preventDefault(),value}} onFocus={(e)=>{e.preventDefault(); setInputFocus(true)}} onBlur={(e)=>{ if (e.target.value.length===0) {setInputFocus(false); if(!hide)setHide(!hide)} else {setInputFocus(true)}}} type={!hide?altType:type}/>
-      <p className='absolute text-red-500 font-extralight italic top-8 text-[0.65rem]'>{error}</p>
+      <input className="border-none outline-none bg-transparent h-9 top-[0.54rem] w-full z-20 pl-1" name={name} onChange={(e)=>{change(e)}} onInput={(e)=>{input(e)}} onFocus={(e)=>{e.preventDefault(); setInputFocus(true)}} onBlur={(e)=>{ if (e.target.value.length===0) {setInputFocus(false); if(!hide)setHide(!hide)} else {setInputFocus(true)}}} type={!hide?altType:type}/>
+      <p className='absolute text-red-500 font-extralight italic top-10 text-[0.65rem]'>{error}</p>
     </div>
   )
 }

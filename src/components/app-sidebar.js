@@ -53,7 +53,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
             <h1 className="font-bold font-Madetommy md:block hidden text-lg">nexShelf</h1>
           </div>
         </SidebarHeader>
-        <button data-open={sidebarOpen} className='bg-green-500 z-50 pl-1 hidden md:inline-block pr-2 py-[2px] left-[98%] absolute w-fit scale-90 top-10  rounded-r-full hover:bg-core_contrast/25' onClick={()=>{toggleSidebar(),wrap()}}>{sidebarOpen?<ChevronLeft  className="text-white "/>:<ChevronRight className="text-white "/>}</button>
+        <button data-open={sidebarOpen} className='bg-green-500 z-50 pl-1 hidden md:inline-block pr-2 py-[2px] left-[98%] absolute w-fit scale-90 top-9  rounded-r-full hover:bg-core_contrast/25' onClick={()=>{toggleSidebar(),wrap()}}>{sidebarOpen?<ChevronLeft  className="text-white "/>:<ChevronRight className="text-white "/>}</button>
         
         <div data-open={sidebarOpen} className="flex-grow py-8 data-[open=true]:px-3 px-0 flex flex-col justify-start liststyle-none transition-all duration-300 overflow-x-hidden data-[openn=true]:duration-100 ease-in-out">
         
