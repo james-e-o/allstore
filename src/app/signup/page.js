@@ -6,9 +6,15 @@ import InputBox from "@/components/input-box"
 import Link from "next/link"
 import { useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
+import auth from "@/config/firebaseAuth"
+import db from "@/config/firestore"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { collection,addDoc,onSnapshot,updateDoc,deleteDoc,doc } from "firebase/firestore"
 
 const SignUp = () => {
   const validEmail = /^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+  const staffCollectionRef = collection(db,'staff')
+  const storeCollectionRef = collection(db,'store')
 
   const [storeName, setStoreName] = useState('')
   const [businessMail, setBusinessMail] = useState('')
@@ -28,6 +34,27 @@ const SignUp = () => {
     else if(passwordValidate !== password){setError({item:'passwordvalidate',message:'does not match password'}); return}
 
     console.log(name,businessMail,name,password,email)
+    createUserWithEmailAndPassword(email,password).then(cred=>{
+      return addDoc(storeCollectionRef,{
+        storename:storeName,
+        businessmail:businessMail,
+        staff:[],
+      })
+    }).then(storeData=>{
+      return addDoc(staffCollectionRef,{
+        store:storeData.id,
+        username:userName,
+        email:email,
+        role:'Admin-1',
+      }).then(staffData=>{
+        let storeRef = doc(db,'store',storeData.id)
+        updateDoc(storeRef,{
+          staff:[staffData.id]
+        })
+      })
+    }).then(()=>{
+      setBusinessMail(''); setStoreName(''); setUserName(''); setEmail('');setPassword(''); setPasswordValidate('')
+    })
 
   }
 
