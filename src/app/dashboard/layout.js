@@ -28,6 +28,9 @@ export default function DashboardLayout({ children }) {
        let Heading = commonTitle.filter(value => split.includes(value))
        setActiveMenu(Heading[Heading.length-1])
     },[path]) 
+    useEffect(()=>{
+       if(window.innerWidth>=768)setSidebarActive(true)
+    },[]) 
    
     return (   
         <div className='flex h-full overflow-hidden'>

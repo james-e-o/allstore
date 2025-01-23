@@ -1,6 +1,6 @@
 'use client'
 import { useState,useEffect } from "react"
-import { Edit,Edit3, Plus,Trash2, XIcon } from "lucide-react"
+import { Dice6, Edit,Edit3, Plus,Trash2, XIcon } from "lucide-react"
 import InputBox from "./input-box"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,} from "@/components/ui/alert-dialog"
 import { ColorPicker, useColor,Saturation,IColor, Hue, Alpha } from "react-color-palette";
@@ -16,8 +16,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export default function Variant ({sellingPrice,costPrice}){
 
-     const [colorVariant,setColorVariant]=useState(true)
-     const [sizeVariant,setSizeVariant]=useState(true)
+     const [variant,setVariant]=useState(true)
+     const [newOption,setNewOption]=useState(false)
      const [activeDialog, setActiveDialog]= useState() // Dialog content
 
      const [colorValues,setColorValues]=useState([])
@@ -88,7 +88,38 @@ export default function Variant ({sellingPrice,costPrice}){
      },[customVariants,colorValues,sizeValues])
      
      return(
-          <div className="flex mt-6 flex-col">
+          <div  className="flex p-2 bg-core_grey2 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
+               <p className=" text-xs font-Voces font-semibold ">Variants</p>
+               <div className="mt-3 rounded-lg bg-white shadow-sm">
+                    <div className="px-3 items-center gap-3 flex border-b py-2">
+                         <p className="px-2"><Dice6 /></p>
+                         <div className="flex flex-col">
+                              <p className="text-xs px-1">Sample</p>
+                              <div>
+                                   <p className="py-0 mt-2 px-2 mr-2 rounded-2xl border-border border shadow gap-1 items-center inline-flex relative text-black text-xs cursor-pointer">
+                                        <span className="ml-[2px] leading-tight mr-1">option</span>
+                                        <button className="w-fit h-fit" >
+                                             <XIcon className="p-1"/>                                   
+                                        </button>
+                                   </p>
+
+                              </div>
+                         </div>
+                    </div>
+                    <Separator />
+                    <div className={`grid transition-collapse ${newOption ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                         <div className="overflow-hidden w-full text-xs">
+                              <NewOption />
+                         </div>
+                    </div>
+                    <div className="px-2 items-center  flex border-t py-2">
+                         <Button onClick={()=>{setNewOption(!newOption)}} variant='ghost' className='bg-white hover:bg-transparent'><Plus data-new={newOption} className="data-[new=true]:rotate-45"/> <span data-new={newOption} className="data-[new=true]:opacity-40">Add another option</span></Button>
+                    </div>
+               </div>
+               <Separator />
+               {variant?<div className="mt-3">
+                    <Button onClick={()=>{setVariant(false),setNewOption(true)}} variant='secondary' className='bg-white'><Plus /> Add options like sizes, colors, material, country etc.</Button>
+               </div>:""}
                <AlertDialog>
                     <AlertDialogContent  className=" w-[80%] md:w-[40%]  p-3 md:p-6 rounded-lg text-xs">
                          <p className="p-1 h-fit flex -mb-8 relative -top-3 justify-end items-center">
@@ -108,7 +139,7 @@ export default function Variant ({sellingPrice,costPrice}){
                          </div>
                     </AlertDialogContent>
      
-                    <div className="flex flex-col">
+                    {/* <div className="flex flex-col">
                          <div className="flex bg-white flex-col p-5 rounded-lg">
                               <div className="flex flex-col items-start gap-2 mb-2">
                                    <div className="flex flex-col md:flex-row gap-1 md:items-center items-start">                                   
@@ -202,11 +233,28 @@ export default function Variant ({sellingPrice,costPrice}){
                                    </div>              
                               </div>
                          </div>
-                    </div>
+                    </div> */}
                </AlertDialog>
           </div>
      )
 }
+
+
+const NewOption =({Prop,_variant,edit})=> {
+     return(
+          <div className="flex my-3 md:mx-6 mx-2 rounded-md border border-core_grey1 py-2 md:px-4 px-2 flex-col">
+               <div className="flex gap-2 justify-between">
+                    <div className="">
+                         <InputBox outline label={'Option name'}/>
+                    </div>
+                    <div className="">
+                         <InputBox outline label={'Option name'}/>
+                    </div>
+               </div>
+          </div>
+     )
+}
+
 
 
 const AddCustomProp =({Prop,_variant,edit})=> {

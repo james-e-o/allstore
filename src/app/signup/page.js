@@ -33,8 +33,8 @@ const SignUp = () => {
     else if(!password){setError({item:'password',message:'required'}); return}
     else if(passwordValidate !== password){setError({item:'passwordvalidate',message:'does not match password'}); return}
 
-    console.log(name,businessMail,name,password,email)
-    createUserWithEmailAndPassword(email,password).then(cred=>{
+    console.log(businessMail,password,email)
+    createUserWithEmailAndPassword(auth,email,password).then(cred=>{
       return addDoc(storeCollectionRef,{
         storename:storeName,
         businessmail:businessMail,

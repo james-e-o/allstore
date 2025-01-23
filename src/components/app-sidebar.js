@@ -26,23 +26,26 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
 
   const [innerWidth, setInnerWidth] = useState('')
   const [activeMenu,setActiveMenu]= useState(items[0].title)
-  
  
   useEffect(()=>{
     setInnerWidth(window.innerWidth>=768)
-    const mobile_trigger = document.getElementById('mobile_trigger')
     document.onpointerdown =(e)=> {      
       if(sidebarOpen&&e.target.closest('div#sidebar'))return
       else  if(sidebarOpen&&e.target.closest('button#mobile_trigger'))return
       if(sidebarOpen&&innerWidth)return
       else  if(sidebarOpen&&!innerWidth&&!e.target.closest('button#mobile_trigger')){closeSidebar(),wrap()}
     }
+    // document.removeEventListener('load',(ev)=>{})
   }) 
 
   useEffect(()=>{
     window.onresize = () => {
       setInnerWidth(window.innerWidth>=768)
     }
+  },[])
+
+  useEffect(()=>{
+     if(innerWidth)openSidebar()
   },[])
 
   return (

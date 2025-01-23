@@ -20,7 +20,7 @@ const AddProduct = () => {
     }
 
     return (
-      <div className="px-1 md:px-5 flex h-full w-full overflow-x-hidden flex-col text-sm">
+      <div className="px-1 md:px-5 py-1 flex h-full w-full overflow-x-hidden flex-col text-sm">
         <div className="flex w-full justify-between border-b items-center font-Inter ">
           <p className='font-bold text-sm'>Add product</p>
           <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-[2px] mb-1 px-3' variant='ghost'>
@@ -34,9 +34,10 @@ const AddProduct = () => {
             <p className=" text-[10px] pl-[2px] mb-1">Product information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
-                <div className="p-2 bg-core_grey2/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-md w-full">
+                <div className="p-2 bg-core_grey2 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
                   <p className=" text-xs font-Voces font-semibold ">Product details</p>
-                  <div className="flex flex-col md:flex-row md:gap-2 md:items-center">                
+                  <InputBox flexdir={'row'} mt placeholder={'Product name...'} label={'Product name:'} />
+                  <div className="flex flex-col mt-1 md:flex-row md:gap-2 md:items-center">                
                     <InputBox margin={'8px 0px 0px'} label={'Brand:'} mt flexdir={'row'} placeholder={'Brand...'} />               
                     <div className="flex gap-2 items-center w-full flex-grow">
                       <InputBox placeholder={'Barcode...'} label={'Barcode:'} mt flexdir={'row'}/>
@@ -45,34 +46,37 @@ const AddProduct = () => {
                       </Button>
                     </div>              
                   </div>
-                  <InputBox flexdir={'row'} mt placeholder={'Product name...'} label={'Product name:'} />
+                  <div className="my-1">
+                    <p className="inline-block mr-3 text-xs">Dimensions</p>
+                    <InputBox fit mt mr label={'W:'} flexdir={'row'}/>
+                    <InputBox fit mt mr label={'H:'} flexdir={'row'}/>
+                    <InputBox fit mt mr label={'L:'} flexdir={'row'}/>
+                  </div>
+                  <InputBox fit mt label={'Weight or Volume:'} flexdir={'row'}/>
+                </div>
+               
+                <Pricing />
+               
+              </div>
+
+              <div className="flex md:w-[31%] w-full flex-col">
+                <div className="w-full rounded-xl bg-core_grey2 p-2 md:p-3">
+                  <p className=" text-xs p-1  mb-1">Product categorization</p>
+                  <div className="">
+                    <InputBox placeholder={''} label={'Product category'} />
+                  </div>
+                </div>
+                <p className=" text-[10px] my-1">Store information</p>
+                <div className="flex w-full p-2 md:p-3 bg-core_grey2 rounded-xl flex-col">
+                  <p className=" text-[11px] text-gray-500 mt-2">Created by {'user id'}</p>
+                  <div className="flex flex-col md:gap-4 md:items-center">                
+                    <InputBox label={'Bulk quantity:'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>               
+                    <InputBox label={'Reorder quantity:'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>            
+                  </div>
                 </div>
 
-                <div className="p-2 bg-core_grey2/60 mt-3 md:mt-5 flex-col md:p-5 rounded-md w-full">
-                  <p className=" text-xs font-Voces font-semibold ">Pricing</p>
-                  <Pricing />
-                </div>
-              </div>
-              <div className="flex md:w-[31%] w-full bg-core_grey2 rounded-md h-fit p-2 md:p-3 flex-col">
-                <p className=" text-xs p-1  mb-1">Product categorization</p>
-                <div className="">
-                  <InputBox placeholder={''} label={'Product category'} />
-                </div>
               </div>
             </div>
-          </section>
-
-          {/* <Separator className='mt-1' /> */}
-          <p className=" text-[10px] my-1">Store information</p>
-          <section className="flex flex-col md:flex-row gap-3">
-            <div className="flex md:w-4/6 w-full p-2 md:p-3 bg-core_grey2 rounded-md flex-col">
-              <p className=" text-[11px] text-gray-500 mt-2">Created by {'user id'}</p>
-              <div className="flex flex-col md:flex-row md:gap-4 md:items-center">                
-                <InputBox label={'Bulk quantity:'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>               
-                <InputBox label={'Reorder quantity:'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>            
-              </div>
-            </div>
-
           </section>
 
           <section className="flex flex-col">
@@ -81,7 +85,7 @@ const AddProduct = () => {
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
 
-                <div className="p-2 bg-core_grey2/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-md w-full">
+                <div className="p-2 bg-core_grey2 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
                   <p className=" text-xs font-Voces font-semibold ">Add image</p>
                   <AddImage />
                   <div className="bg-white shadow rounded-lg p-4 md:px-5">
@@ -91,7 +95,7 @@ const AddProduct = () => {
                 </div>
 
               </div>
-              <div className="flex md:w-[31%] w-full bg-core_grey2 rounded-md h-fit p-2 md:p-4 flex-col">
+              <div className="flex md:w-[31%] w-full bg-core_grey2 rounded-xl h-fit p-2 md:p-4 flex-col">
                 <CollapseBox subject={"Warranty"}>
                   <div className="h-fit mt-1">
                     <InputBox textarea row={4} ghost />
@@ -148,54 +152,53 @@ export const Pricing =({})=>{
 
   return(
     <div className="">
-        <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
-          <div className="grid gap-1 items-center w-full grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
-            <div className="inline-block">
-              <InputBox width={'195px'} label={'Unit cost price'} value={costPrice?costPrice:""} change={(e)=>{setCostPrice(new Number(e.target.value))}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
+      <div className="p-2 bg-core_grey2 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
+          <p className=" text-xs font-Voces font-semibold ">Pricing</p>
+          <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
+            <div className="grid gap-1 items-center w-full grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
+              <div className="inline-block">
+                <InputBox width={'195px'} label={'Unit cost price'} value={costPrice?costPrice:""} change={(e)=>{setCostPrice(new Number(e.target.value))}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
+              </div>
+              <div className="inline-flex  items-center">
+                <InputBox width={'120px'} label={'Margin'} mt inputDir={'input-reverse'}  change={(e)=>{setMargin(new Number(e.target.value))}} flexdir={'row'} value={margin} type={'number'} icon={'%'}/>
+              </div>
+
+              <div className="inline-block" >
+                <InputBox width={'180px'} label={'Profit'}  value={profit?profit:""} change={(e)=>{setProfit(new Number(e.target.value)),computeSellingPrice(new Number(e.target.value)),e.target.value==""?computeSellingPrice(costPrice*(margin/100)):""}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
+              </div>           
             </div>
-            <div className="inline-flex  items-center">
-              <InputBox width={'120px'} label={'Margin'} mt inputDir={'input-reverse'}  change={(e)=>{setMargin(new Number(e.target.value))}} flexdir={'row'} value={margin} type={'number'} icon={'%'}/>
+            <div className=" mt-1">
+              <InputBox fit label={'Unit selling price'} value={sellingPrice?sellingPrice:""} change={(e)=>{new Number(e.target.value)}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
+            </div>
+              
+            <div className='flex mt-2 w-full items-center'>
+              <p data-variant={bulkDiscount} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Wholesale discount</p>
+              <Switch disabled={!sellingPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={bulkDiscount} onCheckedChange={()=>setBulkDiscount(!bulkDiscount)} />
+            </div>
+            <div className={`grid transition-collapse ${bulkDiscount ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+              <div className="overflow-hidden w-full text-xs">           
+                <WholesaleDiscount output={wholesaleDiscount} setOutput={(val)=>{setWholesaleDiscount(val)}} sellingPrice={sellingPrice}/>
+              </div>
             </div>
 
-            <div className="inline-block" >
-              <InputBox width={'180px'} label={'Profit'}  value={profit?profit:""} change={(e)=>{setProfit(new Number(e.target.value)),computeSellingPrice(new Number(e.target.value)),e.target.value==""?computeSellingPrice(costPrice*(margin/100)):""}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
-            </div>           
-          </div>
-          <div className=" mt-1">
-            <InputBox fit label={'Unit selling price'} value={sellingPrice?sellingPrice:""} change={(e)=>{new Number(e.target.value)}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
-          </div>
-            
-          <div className='flex mt-2 w-full items-center'>
-            <p data-variant={bulkDiscount} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Wholesale discount</p>
-            <Switch disabled={!sellingPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={bulkDiscount} onCheckedChange={()=>setBulkDiscount(!bulkDiscount)} />
-          </div>
-          <div className={`grid transition-collapse ${bulkDiscount ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-            <div className="overflow-hidden w-full text-xs">           
-              <WholesaleDiscount output={wholesaleDiscount} setOutput={(val)=>{setWholesaleDiscount(val)}} sellingPrice={sellingPrice}/>
+            <div className='flex mt-2 w-full items-center'>
+              <p data-variant={piecePrice} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Sell in measurable quantity/pieces</p>
+              <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={piecePrice} onCheckedChange={()=>setPiecePrice(!piecePrice)} />
+            </div>
+            <div className={`grid transition-collapse ${piecePrice ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+              <div className="overflow-hidden w-full text-xs">
+                <VolumeCalculator sp={sellingPrice}/>
+              </div>
+            </div>
+
+            <div className='flex mt-2 w-full items-center'>
+              <p data-variant={toggleVariant} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Manage product variants</p>
+              <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
             </div>
           </div>
+      </div>
 
-          <div className='flex mt-2 w-full items-center'>
-            <p data-variant={piecePrice} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Sell in measurable quantity/pieces</p>
-            <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={piecePrice} onCheckedChange={()=>setPiecePrice(!piecePrice)} />
-          </div>
-          <div className={`grid transition-collapse ${piecePrice ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-            <div className="overflow-hidden w-full text-xs">
-              <VolumeCalculator sp={sellingPrice}/>
-            </div>
-          </div>
-
-          <div className='flex mt-2 w-full items-center'>
-            <p data-variant={toggleVariant} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Manage product variants</p>
-            <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
-          </div>
-        </div>
-
-        <div className={`grid transition-collapse ${toggleVariant ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-          <div className="overflow-hidden text-xs">
-            <Variant costPrice={costPrice.toString()} sellingPrice={sellingPrice.toString()}/>
-          </div>
-        </div>
+      <Variant costPrice={costPrice.toString()} sellingPrice={sellingPrice.toString()}/>
     </div>
   )
 }
