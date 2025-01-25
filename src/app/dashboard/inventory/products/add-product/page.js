@@ -20,12 +20,12 @@ const AddProduct = () => {
     }
 
     return (
-      <div className="px-1 md:px-5 py-1 flex h-full w-full overflow-x-hidden flex-col text-sm">
+      <div className="px-1 md:px-5 py-1 flex h-full  w-full overflow-x-hidden flex-col">
         <div className="flex w-full justify-between border-b items-center font-Inter ">
-          <p className='font-bold text-sm'>Add product</p>
+          <p className='font-bold'>Add product</p>
           <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-[2px] mb-1 px-3' variant='ghost'>
               <MoveLeftIcon className="w-4 h-4 mr-1"/>
-              <span className="text-core_polish text-xs font-light">All products</span>
+              <span className="text-core_polish font-light">All products</span>
           </Button></Link>
         </div> 
               
@@ -35,7 +35,7 @@ const AddProduct = () => {
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
                 <div className="p-2 bg-core_grey2 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
-                  <p className=" text-xs font-Voces font-semibold ">Product details</p>
+                  <p className=" font-Voces font-semibold ">Product details</p>
                   <InputBox flexdir={'row'} mt placeholder={'Product name...'} label={'Product name:'} />
                   <div className="flex flex-col mt-1 md:flex-row md:gap-2 md:items-center">                
                     <InputBox margin={'8px 0px 0px'} label={'Brand:'} mt flexdir={'row'} placeholder={'Brand...'} />               
@@ -47,7 +47,7 @@ const AddProduct = () => {
                     </div>              
                   </div>
                   <div className="my-1">
-                    <p className="inline-block mr-3 text-xs">Dimensions</p>
+                    <p className="inline-block mr-3">Dimensions</p>
                     <InputBox fit mt mr label={'W:'} flexdir={'row'}/>
                     <InputBox fit mt mr label={'H:'} flexdir={'row'}/>
                     <InputBox fit mt mr label={'L:'} flexdir={'row'}/>
@@ -61,7 +61,7 @@ const AddProduct = () => {
 
               <div className="flex md:w-[31%] w-full flex-col">
                 <div className="w-full rounded-xl bg-core_grey2 p-2 md:p-3">
-                  <p className=" text-xs p-1  mb-1">Product categorization</p>
+                  <p className=" p-1  mb-1">Product categorization</p>
                   <div className="">
                     <InputBox placeholder={''} label={'Product category'} />
                   </div>
@@ -86,10 +86,10 @@ const AddProduct = () => {
               <div className="flex md:w-4/6 w-full flex-col">
 
                 <div className="p-2 bg-core_grey2 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
-                  <p className=" text-xs font-Voces font-semibold ">Add image</p>
+                  <p className=" font-Voces font-semibold ">Add image</p>
                   <AddImage />
                   <div className="bg-white shadow rounded-lg p-4 md:px-5">
-                    <p className=" text-xs  mb-1">Description</p>              
+                    <p className="  mb-1">Description</p>              
                     <InputBox textarea mt row={4}/>                
                   </div>
                 </div>
@@ -102,7 +102,7 @@ const AddProduct = () => {
                   </div>
                 </CollapseBox>
                 <div className="mt-3">
-                  <p className="inline-block font-semibold text-xs mr-3">Return policy</p>
+                  <p className="inline-block font-semibold mr-3">Return policy</p>
                   <div className="h-fit mt-1">
                     <InputBox textarea row={4} ghost />
                   </div>
@@ -153,7 +153,7 @@ export const Pricing =({})=>{
   return(
     <div className="">
       <div className="p-2 bg-core_grey2 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
-          <p className=" text-xs font-Voces font-semibold ">Pricing</p>
+          <p className=" font-Voces font-semibold ">Pricing</p>
           <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
             <div className="grid gap-1 items-center w-full grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
               <div className="inline-block">
@@ -176,7 +176,7 @@ export const Pricing =({})=>{
               <Switch disabled={!sellingPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={bulkDiscount} onCheckedChange={()=>setBulkDiscount(!bulkDiscount)} />
             </div>
             <div className={`grid transition-collapse ${bulkDiscount ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-              <div className="overflow-hidden w-full text-xs">           
+              <div className="overflow-hidden w-full">           
                 <WholesaleDiscount output={wholesaleDiscount} setOutput={(val)=>{setWholesaleDiscount(val)}} sellingPrice={sellingPrice}/>
               </div>
             </div>
@@ -186,7 +186,7 @@ export const Pricing =({})=>{
               <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={piecePrice} onCheckedChange={()=>setPiecePrice(!piecePrice)} />
             </div>
             <div className={`grid transition-collapse ${piecePrice ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-              <div className="overflow-hidden w-full text-xs">
+              <div className="overflow-hidden w-full">
                 <VolumeCalculator sp={sellingPrice}/>
               </div>
             </div>

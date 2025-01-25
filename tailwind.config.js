@@ -64,11 +64,22 @@ module.exports = {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
+		fontSize: {
+			'10px':'0.625rem',
+			'9px':'0.5625rem',
+			'8px':'0.5rem',
+		},
   		fontFamily: {
   			Inter: ['Inter','mono'],
   			Clash: ['ClashDisplay', 'serif'],
   			Voces: ['Voces', 'sans'],
-  			Madetommy: ['Madetommy', 'sans']
+  			Madetommy: ['Madetommy', 'sans'],
+			'MontserratAl': ['MontserratAl', 'mono'],
+			'Lato': ['Lato','mono'],
+			'GeistMono': ['GeistMono','mono'],
+			'Geist': ['Geist','mono'],
+			'Acme': ['Acme','sans'],
+			'Mukta': ['Mukta','sans'],
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

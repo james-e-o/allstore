@@ -11,7 +11,7 @@
   src: url("../components/fonts/MADE_TOMMY_Regular.otf");
 }
 @font-face {
-  font-family: Voces;
+  font-family:Voces;
   src: url("../components/fonts/Voces-Regular.ttf");
 }
 
@@ -19,6 +19,36 @@
   font-family: ClashDisplay;
   src: url("../components/fonts/ClashDisplay-Regular.otf");
 }
+
+
+
+@font-face {
+  font-family: "Mukta";
+  src: url("../components/fonts/Mukta-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url("../components/fonts/Lato-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Acme";
+  src: url("../components/fonts/Acme-Regular.ttf");
+}
+@font-face {
+  font-family: "MontserratAl";
+  src: url("../components/fonts/MontserratAlternates-Regular.ttf");
+}
+@font-face {
+  font-family: "GeistMono";
+  src: url("../components/fonts/GeistMonoVF.woff");
+}
+@font-face {
+  font-family: "Geist";
+  src: url("../components/fonts/GeistVF.woff");
+}
+
 
 
 body {

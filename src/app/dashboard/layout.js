@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useState,createContext } from "react";
 import Link from "next/link";
 import { Edit,ChevronLeft,ChevronRight, Bell,MoreHorizontal, MessageSquare, } from "lucide-react";
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
@@ -13,11 +13,13 @@ import Image from "next/image"
 
 import DefaultUser from '../../../public/dummy.jpg'
 
+export const headerValue = createContext()
 
 
 export default function DashboardLayout({ children }) {
     const path = usePathname()
     const [activeMenu, setActiveMenu] = useState('')
+    const [headerContext, setHeaderContext] = useState('')
     let split = path.split('/')
     const commonTitle = items.map(item=>item.title.toLowerCase())
 
@@ -32,20 +34,22 @@ export default function DashboardLayout({ children }) {
        if(window.innerWidth>=768)setSidebarActive(true)
     },[]) 
    
-    return (   
+    return ( 
+    <headerValue.Provider value={[headerContext,setHeaderContext]}>
         <div className='flex h-full overflow-hidden'>
             <Drawer>
             <AppSidebar sidebarOpen={sidebarActive} activeMenu={activeMenu} toggleSidebar={()=>setSidebarActive(!sidebarActive)} closeSidebar={()=>setSidebarActive(false)} openSidebar={()=>setSidebarActive(true)} collapsible={collapsible} toggleDrop={()=>setCollapsible(!collapsible)} wrap={()=>setCollapsible(false)} drop={()=>setCollapsible(false)}/>
             <main className='flex-grow bg-core_grey2/80 p-2 md:px-4 py-2 h-full relative w-svw overflow-hidden'>
             <button id="mobile_trigger" data-open={sidebarActive} className='bg-green-500 z-50 pl-3 shadow-md md:hidden inline-block pr-4 py-3 right-0 bottom-16 absolute w-fit scale-90 rounded-l-full hover:bg-core_contrast/25' onClick={()=>{setSidebarActive(!sidebarActive),setCollapsible(false)}}>{sidebarActive?<ChevronLeft  className="text-white "/>:<ChevronRight className="text-white "/>}</button> 
                 <div className="bg-white flex flex-col overflow-y-hidden rounded-lg h-full">                    
-                    <header className=" rounded-md px-3 pt-2  text-xs flex w-full justify-end items-center font-Inter ">
-                        <div className="flex gap-2 items-center">
-                            <div className="p-1">
-                                <MessageSquare className="p-1" />
+                    <header className=" rounded-md px-3 pt-2  text-xs flex w-full justify-between items-center">
+                        <div className="p-1 font-bold text-sm">Dashboard{headerContext}</div>
+                        <div className="flex gap-1 items-center">
+                            <div className="">
+                                <MessageSquare className="p-[5px]" />
                             </div>
-                            <div className="p-1">
-                                <Bell className="p-1" />
+                            <div className="">
+                                <Bell className="p-[5px]" />
                             </div>
                             <DropdownMenu className="text-right hidden md:block">
                                 <DropdownMenuTrigger asChild>
@@ -54,9 +58,9 @@ export default function DashboardLayout({ children }) {
                                             <Image src={DefaultUser} className=" w-full " alt="@storeprobuilder"/>
                                             {/* <AvatarFallback>JO</AvatarFallback> */}
                                         </Avatar>
-                                        <div className="flex-col leading-tight flex">
-                                            <p className="text-[11px] font-semibold">Staff full name</p>
-                                            <p className="text-[10px] italic font-semibold text-core_contrast/50">Staff role</p>
+                                        <div className="flex-col justify-center leading-tight flex">
+                                            <p className="text-[10px] ">Staff</p>
+                                            <p className="text-[10px] text-core_contrast/50">staffmail@role.com</p>
                                         </div>
                                     </div>
                                 </DropdownMenuTrigger>
@@ -89,10 +93,14 @@ export default function DashboardLayout({ children }) {
                             </DrawerContent>
                         </div>
                     </header>           
+                    <div className="px-3">
+                        <Separator className='mt-[6px]' />
+                    </div>
                     {children}
                 </div>  
             </main>
             </Drawer>
         </div>
+        </headerValue.Provider>  
     );
  }

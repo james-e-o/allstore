@@ -28,7 +28,7 @@ export const DisplayVariant =({string})=> {
     )
 }
 
-export default function SelectedVariantCombinationsTable({table_data,updateCP,updateSP}) {
+export default function SelectedVariantitemsTable({table_data,updateCP,updateSP}) {
       const [data,setData]=useState(table_data)
       const [sorting, setSorting] = useState([])
       const [columnFilters, setColumnFilters] = useState([])
@@ -51,9 +51,9 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
             size:25,
           },
           {
-            accessorKey: "combination",
-            header:()=><div className="text-center">{isMobile ?"Variant":"Variant combinations"}</div>,
-            cell: ({ row }) => (<div className="uppercase text-xs"><DisplayVariant string={row.getValue("combination")} /></div>),
+            accessorKey: "item",
+            header:()=><div className="text-center">{isMobile ?"Values":"Option values"}</div>,
+            cell: ({ row }) => (<div className="uppercase "><DisplayVariant string={row.getValue("item")} /></div>),
             enableHiding: false,
           },
           {
@@ -77,7 +77,7 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
       
               return (<DropdownMenu>
                 <DropdownMenuTrigger className='flex flex-row justify-end'  asChild>
-                  <Button variant="outline" className="ml-auto px-2 min-w-10 text-xs md:text-[0.8175rem] capitalize">
+                  <Button variant="outline" className="ml-auto px-2 min-w-10 capitalize">
                     {responsive==='cp'?'cost pr.':responsive==='sp'?'selling pr.':responsive} <ChevronDown />
                   </Button>
                 </DropdownMenuTrigger>
@@ -174,10 +174,10 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
        
      if(isClient)
      return (
-       <div className="w-full">
-         <div className="flex items-center justify-between gap-2 py-4">
-           <Input placeholder="Search product..." value={(table.getColumn("combination")?.getFilterValue()) ?? ""}
-             onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-sm"
+       <div className="w-full text-10px">
+         <div className="flex items-center  justify-between gap-2 py-4">
+           <Input placeholder="Search product..." value={(table.getColumn("item")?.getFilterValue()) ?? ""}
+             onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-sm text-10px"
            />
            <div className="flex items-center gap-2">
              <DropdownMenu>
@@ -229,7 +229,7 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
            </div>
          </div>
          <div className="rounded-md border md:border-none">
-           <Table className={`text-xs md:text-[0.8175rem] w-full`}>
+           <Table className={` md: w-full`}>
              <TableHeader>
                {table.getHeaderGroups().map((headerGroup) => (
                  <TableRow key={headerGroup.id}>
@@ -275,7 +275,7 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
                      colSpan={columns.length}
                      className="h-24 text-center"
                    >
-                     No Selected combinations.
+                     No Selected items.
                    </TableCell>
                  </TableRow>
                )}
@@ -283,7 +283,7 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
            </Table>
          </div>
          <div className="flex items-center justify-end space-x-2 py-4">
-           <div className="flex-1 text-sm text-muted-foreground">
+           <div className="flex-1 text-muted-foreground">
              {table.getFilteredSelectedRowModel().rows.length} of{" "}
              {table.getFilteredRowModel().rows.length} row(s) selected.
            </div>
@@ -316,7 +316,7 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
     const [value,setValue]=useState(initialValue)
     const updateData = () => table.options.meta?.updateState(row.index,column.id,value)
     return (
-         <Input value={value} onBlur={updateData} className=" md:text-xs text-xs h-8" onChange={({target})=>{setValue(target.value)}} />
+         <Input value={value} onBlur={updateData} className=" md:  h-8" onChange={({target})=>{setValue(target.value)}} />
     )
   }
 
@@ -326,9 +326,8 @@ export default function SelectedVariantCombinationsTable({table_data,updateCP,up
     const updateSP = () => table.options.meta?.updateState(row.index,responsive,value)
 
     return (
-      <div className="text-xs">
+      <div className="">
         <Input value={value} onBlur={updateSP} className=" h-8" onChange={({target})=>{setValue(target.value)}} />
-        {/* <InputBox value={value} blurr={updateSP} change={({target})=>{setValue(target.value)}} /> */}
       </div>
     )
   }
