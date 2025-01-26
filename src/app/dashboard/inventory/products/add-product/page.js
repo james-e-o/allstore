@@ -21,10 +21,17 @@ const categoryCollectionRef = collection(db,'categories')
 
 const AddProduct = () => {
     const [categoryList,setCategoryList] = useState([])
+    const categoryTree = buildCategoryTree(categoryList);
+    const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+
+    // DATA
+    const [category,setCategory] = useState('')
+    
+    
     function Submit(e){
       e.preventDefault()
     }
-    const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+
     useEffect(()=>{
         ResetHeadValue('Products')
         getDocs(categoryCollectionRef).then((snapshot) => {
@@ -87,7 +94,7 @@ const AddProduct = () => {
                 <div className="w-full rounded-xl bg-core_grey2 p-2 md:p-3">
                   <p className=" p-1  mb-1">Product categorization</p>
                   <div className="">
-                  {categoryList&& <CheckboxTree categories={categoryTree}/>}
+                  {categoryList&& <CheckboxTree handleCheckboxChange={(id)=>{setCategory(id)}} checked={category} categories={categoryTree}/>}
                   </div>
                 </div>
                 <p className=" text-9px my-1">Store information</p>
@@ -197,7 +204,7 @@ export const Pricing =({})=>{
               
             <div className='flex mt-2 w-full items-center'>
               <p data-variant={bulkDiscount} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Wholesale discount</p>
-              <Switch disabled={!sellingPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={bulkDiscount} onCheckedChange={()=>setBulkDiscount(!bulkDiscount)} />
+              <Switch disabled={!sellingPrice} className='data-[state=unchecked]:bg-core_contrast/40 scale-75 shadow' checked={bulkDiscount} onCheckedChange={()=>setBulkDiscount(!bulkDiscount)} />
             </div>
             <div className={`grid transition-collapse ${bulkDiscount ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
               <div className="overflow-hidden w-full">           
@@ -207,17 +214,12 @@ export const Pricing =({})=>{
 
             <div className='flex mt-2 w-full items-center'>
               <p data-variant={piecePrice} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Sell in measurable quantity/pieces</p>
-              <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={piecePrice} onCheckedChange={()=>setPiecePrice(!piecePrice)} />
+              <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 scale-75 shadow' checked={piecePrice} onCheckedChange={()=>setPiecePrice(!piecePrice)} />
             </div>
             <div className={`grid transition-collapse ${piecePrice ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
               <div className="overflow-hidden w-full">
                 <VolumeCalculator sp={sellingPrice}/>
               </div>
-            </div>
-
-            <div className='flex mt-2 w-full items-center'>
-              <p data-variant={toggleVariant} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Manage product variants</p>
-              <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 shadow' checked={toggleVariant} onCheckedChange={()=>setToggleVariant(!toggleVariant)} />
             </div>
           </div>
       </div>

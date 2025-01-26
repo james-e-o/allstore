@@ -7,7 +7,7 @@ import InputBox from "./input-box";
 const VolumeCalculator =({sp})=> {
 
      const measurements = [
-          {measurement:'pieces',units:[{name:'piece',value:1,short:"pcs"}]},
+          {measurement:'unit',units:[{name:'unit',value:1,short:"unit"}]},
           {measurement:'weight',units:[{name:'kilograms',value:1,short:"kg"},{name:'grams',value:1000,short:"g"},{name:'milligrams',value:1000000,short:"mg"}]},
           {measurement:'volume',units:[{name:'litres',value:5,short:"l"},{name:'centilitres',value:100,short:"cl"},{name:'millilitres',value:1000,short:"ml"}]},
           {measurement:'length',units:[{name:'metres',value:1,short:"m"},{name:'centimetres',value:100,short:"cm"},{name:'inches',value:39.4,short:"in"},{name:'millimetres',value:1000,short:"ml"}]}
@@ -36,7 +36,7 @@ const VolumeCalculator =({sp})=> {
      },[totalQuantity,baseUnits,totalQuantityMeasurement,baseUnitMeasurement,sp])
    
      return (
-          <div className=" flex flex-col">
+          <div className="  flex rounded-lg bg-white px-3 flex-col">
                <Dialog>
                     <DialogContent className={'md:w-fit w-[80%] rounded-lg'}>
                          {
@@ -97,7 +97,7 @@ const VolumeCalculator =({sp})=> {
                               <InputBox width={'130px'} change={(e)=>{setTotalQuantity(new Number(e.target.value))}} value={totalQuantity?totalQuantity:""} type={'number'} label={'Total product units'} />           
                               <p className="h-full w-fit flex-col flex justify-end">
                                    <DialogTrigger asChild>
-                                        <button variant="outline" onClick={()=>{setActiveDialog('total-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs uppercase">
+                                        <button variant="outline" onClick={()=>{setActiveDialog('total-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs lowercase">
                                              <span>{totalQuantityMeasurement.type}</span> <ChevronDown className="h-4 w-4"/>
                                         </button>       
                                    </DialogTrigger>
@@ -107,7 +107,7 @@ const VolumeCalculator =({sp})=> {
                               <InputBox width={'130px'} change={(e)=>{setBaseUnits(new Number(e.target.value))}} value={baseUnits?baseUnits:""} type={'number'} label={'Minimum product unit(s)'} />           
                               <p className="h-full w-fit flex-col flex justify-end">
                                    <DialogTrigger asChild> 
-                                        <button variant="outline" onClick={()=>{setActiveDialog('base-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs uppercase">
+                                        <button variant="outline" onClick={()=>{setActiveDialog('base-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs lowercase">
                                              <span>{baseUnitMeasurement.type}</span> <ChevronDown className="h-4 w-4"/>
                                         </button>       
                                    </DialogTrigger>

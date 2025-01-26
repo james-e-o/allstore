@@ -21,8 +21,8 @@ export const buildCategoryTree = (categories) => {
 
   const tree = [];
   categories.forEach((category) => {
-    if (category.parentId) {
-      categoryMap[category.parentId].children.push(categoryMap[category.id]);
+    if (category.parent) {
+      categoryMap[category.parent].children.push(categoryMap[category.id]);
     } else {
       tree.push(categoryMap[category.id]);
     }
@@ -68,7 +68,7 @@ const AddCategory = () => {
         slug,
         description,
         subcategories:[]
-      }).then(newdoc=>{-
+      }).then(newdoc=>{
         categoryList.forEach(category=>{
           if(category.id == parent){
             getDoc(doc(db,'categories',parent)).then(parentDoc =>{
