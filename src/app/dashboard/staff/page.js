@@ -1,5 +1,5 @@
-'use client'
-import { useState } from "react";
+'use client' 
+import { useEffect, useState,useContext} from "react";
 import { BriefcaseBusiness, SendHorizonal, UserPlusIcon, Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
@@ -13,12 +13,17 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import InputBox from "@/components/input-box";
 import CollapseBox from "@/components/collapse-box";
+import { headerValueContext } from "@/components/head-value";
 
 
 
 const Staff = () => {
   const [activeInterface,setActiveInterface]=useState('all')
   const [enableRequired,setEnableRequired]=useState(false)
+  const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+  useEffect(()=>{
+      ResetHeadValue('Staff')
+  })
     return (
       <div>
         <div className="w-full flex px-0 md:px-2 gap-2">

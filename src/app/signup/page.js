@@ -69,12 +69,12 @@ const SignUp = () => {
         <Card className='border bg-core_grey2/25 border-white shadow-md'>
           <CardContent className="space-y-2 py-3 px-5">
             <form method='post' onSubmit={Submit}>
-              <p className="inline-block text-gray-500 mt-2 error-[variant=true]:text-core_contrast text-[11px] mr-3">Business information</p>
+              <p className="inline-block text-gray-500 mt-2 error-[variant=true]:text-core_contrast mr-3">Business information</p>
               <InputBox value={storeName} input={()=>{setError({item:'',message:''})}} change={({target})=>{setStoreName(target.value)}} error={error.item==='storename'&&error.message} mt l_font={'sm'} font={'base'} label={'Store/Company name'}/>
               <div className="mt-1">
                 <InputBox value={businessMail} input={()=>{setError({item:'',message:''})}} change={({target})=>{setBusinessMail(target.value)}} error={error.item==='businessmail'&&error.message} l_font={'sm'} font={'base'} label={'Business mail'}/>
               </div>
-              <p className="inline-block text-gray-500 mt-4 error-[variant=true]:text-core_contrast text-[11px] mr-3">Your information</p>
+              <p className="inline-block text-gray-500 mt-4 error-[variant=true]:text-core_contrast mr-3">Your information</p>
               <div className="mt-2">
                 <InputBox value={userName} input={()=>{setError({item:'',message:''})}} change={({target})=>{setUserName(target.value)}} placeholder={'Admin1'} error={error.item==='username'&&error.message} l_font={'sm'} font={'base'} label={'Username'}/>
               </div>

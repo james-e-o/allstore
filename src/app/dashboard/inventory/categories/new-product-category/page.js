@@ -161,14 +161,6 @@ const AddCategory = () => {
 
 
 export const CheckboxTree = ({ categories,handleCheckboxChange,checked }) => {
-  // const [checkedItems, setCheckedItems] = useState({});
-
-  // const handleCheckboxChange = (id) => {
-  //   setCheckedItems((prev) => ({
-  //     ...prev,
-  //     [id]: !prev[id],
-  //   }));
-  // };
 
   const renderCategories = (categories, level = 0) => {
     return categories.map((category) => (

@@ -164,6 +164,9 @@ div.rcp-body{
 label.rcp-field-label{
   display: none;
 }
-/* .no_scroll{
-  sc
-} */
+.no_scroll{
+  scrollbar-width: none; 
+}
+.no_scroll::-webkit-scrollbar{
+  display: none;
+}

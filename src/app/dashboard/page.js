@@ -1,11 +1,15 @@
 'use client'
+import { useEffect, useState,useContext} from "react";
 import { Separator } from "@/components/ui/separator"
 import {SidebarSeparator, SidebarTrigger } from "@/components/ui/sidebar"
-import { useState } from "react"
+import { headerValueContext } from "@/components/head-value";
 
 
 const Dashboard = () => {
-
+  const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+  useEffect(()=>{
+      ResetHeadValue('Dashboard')
+  })
   return (
     <div className="h-full flex flex-col w-full">
       {/* <div className='w-full flex flex-col flex-grow '>

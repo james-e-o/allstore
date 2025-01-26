@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useEffect, useState,useContext } from "react"
 import { Edit, MoveLeftIcon, Plus, ScanBarcode, Trash2, XIcon } from "lucide-react"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
@@ -12,26 +12,49 @@ import WholesaleDiscount from "@/components/wholesale-discount";
 import Variant from "@/components/variants"
 import AddImage from "@/components/add-image"
 import CollapseBox from "@/components/collapse-box"
+import { headerValueContext } from "@/components/head-value";
+import db from "@/config/firestore";
+import { collection,addDoc,onSnapshot,updateDoc,deleteDoc,getDoc,getDocs,doc} from "firebase/firestore";
+import { buildCategoryTree,CheckboxTree } from "../../categories/new-product-category/page"
+
+const categoryCollectionRef = collection(db,'categories')
 
 const AddProduct = () => {
-
+    const [categoryList,setCategoryList] = useState([])
     function Submit(e){
-        e.preventDefault()
+      e.preventDefault()
     }
-
+    const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+    useEffect(()=>{
+        ResetHeadValue('Products')
+        getDocs(categoryCollectionRef).then((snapshot) => {
+            let data =[]
+            snapshot.docs.forEach((doc)=>{
+              data.push({              
+                ...doc.data(),
+                id:doc.id
+              })
+            })
+            setCategoryList(data)
+            console.log(data)
+          }).catch(error=>{
+          console.log(error)
+        })
+    },[])
+    
     return (
-      <div className="px-1 md:px-5 py-1 flex h-full  w-full overflow-x-hidden flex-col">
-        <div className="flex w-full justify-between border-b items-center font-Inter ">
-          <p className='font-bold'>Add product</p>
-          <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-[2px] mb-1 px-3' variant='ghost'>
+      <div className="px-1 md:px-3 py-1 flex h-full  w-full overflow-x-hidden flex-col">
+        <div className="flex w-full justify-end gap-3 mt-[5px] items-center">
+          <p className='font-bold pb-1px'>Add product</p>
+          <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-3px border px-3' variant='ghost'>
               <MoveLeftIcon className="w-4 h-4 mr-1"/>
               <span className="text-core_polish font-light">All products</span>
           </Button></Link>
         </div> 
               
-        <form onSubmit={Submit} className="flex flex-col flex-grow w-full overflow-x-clip overflow-y-scroll" action="">          
+        <form onSubmit={Submit} className="flex flex-col flex-grow w-full no_scroll overflow-x-clip overflow-y-scroll" action="">          
           <section className="flex flex-col">
-            <p className=" text-[10px] pl-[2px] mb-1">Product information</p>
+            <p className=" text-9px pl-[2px] mb-[2px]">Product information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
                 <div className="p-2 bg-core_grey2 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
@@ -44,6 +67,7 @@ const AddProduct = () => {
                       <Button variant="outline" className="mt-2 h-full bg-white text-right w-fit p-2">
                         <ScanBarcode />
                       </Button>
+
                     </div>              
                   </div>
                   <div className="my-1">
@@ -63,10 +87,10 @@ const AddProduct = () => {
                 <div className="w-full rounded-xl bg-core_grey2 p-2 md:p-3">
                   <p className=" p-1  mb-1">Product categorization</p>
                   <div className="">
-                    <InputBox placeholder={''} label={'Product category'} />
+                  {categoryList&& <CheckboxTree categories={categoryTree}/>}
                   </div>
                 </div>
-                <p className=" text-[10px] my-1">Store information</p>
+                <p className=" text-9px my-1">Store information</p>
                 <div className="flex w-full p-2 md:p-3 bg-core_grey2 rounded-xl flex-col">
                   <p className=" text-[11px] text-gray-500 mt-2">Created by {'user id'}</p>
                   <div className="flex flex-col md:gap-4 md:items-center">                
@@ -81,7 +105,7 @@ const AddProduct = () => {
 
           <section className="flex flex-col">
             {/* <Separator className='mt-1' /> */}
-            <p className=" text-[10px] my-1">E-Shop information</p>
+            <p className=" text-9px my-1">E-Shop information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
 

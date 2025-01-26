@@ -1,11 +1,16 @@
+'use client'
+import { useEffect,useContext } from "react"
 import { DataTableDemo } from "@/components/inventory-template"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table"
+import { headerValueContext } from "@/components/head-value";
 
 
 const Inventory = () => {
+    const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+    useEffect(()=>{
+        ResetHeadValue('Inventory')
+    })
     return (
       <div className="flex w-full flex-col pl-2 pr-1 pt-2 overflow-hidden h-full">
          {/* <header className="bg-white rounded-md p-2 mb-1 flex w-full justify-between items-center font-Inter ">

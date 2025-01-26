@@ -1,5 +1,5 @@
 'use client'
-import { Calendar,Users, Home,ChevronLeft,ChevronRight, ClipboardList,CircleDollarSign,ShoppingBag, Inbox, Search, Settings,Plus,ShoppingCart } from "lucide-react"
+import { Calendar,Users, Home,ChevronLeft,ChevronRight, ClipboardList,CircleDollarSign,ShoppingBag,ChartLine,Plus,ShoppingCart, NotebookPen, Truck, Minus } from "lucide-react"
 import {Sidebar, SidebarContent, SidebarFooter, useSidebar, SidebarGroup, SidebarHeader,SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator, SidebarMenuSubButton,SidebarMenuSub,SidebarMenuSubItem, SidebarTrigger } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { DialogTitle } from "./ui/dialog"
@@ -9,15 +9,18 @@ import { Collapsible } from "@radix-ui/react-collapsible"
 
   export const items = [
     {title: "Dashboard", url:"/dashboard", icon: Home, sub_content:''},
+    {title: "Analytics", url:"/analytics", icon: ChartLine, sub_content:''},
     {title: "Inventory", url:"/dashboard/inventory", icon:ClipboardList, sub_content:[
-      {title: "All stock", url:"/dashboard/inventory", icon: Plus},
-      {title: "Products", url:"/dashboard/inventory/products/", icon: Plus},
-      {title: "Categories", url:"/dashboard/inventory/categories/", icon: ''},
+      {title: "All stock", url:"/dashboard/inventory", icon: Minus},
+      {title: "Products", url:"/dashboard/inventory/products/", icon: Minus},
+      {title: "Categories", url:"/dashboard/inventory/categories/", icon: Minus},
     ]},
     {title: "Purchases", url:"/dashboard/purchases", icon:ShoppingBag, sub_content:''},
     {title: "Sales", url:"/dashboard/sales", icon:CircleDollarSign, sub_content:''},
+    {title: "Accounts", url:"/dashboard/accounts", icon:NotebookPen, sub_content:''},
     {title: "E shop", url:"/dashboard/e-shop", icon: ShoppingCart, sub_content:''},
     {title: "Staff", url:"/dashboard/staff", icon: Users, sub_content:''},
+    {title: "Logistics", url:"/dashboard/logistics", icon: Truck, sub_content:''},
   ]
 
  
@@ -64,31 +67,31 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
           {items.map((item,index) => (
                 <SidebarMenuItem className='flex-grow' key={item.title}>
                  {item.sub_content==''? <Link href={item.url}>
-                    <Button size='sm' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?toggleDrop():item.sub_content==''?wrap():'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),wrap()):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
+                    <Button size='xs' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?toggleDrop():item.sub_content==''?wrap():'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),wrap()):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
                       <span className=" flex w-full border-none items-center">
-                        {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 ml-[3px] scale-105"/>}
+                        {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 md:scale-90 ml-[3px]"/>}
                         <span className="w-fit ">{item.title}</span>
                       </span>
                     </Button>
                   </Link>
                   :
-                  <Button size='sm' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?toggleDrop():item.sub_content==''?wrap():'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),wrap()):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
+                  <Button size='xs' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?toggleDrop():item.sub_content==''?wrap():'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),wrap()):"",console.log(activeMenu,collapsible)}}  className='w-full text-white hover:bg-white relative border-none shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
                     <span className=" flex w-full border-none items-center">
-                      {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 ml-[3px] scale-105"/>}
+                      {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 md:scale-90 ml-[3px]"/>}
                       <span className="w-fit">{item.title}</span>
                     </span>
                 </Button>
                   }
-                  {item.sub_content ? <div className={`grid transition-all ease-out duration-200 border-none transition-collapse ${item.title==activeMenu&&collapsible? "grid-rows-[1fr]" : " grid-rows-[0fr] "}`}><SidebarMenuSub data-margin={collapsible} className={`border-none overflow-hidden data-[margin=true]:mt-2 transition-all duration-500 ml-8 mr-0 items-start`}>
+                  {item.sub_content ? <div className={`grid transition-all ease-out duration-200 border-none transition-collapse ${item.title==activeMenu&&collapsible? "grid-rows-[1fr]" : " grid-rows-[0fr] "}`}><SidebarMenuSub data-margin={collapsible} className={`border-none overflow-hidden transition-all duration-500 ml-8 mr-0 items-start`}>
                   {item.sub_content.map((sub,index)=>(
                       <SidebarMenuSubItem key={index} className='w-full'>
                         <Link href={sub.url}>
-                          <Button size='sm' onClick={()=>{innerWidth?"":(closeSidebar(),wrap())}} variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black text-white hover:bg-white'>
-                            <span className=" flex justify-start text-start px-2 ">
-                              {/* {sub.icon && <sub.icon/>} */}
+                          <button size='sm' onClick={()=>{innerWidth?"":(closeSidebar(),wrap())}} variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black px-1px py-2px mt-1 rounded-md text-white hover:bg-white'>
+                            <span className=" flex justify-start gap-1 items-center text-start px-1 ">
+                              {sub.icon && <sub.icon className='p-1 h-5 w-5'/>}
                               <span className="w-fit">{sub.title}</span>
                             </span>
-                          </Button>
+                          </button>
                         </Link>
                       </SidebarMenuSubItem>
                   ))}
