@@ -1,15 +1,18 @@
 'use client'
-import { useContext } from "react"
-import { headerValue } from "../layout"
+import { useContext,useEffect, useState } from "react"
+import { headerValueContext } from "@/components/head-value";
 
 const Purchases = () => {
-  
+
+   const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+    useEffect(()=>{
+        ResetHeadValue('Purchases')
+    })
+
   return (
-    <headerValue.Provider value={'Purchases'}>
       <div>
           Purchases
       </div>
-    </headerValue.Provider>
   )
 }
   
