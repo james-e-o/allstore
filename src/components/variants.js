@@ -1,6 +1,5 @@
 'use client'
 import { useState,useEffect } from "react"
-import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import { ChevronsDownUp, ChevronsUpDown, Dice6, Edit,Edit3, Plus,Trash2, X, XIcon } from "lucide-react"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,} from "@/components/ui/alert-dialog"
 import { ColorPicker, useColor,Saturation,IColor, Hue, Alpha } from "react-color-palette";
@@ -250,50 +249,6 @@ const AddCustomProp =({Prop,_variant,edit})=> {
            <AlertDialogCancel asChild><Button size='sm' disabled={sizeData.length<=0} className='w-fit text-core_contrast px-5' type="submit">Add sizes</Button></AlertDialogCancel>
          </AlertDialogFooter>
        </form>
-     )
-   }
-
-   const EditVariantCombinations = ({combinations,changed,log}) => {
-
-     
-    
-     return (
-          <div className="">
-               <AlertDialogHeader><AlertDialogTitle className=' p-0'>
-                         <AlertDialogDescription className=''>Choose variations</  AlertDialogDescription></AlertDialogTitle>
-               </AlertDialogHeader>
-               <div className=" flex flex-col mt-4 items-start gap-3">
-                    {combinations.map((item,i)=>(
-                         <div key={i} className="flex w-full flex-col ">
-                              <div className="grid w-full mb-1 grid-cols-[_1fr_5fr] gap-2">
-                                   <p className="w-fit justify-items-start">
-                                        <Checkbox
-                                             className=''
-                                             checked={item.status}
-                                             onCheckedChange={(value) => changed(value,i)}
-                                        />
-                                   </p>
-                                   <div className="uppercase inline-flex ">
-                                        <DisplayVariant string={item.variant} />
-                                   </div>
-                              </div>
-                              <Separator />
-                         </div>
-                    ))}
-               </div>
-               <AlertDialogFooter className={'flex  mx-1 flex-row mt-2 items-center justify-end'}>
-                    <AlertDialogCancel asChild><Button size='sm' onClick={()=>{log()}} className='w-fit text-core_contrast px-3' type="submit">Done</Button></AlertDialogCancel>
-               </AlertDialogFooter>
-          </div>
-     )
-   }
-
-   const VariantCombinationsTable = () => {
-     return (
-          <div className="grid grid-cols-5">
-
-
-          </div>
      )
    }
 

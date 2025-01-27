@@ -61,15 +61,15 @@ const AddProduct = () => {
               
         <form onSubmit={Submit} className="flex flex-col flex-grow w-full no_scroll overflow-x-clip overflow-y-scroll" action="">          
           <section className="flex flex-col">
-            <p className=" text-9px pl-[2px] mb-[2px]">Product information</p>
+            <p className=" text-9px pl-2px mb-[2px]">Product information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
                 <div className="p-2 bg-core_grey2 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
-                  <p className=" font-Voces font-semibold ">Product details</p>
+                  <p className=" font-Voces pl-2px mb-1 font-semibold ">Product details</p>
                   <InputBox flexdir={'row'} mt placeholder={'Product name...'} label={'Product name:'} />
                   <div className="flex flex-col mt-1 md:flex-row md:gap-2 md:items-center">                
                     <InputBox margin={'8px 0px 0px'} label={'Brand:'} mt flexdir={'row'} placeholder={'Brand...'} />               
-                    <div className="flex gap-2 items-center w-full flex-grow">
+                    <div className="flex gap-2 items-end w-full flex-grow">
                       <InputBox placeholder={'Barcode...'} label={'Barcode:'} mt flexdir={'row'}/>
                       <Button variant="outline" className="mt-2 h-full bg-white text-right w-fit p-2">
                         <ScanBarcode />
@@ -110,14 +110,14 @@ const AddProduct = () => {
             </div>
           </section>
 
-          <section className="flex flex-col">
+          <section className="flex mt-1 flex-col">
             {/* <Separator className='mt-1' /> */}
             <p className=" text-9px my-1">E-Shop information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
 
                 <div className="p-2 bg-core_grey2 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
-                  <p className=" font-Voces font-semibold ">Add image</p>
+                  <p className=" font-Voces font-semibold ">Media</p>
                   <AddImage />
                   <div className="bg-white shadow rounded-lg p-4 md:px-5">
                     <p className="  mb-1">Description</p>              
@@ -203,7 +203,7 @@ export const Pricing =({})=>{
             </div>
               
             <div className='flex mt-2 w-full items-center'>
-              <p data-variant={bulkDiscount} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Wholesale discount</p>
+              <p data-variant={bulkDiscount} className="inline-block text-gray-500 pl-2px data-[variant=true]:text-core_contrast mr-3">Wholesale discount</p>
               <Switch disabled={!sellingPrice} className='data-[state=unchecked]:bg-core_contrast/40 scale-75 shadow' checked={bulkDiscount} onCheckedChange={()=>setBulkDiscount(!bulkDiscount)} />
             </div>
             <div className={`grid transition-collapse ${bulkDiscount ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
@@ -213,10 +213,10 @@ export const Pricing =({})=>{
             </div>
 
             <div className='flex mt-2 w-full items-center'>
-              <p data-variant={piecePrice} className="inline-block text-gray-500 data-[variant=true]:text-core_contrast text-[11px] mr-3">Sell in measurable quantity/pieces</p>
+              <p data-variant={piecePrice} className="inline-block text-gray-500 pl-2px data-[variant=true]:text-core_contrast mr-3">Sell in measurable quantity/pieces</p>
               <Switch disabled={!costPrice} className='data-[state=unchecked]:bg-core_contrast/40 scale-75 shadow' checked={piecePrice} onCheckedChange={()=>setPiecePrice(!piecePrice)} />
             </div>
-            <div className={`grid transition-collapse ${piecePrice ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+            <div className={`grid w-full transition-collapse ${piecePrice ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
               <div className="overflow-hidden w-full">
                 <VolumeCalculator sp={sellingPrice}/>
               </div>

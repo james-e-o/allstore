@@ -1,8 +1,12 @@
 'use client'
 import { useEffect, useState } from "react"
+import { Input } from "@/components/ui/input"
+import InputBox from "./input-box"
+import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import { Dialog,DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, } from "@/components/ui/dialog";
-import { ChevronDown } from "lucide-react"
-import InputBox from "./input-box";
+import { Button } from "@/components/ui/button"
+import { ChevronsUpDown } from 'lucide-react'
+
 
 const VolumeCalculator =({sp})=> {
 
@@ -14,10 +18,10 @@ const VolumeCalculator =({sp})=> {
      ]
      const [measurementFilter,setMeasurementFilter]=useState([])
      
-     const [activeDialog,setActiveDialog]=useState('')
+     const [activeMeasurement,setActiveMeasurement]=useState(measurements[0])
      const [totalQuantity,setTotalQuantity] = useState(0)
      const [baseUnits,setBaseUnits] = useState(0)
-     const [totalQuantityMeasurement,setTotalQuantityMeasurement] = useState({type:measurements[0].units[0].short,value:measurements[0].units[0].value})
+     const [totalQuantityMeasurement,setTotalQuantityMeasurement] = useState({type:activeMeasurement.units[0].short,value:activeMeasurement.units[0].value})
      const [baseUnitMeasurement,setBaseUnitMeasurement] = useState(totalQuantityMeasurement)
      const [output,setOutput] = useState(0)
 
@@ -32,13 +36,18 @@ const VolumeCalculator =({sp})=> {
      }
 
      useEffect(()=>{
+          setTotalQuantityMeasurement({type:activeMeasurement.units[0].short,value:activeMeasurement.units[0].value})
+          setBaseUnitMeasurement({type:activeMeasurement.units[0].short,value:activeMeasurement.units[0].value})
+     },[activeMeasurement])
+
+     useEffect(()=>{
           computePiecePrice()
      },[totalQuantity,baseUnits,totalQuantityMeasurement,baseUnitMeasurement,sp])
    
      return (
-          <div className="  flex rounded-lg bg-white px-3 flex-col">
+          <div className="  flex w-full shadow-sm mb-2 border rounded-lg bg-white mt-1 p-4 flex-col">
                <Dialog>
-                    <DialogContent className={'md:w-fit w-[80%] rounded-lg'}>
+                    {/* <DialogContent className={'md:w-fit w-[80%] rounded-lg'}>
                          {
                          activeDialog === 'total-units'?
                               <div className="flex-col mt-4 gap-3 flex">
@@ -91,31 +100,56 @@ const VolumeCalculator =({sp})=> {
                          : ""
                          
                          }
-                    </DialogContent>
-                    <div className="flex gap-2 md:gap-4 flex-col md:flex-row">
-                         <div className="mt-2 flex w-fit justify-start h-fit items-end">
-                              <InputBox width={'130px'} change={(e)=>{setTotalQuantity(new Number(e.target.value))}} value={totalQuantity?totalQuantity:""} type={'number'} label={'Total product units'} />           
-                              <p className="h-full w-fit flex-col flex justify-end">
-                                   <DialogTrigger asChild>
-                                        <button variant="outline" onClick={()=>{setActiveDialog('total-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs lowercase">
-                                             <span>{totalQuantityMeasurement.type}</span> <ChevronDown className="h-4 w-4"/>
-                                        </button>       
-                                   </DialogTrigger>
-                              </p>                                   
-                         </div>
-                         <div className="mt-2 flex w-fit  justify-start h-fit items-end">
-                              <InputBox width={'130px'} change={(e)=>{setBaseUnits(new Number(e.target.value))}} value={baseUnits?baseUnits:""} type={'number'} label={'Minimum product unit(s)'} />           
-                              <p className="h-full w-fit flex-col flex justify-end">
-                                   <DialogTrigger asChild> 
-                                        <button variant="outline" onClick={()=>{setActiveDialog('base-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs lowercase">
-                                             <span>{baseUnitMeasurement.type}</span> <ChevronDown className="h-4 w-4"/>
-                                        </button>       
-                                   </DialogTrigger>
-                              </p>                                  
-                         </div>
+                    </DialogContent> */}
+                    <div className="grid gap-2 flex-col grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
+                         <div className='inline-flex gap-1 items-end'>
+                              <InputBox shortInput width={'90px'} change={(e)=>{setTotalQuantity(new Number(e.target.value))}}  value={totalQuantity?totalQuantity:""} type={'number'} label={'Total product units'} /> 
+                              <DropdownMenu>
+                                   <DropdownMenuTrigger asChild>
+                                        <Button variant='ghost' className='min-w-9 h-6'>{activeMeasurement.measurement}<ChevronsUpDown className='p-1px'/></Button>
+                                   </DropdownMenuTrigger>
+                                   <DropdownMenuContent align="end">
+                                        <DropdownMenuSeparator />
+                                        {measurements.map((option,index)=>(
+                                             <DropdownMenuItem key={index} onClick={(e) =>{setActiveMeasurement(option)}} >
+                                                  {option.measurement}
+                                             </DropdownMenuItem>
+                                        ))}
+                                   </DropdownMenuContent>
+                              </DropdownMenu>
+                              <DropdownMenu>
+                                   <DropdownMenuTrigger asChild>
+                                        <Button variant='ghost' className='min-w-9 h-6'>{totalQuantityMeasurement.type}<ChevronsUpDown className='p-1px'/></Button>
+                                   </DropdownMenuTrigger>
+                                   <DropdownMenuContent align="end">
+                                        <DropdownMenuSeparator />
+                                        {activeMeasurement.units.map((unit,index)=>(
+                                             <DropdownMenuItem key={index} onClick={(e) =>{setTotalQuantityMeasurement({type:unit.short,value:unit.value}),setBaseUnitMeasurement({type:unit.short,value:unit.value})}} >
+                                                  {unit.name}
+                                             </DropdownMenuItem>
+                                        ))}
+                                   </DropdownMenuContent>
+                              </DropdownMenu>    
+                         </div>  
+                         <div className='inline-flex gap-1 items-end'>
+                              <InputBox width={'90px'} change={(e)=>{setBaseUnits(new Number(e.target.value))}} shortInput value={baseUnits?baseUnits:""} type={'number'} label={'Minimum product unit(s)'} /> 
+                              <DropdownMenu>
+                                   <DropdownMenuTrigger asChild>
+                                        <Button variant='ghost' className='min-w-9 h-6'>{baseUnitMeasurement.type}<ChevronsUpDown className='p-1px'/></Button>
+                                   </DropdownMenuTrigger>
+                                   <DropdownMenuContent align="end">
+                                        <DropdownMenuSeparator />
+                                        {activeMeasurement.units.map((unit,index)=>(
+                                             <DropdownMenuItem key={index} onClick={(e) =>{setBaseUnitMeasurement({type:unit.short,value:unit.value})}} >
+                                                  {unit.name}
+                                             </DropdownMenuItem>
+                                        ))}
+                                   </DropdownMenuContent>
+                              </DropdownMenu>    
+                         </div>  
                     </div>
                     <div className="py-1">
-                         {sp? <p className="ml-4 text-sm mt-1">{`$${output} per ${baseUnitMeasurement.type}`}</p>:""}
+                         {sp? <p className="ml-4 text-xs mt-1">{`$${output} per ${baseUnitMeasurement.type}`}</p>:""}
                     </div>
                </Dialog>
           </div>
@@ -123,3 +157,25 @@ const VolumeCalculator =({sp})=> {
 }
 
 export default VolumeCalculator
+
+     
+{/* <div className="mt-2 flex w-fit justify-start h-fit items-end">
+     <InputBox width={'130px'} change={(e)=>{setTotalQuantity(new Number(e.target.value))}} value={totalQuantity?totalQuantity:""} type={'number'} label={'Total product units'} />           
+     <p className="h-full w-fit flex-col flex justify-end">
+          <DialogTrigger asChild>
+               <button variant="outline" onClick={()=>{setActiveDialog('total-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs lowercase">
+                    <span>{totalQuantityMeasurement.type}</span> <ChevronDown className="h-4 w-4"/>
+               </button>       
+          </DialogTrigger>
+     </p>                                   
+</div> */}
+{/* <div className="mt-2 flex w-fit  justify-start h-fit items-end">
+                
+     <p className="h-full w-fit flex-col flex justify-end">
+          <DialogTrigger asChild> 
+               <button variant="outline" onClick={()=>{setActiveDialog('base-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs lowercase">
+                    <span>{baseUnitMeasurement.type}</span> <ChevronDown className="h-4 w-4"/>
+               </button>       
+          </DialogTrigger>
+     </p>                                  
+</div> */}
