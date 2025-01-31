@@ -64,7 +64,7 @@ const AddCategory = () => {
       console.log(category,parent,slug,description)
       addDoc(categoryCollectionRef,{
         name:category,
-        parent,
+        parent:parent.id,
         slug,
         description,
         subcategories:[]
@@ -112,7 +112,7 @@ const AddCategory = () => {
                 </DialogDescription>
               </DialogHeader>
               <div className="max-h-[70svh] overflow-y-scroll">
-                 {categoryList&& <CheckboxTree handleCheckboxChange={(id)=>{setParent(id)}} checked={parent} categories={categoryTree}/>}
+                 {categoryList&& <CheckboxTree handleCheckboxChange={(category)=>{setParent(category)}} checked={parent.id} categories={categoryTree}/>}
               </div>
               <DialogFooter className={'flex flex-row justify-end'}>
                 <DialogClose asChild><Button size='sm' className='w-fit' type="submit">Done</Button></DialogClose>
@@ -136,7 +136,7 @@ const AddCategory = () => {
                       <span className="pl-[2px] mb-1 ">Parent category</span>
                       <DialogTrigger asChild>
                         <Button className='p-2 justify-start bg-white text-xs' variant='secondary'>
-                         {parent?parent:'select parent category...'}
+                         {parent?parent.name:'select parent category...'}
                         </Button>
                       </DialogTrigger>                   
                     </div> 
@@ -165,11 +165,11 @@ export const CheckboxTree = ({ categories,handleCheckboxChange,checked }) => {
   const renderCategories = (categories, level = 0) => {
     return categories.map((category) => (
       <div key={category.id} style={{ marginLeft: `${level * 20}px` }}>
-        <label className="my-1">
+        <label className="my-1 inline-flex items-center">
           <input
             type="checkbox"
             checked={checked==category.id}
-            onChange={() => handleCheckboxChange(category.id)}
+            onChange={() => handleCheckboxChange(category)}
           />
           <span className="ml-1">{category.name}</span>
         </label>

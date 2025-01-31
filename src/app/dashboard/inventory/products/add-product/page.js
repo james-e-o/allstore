@@ -16,6 +16,7 @@ import { headerValueContext } from "@/components/head-value";
 import db from "@/config/firestore";
 import { collection,addDoc,onSnapshot,updateDoc,deleteDoc,getDoc,getDocs,doc} from "firebase/firestore";
 import { buildCategoryTree,CheckboxTree } from "../../categories/new-product-category/page"
+import WeightSelection from "@/components/weight-selector"
 
 const categoryCollectionRef = collection(db,'categories')
 
@@ -23,6 +24,7 @@ const AddProduct = () => {
     const [categoryList,setCategoryList] = useState([])
     const categoryTree = buildCategoryTree(categoryList);
     const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+
 
     // DATA
     const [category,setCategory] = useState('')
@@ -77,13 +79,15 @@ const AddProduct = () => {
 
                     </div>              
                   </div>
-                  <div className="my-1">
-                    <p className="inline-block mr-3">Dimensions</p>
-                    <InputBox fit mt mr label={'W:'} flexdir={'row'}/>
-                    <InputBox fit mt mr label={'H:'} flexdir={'row'}/>
-                    <InputBox fit mt mr label={'L:'} flexdir={'row'}/>
+                  <div className="mt-2">
+                    <p className="block mr-3">Dimensions</p>
+                    <div className="">
+                      <InputBox width={'70px'} mr type={'number'} shortInput mt label={'L:'} flexdir={'row'}/>
+                      <InputBox width={'70px'} mr type={'number'} shortInput mt label={'W:'} flexdir={'row'}/>
+                      <InputBox width={'70px'} mr type={'number'} shortInput mt label={'H:'} flexdir={'row'}/>
+                    </div>
                   </div>
-                  <InputBox fit mt label={'Weight or Volume:'} flexdir={'row'}/>
+                  <WeightSelection />
                 </div>
                
                 <Pricing />

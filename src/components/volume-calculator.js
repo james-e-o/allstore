@@ -47,60 +47,6 @@ const VolumeCalculator =({sp})=> {
      return (
           <div className="  flex w-full shadow-sm mb-2 border rounded-lg bg-white mt-1 p-4 flex-col">
                <Dialog>
-                    {/* <DialogContent className={'md:w-fit w-[80%] rounded-lg'}>
-                         {
-                         activeDialog === 'total-units'?
-                              <div className="flex-col mt-4 gap-3 flex">
-                                   <DialogHeader>
-                                        <DialogTitle className='text-xs p-0'></DialogTitle>
-                                             <DialogDescription className='text-xs'>
-                                                  Select unit of measurement
-                                             </DialogDescription>
-                                   </DialogHeader>
-                                   {measurements.map((measurement,i)=>(
-                                        <div key={i} className="flex text-sm mt-1 justify-between gap-2 md:gap-4 items-center">
-                                             <p className="p-1 font-semibold">{measurement.measurement}:</p>
-                                             <div className="flex gap-2">
-                                                  {measurement.units&&measurement.units.map((type,_i)=>(
-                                                       <p key={_i} className="">
-                                                            <DialogClose  asChild>
-                                                                 <button variant="outline" onClick={()=>{setTotalQuantityMeasurement({type:type.short,value:type.value}),setMeasurementFilter(measurement.units),setBaseUnitMeasurement({type:type.short,value:type.value})}} className="ml-auto px-2 lowercase rounded-md border-black/20 border py-[6px] bg-white min-w-8 flex justify-center text-xs ">
-                                                                 <span className="">{type.short}</span>
-                                                                 </button> 
-                                                            </DialogClose>
-                                                       </p>
-                                                  ))}
-                                             </div>
-                                        </div>
-                                   ))}                    
-                              </div>
-                         :
-                         activeDialog === 'base-units'?
-                         <div  className="flex gap-2 flex-col mt-4">
-                              <DialogHeader>
-                                        <DialogTitle className='text-xs p-0'></DialogTitle>
-                                             <DialogDescription className='text-xs'>
-                                                  Select base unit of measurement
-                                             </DialogDescription>
-                                   </DialogHeader>
-                                   <div className="flex gap-5">
-
-                                   {measurementFilter&&measurementFilter.map((unit,i)=>(
-                                        <p key={i} className="mt-4">
-                                             <DialogClose  asChild>
-                                                  <button variant="outline" onClick={()=>{setBaseUnitMeasurement({type:unit.short,value:unit.value})}} className="ml-auto px-2 lowercase rounded-md border-black/20 border py-[6px] bg-white min-w-8 flex justify-center text-sm ">
-                                                  <span className="">{unit.short}</span>
-                                                  </button> 
-                                             </DialogClose>
-                                        </p>
-                                   ))}
-                                   </div>
-
-                         </div>
-                         : ""
-                         
-                         }
-                    </DialogContent> */}
                     <div className="grid gap-2 flex-col grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
                          <div className='inline-flex gap-1 items-end'>
                               <InputBox shortInput width={'90px'} change={(e)=>{setTotalQuantity(new Number(e.target.value))}}  value={totalQuantity?totalQuantity:""} type={'number'} label={'Total product units'} /> 
@@ -159,23 +105,3 @@ const VolumeCalculator =({sp})=> {
 export default VolumeCalculator
 
      
-{/* <div className="mt-2 flex w-fit justify-start h-fit items-end">
-     <InputBox width={'130px'} change={(e)=>{setTotalQuantity(new Number(e.target.value))}} value={totalQuantity?totalQuantity:""} type={'number'} label={'Total product units'} />           
-     <p className="h-full w-fit flex-col flex justify-end">
-          <DialogTrigger asChild>
-               <button variant="outline" onClick={()=>{setActiveDialog('total-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs lowercase">
-                    <span>{totalQuantityMeasurement.type}</span> <ChevronDown className="h-4 w-4"/>
-               </button>       
-          </DialogTrigger>
-     </p>                                   
-</div> */}
-{/* <div className="mt-2 flex w-fit  justify-start h-fit items-end">
-                
-     <p className="h-full w-fit flex-col flex justify-end">
-          <DialogTrigger asChild> 
-               <button variant="outline" onClick={()=>{setActiveDialog('base-units')}} className="ml-auto px-2 rounded-md border py-[7px] bg-white w-fit flex items-center gap-1 md:text-xs lowercase">
-                    <span>{baseUnitMeasurement.type}</span> <ChevronDown className="h-4 w-4"/>
-               </button>       
-          </DialogTrigger>
-     </p>                                  
-</div> */}

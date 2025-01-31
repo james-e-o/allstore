@@ -75,7 +75,7 @@ export default function Variant ({sellingPrice,costPrice}){
                     </div>
                     <div data-border={newOption} className="px-2 max-h-min items-center flex data-[border=true]:border-t bg-white py-1">
                          {optionSets.length<=0?<div className="">
-                              <Button onClick={()=>{setNewOption(!newOption)}} variant='ghost' className='bg-white hover:bg-transparent '><Plus /> Add options like sizes, colors, material, country etc.</Button>
+                              <Button onClick={()=>{setNewOption(!newOption)}} variant='ghost' className='bg-white hover:bg-transparent '><Plus data-new={newOption} className="data-[new=true]:rotate-45 transition-transform"/> Add options like sizes, colors, material, country etc.</Button>
                          </div>:""}
                          {optionSets.length>0?<Button onClick={()=>{setNewOption(!newOption)}} variant='ghost' className='bg-white hover:bg-transparent'><Plus data-new={newOption} className="data-[new=true]:rotate-45 transition-transform"/> <span data-new={newOption} className="data-[new=true]:opacity-40">Add another option</span></Button>:""}
                     </div>
@@ -191,66 +191,4 @@ const AddCustomProp =({Prop,_variant,edit})=> {
      )
    }
    
-   const AddColorProp =({colorProp})=> {
-     const [colorValue,setColorValue] = useState('')
-     const [colorUrl,setColorUrl] = useState('')
-     const [color, setColor] = useColor("darkturquoise");
-
-     function convertToImg (pickedColor){
-         const canvas = document.createElement('canvas')
-         canvas.width = 18
-         canvas.height = 18
-         const context = canvas.getContext('2d')
-         context.fillStyle = pickedColor
-         context.fillRect(0,0,canvas.width,canvas.height)
-
-         const canvasUrl = canvas.toDataURL(`${pickedColor}/png`)
-         setColorUrl(canvasUrl)
-         console.log(canvasUrl)
-     }
-
-     return (
-       <form onSubmit={(e)=>{e.preventDefault(),colorProp(colorValue,colorUrl)}} className="w-full">
-         <AlertDialogHeader><AlertDialogTitle className=' p-0'>
-               <AlertDialogDescription className=''>Add color variant</  AlertDialogDescription></AlertDialogTitle>
-         </AlertDialogHeader>
-         <div className="flex justify-center mt-4 w-full items-start gap-2">
-           <ColorPicker color={color} hideInput={["rgb", "hsv"]} height={100} onChange={setColor} onChangeComplete={(col)=>{setColorValue(col.hex),convertToImg(col.hex)}} />
-         </div>
-         <AlertDialogFooter className={'flex mx-1 flex-row mt-3 items-center justify-end'}>
-           <AlertDialogCancel asChild><Button size='sm' disabled={!colorValue} className='w-fit text-core_contrast px-4' type="submit">Add color</Button></AlertDialogCancel>
-         </AlertDialogFooter>
-       </form>
-     )
-   }
-   
-   const AddSizeProp =({sizeProp})=> {
-     const [sizes,setSizes ]=useState([ {size:'small',status:false}, {size:'medium',status:false}, {size:'large',status:false}, {size:'xlarge',status:false}, {size:'xxlarge',status:false}])
-     const [sizeData,setSizeData] = useState([])
-     useEffect(()=>{
-          setSizeData(sizes.filter(size=>size.status===true))
-     },[sizes])
-     return (
-       <form onSubmit={(e)=>{e.preventDefault(),sizeProp(sizeData)}} className="">
-         <AlertDialogHeader><AlertDialogTitle className=' p-0'>
-               <AlertDialogDescription className=''>Add size variant</  AlertDialogDescription></AlertDialogTitle>
-         </AlertDialogHeader>
-         <div className="flex flex-col gap-3">
-               {sizes.map((item,index)=>(
-                    <div key={index} className="flex gap-1 mx-2 items-center mt-3 space-x-2">
-                         <Checkbox onCheckedChange={(val)=>{setSizes(prev=>prev.map((size,_index)=>(item === size?{...size,status:val}:size)))}} checked={item.status} id={item.size} />
-                              <label htmlFor={item.size} className=" font-medium uppercase leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                              <span className="-ml-1">{item.size}</span>
-                         </label>
-                    </div>
-               ))}
-         </div>
-         <AlertDialogFooter className={'flex mx-1 flex-row mt-2 items-center justify-end'}>
-           <AlertDialogCancel asChild><Button size='sm' disabled={sizeData.length<=0} className='w-fit text-core_contrast px-5' type="submit">Add sizes</Button></AlertDialogCancel>
-         </AlertDialogFooter>
-       </form>
-     )
-   }
-
-
-   
+// 
