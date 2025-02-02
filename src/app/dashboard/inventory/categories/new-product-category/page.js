@@ -34,9 +34,10 @@ export const buildCategoryTree = (categories) => {
 
 const AddCategory = () => {
     const [categoryList,setCategoryList] = useState([])
+    const nullCategory = {name:'none',id:null}
     const [slug,setSlug] = useState('')
     const [category,setCategory] = useState('')
-    const [parent, setParent] = useState('')
+    const [parent, setParent] = useState(nullCategory)
     const [description, setDescription] = useState("")
     const [error, setError] = useState("")
   
@@ -73,7 +74,7 @@ const AddCategory = () => {
           if(category.id == parent){
             getDoc(doc(db,'categories',parent)).then(parentDoc =>{
               updateDoc(doc(db,'categories',parent),{
-                subcategories:parentDoc.data().subcategories.push(newdoc.id)
+                subcategories:[...parentDoc.data().subcategories,newdoc.id]
               })
             })
           }
@@ -112,7 +113,7 @@ const AddCategory = () => {
                 </DialogDescription>
               </DialogHeader>
               <div className="max-h-[70svh] overflow-y-scroll">
-                 {categoryList&& <CheckboxTree handleCheckboxChange={(category)=>{setParent(category)}} checked={parent.id} categories={categoryTree}/>}
+                 {categoryList&& <CheckboxTree nullCheckBox={()=>{setParent(nullCategory)}} handleCheckboxChange={(category)=>{setParent(category)}} checked={parent.id} categories={categoryTree}/>}
               </div>
               <DialogFooter className={'flex flex-row justify-end'}>
                 <DialogClose asChild><Button size='sm' className='w-fit' type="submit">Done</Button></DialogClose>
@@ -160,7 +161,7 @@ const AddCategory = () => {
 
 
 
-export const CheckboxTree = ({ categories,handleCheckboxChange,checked }) => {
+export const CheckboxTree = ({ categories,handleCheckboxChange,checked,nullCheckBox }) => {
 
   const renderCategories = (categories, level = 0) => {
     return categories.map((category) => (
@@ -178,5 +179,17 @@ export const CheckboxTree = ({ categories,handleCheckboxChange,checked }) => {
     ));
   };
 
-  return <div>{renderCategories(categories)}</div>;
+  return(
+    <div>
+      <label className="my-1 inline-flex items-center">
+        <input
+          type="checkbox"
+          checked={checked=='none'}
+          onChange={() => nullCheckBox()}
+        />
+        <span className="ml-1">{'none--'}</span>
+      </label>
+      {renderCategories(categories)}
+    </div>
+  );
 }

@@ -15,6 +15,7 @@ import Link from "next/link"
 
 const AddImage = () => {
      const [uploadState,setUploadState] =useState(false)
+     const [trash,setTrash] =useState([])
      
 
   return (
@@ -246,9 +247,9 @@ export const Folders = () => {
           const [folders, setFolders] = useState([
                { id: "folder1", name: "Folder 1",folderId:null},
           ]);
-
-          const [currentFolder,setCurrentFolder] = useState(null)
-          const [breadList,setBreadList] = useState([`All`])
+          
+          const [breadCrumbsList,setBreadCrumbsList] = useState([{id:null,name:'All'}])
+          const [currentFolder,setCurrentFolder] = useState([])
           
           const moveFile = (fileId, folderId) => {
                console.log(`Moving file ${fileId} to folder ${folderId}`);
@@ -268,23 +269,18 @@ export const Folders = () => {
           };
 
           const addFolder = () => {
-               setFolders(prev=>[...prev,{id:Date.now(),name:newFolderValue,folderId:null}])
+               setFolders(prev=>[...prev,{id:Date.now(),name:newFolderValue,folderId:breadCrumbsList[breadCrumbsList.length-1].id}])
                setNewFolderValue('')
                setNewFolderState(false)
           }
 
 
-          const openFolder =(folderId)=> {
-               setCurrentFolder(folderId)
+          const openFolder =(folder)=> {
+               setBreadCrumbsList(prev=>[...prev,{id:folder.id,name:folder.name}])
           }
 
-          function getParentFolderIds(folderId) {
-               let ids = []
-               if (folderId==null) return ids;
-               
-               ids.push(folder.folderId);
-               const parentFolder = folders.find(item=>item.folderId==folder.id)
-               return getParentFolderIds(parentFolder, ids);
+          function navigateBreadcrumbs(item,index) {
+               setBreadCrumbsList(prev=>prev.slice(0,index+1))
           }
           
           
@@ -299,22 +295,21 @@ export const Folders = () => {
           })   
 
           useEffect(()=>{  
-               console.log(currentFolder)
-               if(currentFolder!==null){ setBreadList(prev=>[...prev,...getParentFolderIds(currentFolder)]),console.log(getParentFolderIds(currentFolder))}
-          },[currentFolder])
+              setCurrentFolder(breadCrumbsList[breadCrumbsList.length-1])
+          },[breadCrumbsList])
    
      return (
        <DndProvider backend={HTML5Backend}>
          <div className='h-full flex flex-col'>
                <div className="flex items-center px-2 mt-[3px] justify-between">
                     <Breadcrumb>
-                         <BreadcrumbList className='flex'>
-                              {breadList.map((item,index)=>(
-                                   <div className="inline-flex gap-[3px]">
+                         <BreadcrumbList className='flex gap-0 sm:gap-0 md:gap-0'>
+                              {breadCrumbsList.map((item,index)=>(
+                                   <div key={index} onClick={()=>{navigateBreadcrumbs(item,index)}} className="inline-flex gap-[3px]">
                                         <BreadcrumbItem>
-                                             <span>{item}</span>
+                                             <Button variant='ghost' className='h-0 px-1'>{item.name}</Button>
                                         </BreadcrumbItem>
-                                        <BreadcrumbSeparator />
+                                       {index!=breadCrumbsList.length-1? <BreadcrumbSeparator  />:""}
                                    </div>
                               ))}
                          </BreadcrumbList>
@@ -327,24 +322,15 @@ export const Folders = () => {
                <div className="flex-grow h-full no_scroll overflow-y-scroll">
                     <div data-grid={displayGrid} className="grid data-[grid=true]:justify-items-center data-[grid=true]:gap-3 grid-cols-1 data-[grid=true]:grid-cols-[_repeat(auto-fit,minmax(8rem,_1fr))_]">
 
-                         {folders.filter(folder => folder.folderId === currentFolder).map(folder => (
-                              <Folder key={folder.id} folder={folder} children={{folders:folders.filter(item=>item.folderId==folder.id).length, files:files.filter(item=>item.folderId==folder.id).length}} click={()=>{openFolder(folder.id),console.log(folder.id)}} moveFile={moveFile} moveFolder={moveFolder} folderIconClass={folderIconClass} folderClass={folderClass} grid={displayGrid}/>
+                         {folders.filter(folder => folder.folderId === currentFolder.id).map(folder => (
+                              <Folder key={folder.id} folder={folder} children={{folders:folders.filter(item=>item.folderId==folder.id).length, files:files.filter(item=>item.folderId==folder.id).length}} click={()=>{openFolder(folder),console.log(folder.id)}} moveFile={moveFile} moveFolder={moveFolder} folderIconClass={folderIconClass} folderClass={folderClass} grid={displayGrid}/>
                          ))}
-                         {files.filter(file => file.folderId === currentFolder).map(file => (
+                         {files.filter(file => file.folderId === currentFolder.id).map(file => (
                               <Files key={file.id} file={file} moveFile={moveFile}  fileIconClass={fileIconClass} fileClass={fileClass} grid={displayGrid}/>
                          ))}
 
                     </div>
                </div>
-          {/* {renderState==''?
-          <div className=""> */}
-          {/* </div>
-          :
-          <></>
-          }
-           */}
-               {/* <div ref={drop} data-grid={grid} style={{ padding: "10px", border: "2px solid blue", marginBottom: "10px" }} className={className} ></div> */}
-               {/* <div className=" data-[grid=true]:w-28  data-[grid=true]:h-40  "></div> */}
          </div>
        </DndProvider>
      );

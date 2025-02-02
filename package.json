@@ -40,7 +40,7 @@
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-color-palette": "^7.3.0",
-    "react-day-picker": "^8.10.1",
+    "react-day-picker": "^9.5.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "19.0.0-rc-66855b96-20241106",
@@ -101,11 +101,11 @@
       "react": "19.0.0-rc-66855b96-20241106",
       "react-dom": "19.0.0-rc-66855b96-20241106"
     },
-   "react-day-picker": {
+    "react-day-picker": {
       "react": "19.0.0-rc-66855b96-20241106",
       "react-dom": "19.0.0-rc-66855b96-20241106"
     },
-   "date-fns": {
+    "date-fns": {
       "react": "19.0.0-rc-66855b96-20241106",
       "react-dom": "19.0.0-rc-66855b96-20241106"
     }

@@ -1,9 +1,11 @@
 'use client'
 import { useEffect, useState,useContext } from "react"
-import { Edit, MoveLeftIcon, Plus, ScanBarcode, Trash2, XIcon } from "lucide-react"
+import { Edit, MoveLeftIcon, Plus, ScanBarcode, Trash2, XIcon,Check, CornerDownRight, CornerDownLeft, Eraser, Loader2 } from "lucide-react"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
+import {  Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import Link from "next/link"
 import InputBox from "@/components/input-box";
@@ -15,20 +17,16 @@ import CollapseBox from "@/components/collapse-box"
 import { headerValueContext } from "@/components/head-value";
 import db from "@/config/firestore";
 import { collection,addDoc,onSnapshot,updateDoc,deleteDoc,getDoc,getDocs,doc} from "firebase/firestore";
-import { buildCategoryTree,CheckboxTree } from "../../categories/new-product-category/page"
+import { buildCategoryTree } from "../../categories/new-product-category/page"
 import WeightSelection from "@/components/weight-selector"
 
 const categoryCollectionRef = collection(db,'categories')
 
 const AddProduct = () => {
-    const [categoryList,setCategoryList] = useState([])
-    const categoryTree = buildCategoryTree(categoryList);
+    
     const {headerContext,ResetHeadValue} = useContext(headerValueContext)
 
-
     // DATA
-    const [category,setCategory] = useState('')
-    
     
     function Submit(e){
       e.preventDefault()
@@ -36,24 +34,11 @@ const AddProduct = () => {
 
     useEffect(()=>{
         ResetHeadValue('Products')
-        getDocs(categoryCollectionRef).then((snapshot) => {
-            let data =[]
-            snapshot.docs.forEach((doc)=>{
-              data.push({              
-                ...doc.data(),
-                id:doc.id
-              })
-            })
-            setCategoryList(data)
-            console.log(data)
-          }).catch(error=>{
-          console.log(error)
-        })
     },[])
     
     return (
       <div className="px-1 md:px-3 py-1 flex h-full  w-full overflow-x-hidden flex-col">
-        <div className="flex w-full justify-end gap-3 mt-[5px] items-center">
+        <div className="flex w-full justify-end gap-3 my-1 items-center">
           <p className='font-bold pb-1px'>Add product</p>
           <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-3px border px-3' variant='ghost'>
               <MoveLeftIcon className="w-4 h-4 mr-1"/>
@@ -64,7 +49,7 @@ const AddProduct = () => {
         <form onSubmit={Submit} className="flex flex-col flex-grow w-full no_scroll overflow-x-clip overflow-y-scroll" action="">          
           <section className="flex flex-col">
             <p className=" text-9px pl-2px mb-[2px]">Product information</p>
-            <div className="flex flex-col md:flex-row md:justify-between gap-3">
+            <div className="flex flex-col md:flex-row md:justify-between gap-2">
               <div className="flex md:w-4/6 w-full flex-col">
                 <div className="p-2 bg-core_grey2 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
                   <p className=" font-Voces pl-2px mb-1 font-semibold ">Product details</p>
@@ -94,12 +79,10 @@ const AddProduct = () => {
                
               </div>
 
-              <div className="flex md:w-[31%] w-full flex-col">
-                <div className="w-full rounded-xl bg-core_grey2 p-2 md:p-3">
-                  <p className=" p-1  mb-1">Product categorization</p>
-                  <div className="">
-                  {categoryList&& <CheckboxTree handleCheckboxChange={(id)=>{setCategory(id)}} checked={category} categories={categoryTree}/>}
-                  </div>
+              <div className="flex md:w-[32%] w-full flex-col">
+                <div className="w-full rounded-xl bg-core_grey2 p-2 md:px-3 md:py-5">
+                  <p className=" font-Voces pl-2px mb-1 font-semibold ">Product category</p>
+                  <Categories/>
                 </div>
                 <p className=" text-9px my-1">Store information</p>
                 <div className="flex w-full p-2 md:p-3 bg-core_grey2 rounded-xl flex-col">
@@ -235,6 +218,131 @@ export const Pricing =({})=>{
 
 
 
+const Categories =({})=>{
+  const [categoryList,setCategoryList] = useState([])
+  const [isLoading,setIsLoading]=useState(true)
+  const [category,setCategory] = useState('')
+  
+  const categoryTree = buildCategoryTree(categoryList);
+
+  useEffect(()=>{
+      getDocs(categoryCollectionRef).then((snapshot) => {
+          setIsLoading(true)
+          let data =[]
+          snapshot.docs.forEach((doc)=>{
+            data.push({              
+              ...doc.data(),
+              id:doc.id
+            })
+          })
+          setCategoryList(data)
+          setIsLoading(false)
+          console.log(data)
+        }).catch(error=>{
+          setIsLoading(false)
+        console.log(error)
+      })
+  },[])
+
+  return (
+    <div className="mt-2">
+      {categoryList.length? <CheckboxTree categoryList={categoryList} handleCheckboxChange={(id)=>{setCategory(id),console.log(id)}} checked={category} categories={categoryTree}/>:
+      <p className="h-14 flex justify-center items-center text-center">{isLoading?"Loading...":" No results."}</p> }
+      <Button onClick={()=>{setCategory('')}} variant='ghost' className='mt-1 hover:bg-core_contrast/10'><Eraser className="p-1px"/> Clear</Button>
+    </div>
+  )
+}
 
 
+const CheckboxTree = ({categoryList, categories,handleCheckboxChange,checked }) => {
+  const [newCategoryName,setNewCategoryName] = useState('')
+  const [slug,setSlug] = useState('')
+  const [description, setDescription] = useState('')
+  const [parent, setParent] = useState('')
+  const [uploading,setUploading] = useState(false)
 
+  function convertToSlug(input) {
+    let newValue= input.toString().toLowerCase().replace(/['"]/g, '').trim().replace(/\band\b/g, '&').replace(/[^a-z0-9\&-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').replace(/&/g, 'and') 
+    setSlug(newValue)
+  }
+  function capitalize(input) {
+    let newValue= input.toString().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ').replace(/\bAnd\b/g, '&')
+    setNewCategoryName(newValue)
+  }
+
+  function categorySetup(data){
+    capitalize(data)
+    convertToSlug(data)
+  }
+
+  function createCategory(parentId){
+    setParent(parentId)
+    if (newCategoryName === ''){
+      return
+     } else if(slug === ''){
+       return
+     }
+     setUploading(true)
+     addDoc(categoryCollectionRef,{
+      name:newCategoryName,
+      parent:parentId,
+      slug:slug,
+      description,
+      subcategories:[]
+    }).then(newdoc=>{
+      categoryList.forEach(category=>{
+        if(category.id == parent){
+          getDoc(doc(db,'categories',parent)).then(parentDoc =>{
+            updateDoc(doc(db,'categories',parent),{
+              subcategories:[...parentDoc.data().subcategories,newdoc.id]
+            })
+          })
+        }
+      })
+      setNewCategoryName('');setDescription('');setSlug('');setParent();  setUploading(false)
+    }).catch(error=>{
+      console.log(error)
+      setUploading(false)
+    })    
+  }
+
+  function blurOut (){
+    console.log(newCategoryName,slug)
+    // setNewCategoryName('')
+    // setSlug('')
+  }
+  
+  const renderCategories = (categories, level = 0) => {
+    return categories.map((category) => (
+      <div key={category.id} style={{ marginLeft: `${level + 19}px` }}>
+          <label className="my-[2px] inline-flex items-center">
+            <input
+              type="checkbox"
+              checked={checked==category.id}
+              onChange={() => handleCheckboxChange(category.id)}
+            />
+            <span className="mx-2">{category.name}</span>
+            <DropInput blur={()=>blurOut()} loading={uploading} createCategory={()=>{createCategory(category.id)}} newCategory={newCategoryName} setNewCategory={(value)=>{categorySetup(value)}}/>
+          </label>
+        {category.children && renderCategories(category.children, level + 1)}
+      </div>
+    ));
+  };
+  
+  return <div className="-ml-4">{renderCategories(categories)}</div>;
+}
+
+const DropInput =({newCategory,setNewCategory,blur,createCategory,loading})=> {
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='ghost' size='xs' className='rounded-sm hover:bg-gray-300 py-1 h-4 w-3 px-3'><CornerDownLeft className=""/></Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+          <p className="inline-flex items-center"><input  placeholder="Add subcategory..." className='h-5 rounded-e-none outline-transparent focus-visible:outline-none ml-1 w-24 rounded-s-md' value={newCategory} onBlur={()=>{blur()}} onChange={({target})=>{setNewCategory(target.value)}}/><Button size='icon' onClick={()=>{createCategory()}} disabled={!newCategory} className='px-1 rounded-e-md rounded-s-none w-fit h-5'>{loading?<Loader2 className="animate-spin" />:<Check className=''/>}</Button></p>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
