@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import InputBox from "./input-box"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { ChevronsUpDown } from 'lucide-react'
+import { newProductContext } from './context-values'
 
 const WeightSelection = () => {
+
+     const {newProduct,setNewProduct} = useContext(newProductContext)
      const weightMeasurement = [{name:'kilograms',value:1,short:"kg"},{name:'grams',value:1000,short:"g"},{name:'milligrams',value:1000000,short:"mg"}]
      const [selected,setSelected]=useState(weightMeasurement[0])
      const [weightValue,setWeightValue] = useState ('')
+
+     useEffect(()=>{
+          setNewProduct(prev=>({...prev,weight:`${weightValue}${selected}`}))
+     },[selected,weightValue])
+
      return (
           <div>
                <div className='inline-flex mt-2 gap-0 items-end'>

@@ -8,23 +8,14 @@ import { Avatar,  AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import DefaultUser from '../../public/dummy.jpg'
-import { headerValueContext } from "@/components/head-value";
+import { headerValueContext } from "@/components/context-values";
 
-const DashboardHeader = () => {
-     const {headerContext,ResetHeadValue} = useContext(headerValueContext)
-     // useEffect(()=>{
-     //      ResetHeadValue('Dashboard')
-     // },[])
+const DashboardHeader = ({section,size}) => {
+ 
      return (
-          <header className=" rounded-md px-3 pt-2  text-xs flex w-full justify-between items-center">
-               <div className="p-1 font-bold text-sm">{headerContext}</div>
-               <div className="flex md:gap-1 gap-2 items-center">
-                    <div className="">
-                         <Mail className="p-[5px]" />
-                    </div>
-                    <div className="">
-                         <Bell className="p-[5px]" />
-                    </div>
+          <header className=" rounded-md pl-0 pr-1 md:pr-0 text-xs flex w-full justify-between items-center">
+               {section?<div data-size={size} className="py-1 px-2 font-bold data-[size=xs]:text-xs data-[size=sm]:text-sm">{section&&section}</div>:""}
+               <div className="flex md:gap-3 p-2 min-w-max rounded-md shadow bg-white gap-2 items-center">
                     <DropdownMenu className="text-right hidden md:block">
                          <DropdownMenuTrigger asChild>
                               <div className="md:flex scale-90 hidden gap-2 items-center">
@@ -33,8 +24,8 @@ const DashboardHeader = () => {
                                         {/* <AvatarFallback>JO</AvatarFallback> */}
                                    </Avatar>
                                    <div className="flex-col justify-center leading-tight flex">
-                                        <p className="text-[10px] ">Staff</p>
-                                        <p className="text-[10px] text-core_contrast/50">staffmail@role.com</p>
+                                        <p className="text-[10px] ">Staff007</p>
+                                        <p className="text-[10px] text-core_contrast/50">staffmail@xyz.store</p>
                                    </div>
                               </div>
                          </DropdownMenuTrigger>
@@ -50,6 +41,12 @@ const DashboardHeader = () => {
                               <DropdownMenuItem>View payment details</DropdownMenuItem>
                          </DropdownMenuContent>
                     </DropdownMenu>
+                    <div className="">
+                         <Mail className="p-[5px]" />
+                    </div>
+                    <div className="">
+                         <Bell className="p-[5px]" />
+                    </div>
                     <DrawerTrigger className="md:hidden">
                          <div className="flex md:hidden gap-2 items-center px-2">
                               <Avatar className='items-center inline-flex rounded-full w-7 h-7 justify-center'>

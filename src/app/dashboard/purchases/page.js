@@ -1,6 +1,6 @@
 'use client'
 import { useContext,useEffect, useState } from "react"
-import { headerValueContext } from "@/components/head-value";
+import { headerValueContext } from "@/components/context-values";
 
 const Purchases = () => {
 

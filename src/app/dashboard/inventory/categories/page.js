@@ -2,7 +2,7 @@
 import { useEffect,useContext } from "react"
 import Link from "next/link";
 import CategoryTable from "@/components/getAllCategories";
-import { headerValueContext } from "@/components/head-value";
+import { headerValueContext } from "@/components/context-values";
 
 const Categories = () => {
      const {headerContext,ResetHeadValue} = useContext(headerValueContext)

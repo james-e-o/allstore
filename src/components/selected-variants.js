@@ -28,7 +28,7 @@ export const DisplayVariant =({string})=> {
     )
 }
 
-export default function SelectedVariantitemsTable({table_data,updateCP,updateSP}) {
+export default function SelectedVariantitemsTable({table_data,sellingPrice,costPrice}) {
       const [data,setData]=useState(table_data)
       const [sorting, setSorting] = useState([])
       const [columnFilters, setColumnFilters] = useState([])
@@ -149,8 +149,8 @@ export default function SelectedVariantitemsTable({table_data,updateCP,updateSP}
          handleResize(); // Check initial size
          window.addEventListener('resize', handleResize); // Listen for resize events
          
-         setData(table_data)
-
+         setData(table_data.flatMap(option=>option.values).map((item,index)=>({item:item.value,sp:sellingPrice,cp:costPrice,sku:`SKU-${index}`})))
+         console.log(table_data.flatMap(option=>option.values).map((item,index)=>({item:item.value,sp:sellingPrice,cp:costPrice,sku:`SKU-${index}`})))
          return () => window.removeEventListener('resize', handleResize);
 
        }, [table_data])
@@ -176,7 +176,7 @@ export default function SelectedVariantitemsTable({table_data,updateCP,updateSP}
      return (
        <div className="w-full text-10px">
          <div className="flex items-center  justify-between gap-2 py-4">
-           <Input placeholder="Search product..." value={(table.getColumn("item")?.getFilterValue()) ?? ""}
+           <Input placeholder="Search option..." value={(table.getColumn("item")?.getFilterValue()) ?? ""}
              onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-sm text-10px"
            />
            <div className="flex items-center gap-2">
@@ -316,7 +316,7 @@ export default function SelectedVariantitemsTable({table_data,updateCP,updateSP}
     const [value,setValue]=useState(initialValue)
     const updateData = () => table.options.meta?.updateState(row.index,column.id,value)
     return (
-         <Input value={value} onBlur={updateData} className=" md:  h-8" onChange={({target})=>{setValue(target.value)}} />
+         <Input value={value} onBlur={updateData} className=" md:  h-6" onChange={({target})=>{setValue(target.value)}} />
     )
   }
 
@@ -327,7 +327,7 @@ export default function SelectedVariantitemsTable({table_data,updateCP,updateSP}
 
     return (
       <div className="">
-        <Input value={value} onBlur={updateSP} className=" h-8" onChange={({target})=>{setValue(target.value)}} />
+        <Input value={value} onBlur={updateSP} className=" h-6" onChange={({target})=>{setValue(target.value)}} />
       </div>
     )
   }

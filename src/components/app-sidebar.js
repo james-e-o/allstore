@@ -29,7 +29,10 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
 
   const [innerWidth, setInnerWidth] = useState('')
   const [activeMenu,setActiveMenu]= useState(items[0].title)
- 
+  
+  useEffect(()=>{
+    window.innerWidth<768?closeSidebar():openSidebar()
+  },[])
   useEffect(()=>{
     setInnerWidth(window.innerWidth>=768)
     document.onpointerdown =(e)=> {      

@@ -3,7 +3,7 @@ import { useEffect,useContext } from "react"
 import { DataTableDemo } from "@/components/inventory-template"
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
-import { headerValueContext } from "@/components/head-value";
+import { headerValueContext } from "@/components/context-values";
 
 
 const Products = () => {

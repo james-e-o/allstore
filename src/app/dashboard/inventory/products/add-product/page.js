@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState,useContext } from "react"
-import { Edit, MoveLeftIcon, Plus, ScanBarcode, Trash2, XIcon,Check, CornerDownRight, CornerDownLeft, Eraser, Loader2 } from "lucide-react"
+import { Edit, MoveLeftIcon, Plus, ScanBarcode, Trash2, XIcon,Check, CornerDownRight, CornerDownLeft, Eraser, Loader2, Indent, Bold, Italic, Strikethrough, Save, Import } from "lucide-react"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import {  Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
@@ -11,22 +11,43 @@ import Link from "next/link"
 import InputBox from "@/components/input-box";
 import VolumeCalculator from "@/components/volume-calculator";
 import WholesaleDiscount from "@/components/wholesale-discount";
-import Variant from "@/components/variants"
+import Variant, { EshopVariants } from "@/components/variants"
 import AddImage from "@/components/add-image"
 import CollapseBox from "@/components/collapse-box"
-import { headerValueContext } from "@/components/head-value";
+import { headerValueContext,newProductContext } from "@/components/context-values";
 import db from "@/config/firestore";
 import { collection,addDoc,onSnapshot,updateDoc,deleteDoc,getDoc,getDocs,doc} from "firebase/firestore";
 import { buildCategoryTree } from "../../categories/new-product-category/page"
 import WeightSelection from "@/components/weight-selector"
+import Tiptap from "@/components/tiptap-editor"
+import DashboardHeader from "@/components/dashboard-header"
+
+import React from 'react'
+
+export const newProductData =  {
+  productName:"",
+  brand:"",
+  barcode:"",
+  dimension:{L:"",W:"",H:""},
+  weight:``,
+  category:``,
+  optionsets:[],
+  
+}
+
 
 const categoryCollectionRef = collection(db,'categories')
 
 const AddProduct = () => {
-    
+    // UI
     const {headerContext,ResetHeadValue} = useContext(headerValueContext)
+    const [editSEO,setEditSEO]=useState(false)
 
     // DATA
+    const {newProduct,setNewProduct} = useContext(newProductContext)
+    const [optionSets,setOptionSets]=useState([])
+    const [description,setDescription] = useState('')
+    const [seoData,setSeoData]=useState([])
     
     function Submit(e){
       e.preventDefault()
@@ -37,27 +58,37 @@ const AddProduct = () => {
     },[])
     
     return (
-      <div className="px-1 md:px-3 py-1 flex h-full  w-full overflow-x-hidden flex-col">
-        <div className="flex w-full justify-end gap-3 my-1 items-center">
-          <p className='font-bold pb-1px'>Add product</p>
-          <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-3px border px-3' variant='ghost'>
-              <MoveLeftIcon className="w-4 h-4 mr-1"/>
-              <span className="text-core_polish font-light">All products</span>
-          </Button></Link>
+      <div className="px-1 md:pl-3 md:pr-1 py-1 flex h-full  w-full overflow-x-hidden flex-col">
+        <DashboardHeader section={'Add product'} size={'xs'}/>
+        <div className="flex w-full justify-end gap-3 my-2 items-center">
+          <div className="flex items-center gap-2">
+            <Link href={'/dashboard/inventory/products'}><Button size='sm ' className='py-3px bg-white shadow border px-3' variant='ghost'>
+                <MoveLeftIcon className="w-4 h-4 mr-1"/>
+                <span className="text-core_polish font-light">All products</span>
+            </Button></Link>
+            <Button size='sm ' className='py-3px bg-white shadow border px-3' variant='ghost'>
+                <Import className="w-4 h-4 mr-1"/>
+                <span className="text-core_polish font-light">import</span>
+            </Button>
+            <Button size='sm ' className='py-3px border px-3'>
+                <Save className="w-4 h-4 mr-1"/>
+                <span className=" font-light">save</span>
+            </Button>
+          </div>
         </div> 
               
         <form onSubmit={Submit} className="flex flex-col flex-grow w-full no_scroll overflow-x-clip overflow-y-scroll" action="">          
           <section className="flex flex-col">
-            <p className=" text-9px pl-2px mb-[2px]">Product information</p>
+            <p className=" text-9px pl-2px">Product information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-2">
               <div className="flex md:w-4/6 w-full flex-col">
-                <div className="p-2 bg-core_grey2 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
+                <div className="p-2 bg-purple-100 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
                   <p className=" font-Voces pl-2px mb-1 font-semibold ">Product details</p>
-                  <InputBox flexdir={'row'} mt placeholder={'Product name...'} label={'Product name:'} />
+                  <InputBox flexdir={'row'} mt value={newProduct.productName} change={({target})=>{setNewProduct(prev=>({...prev,productName:target.value}))}} placeholder={'Product name...'} label={'Product name:'} />
                   <div className="flex flex-col mt-1 md:flex-row md:gap-2 md:items-center">                
-                    <InputBox margin={'8px 0px 0px'} label={'Brand:'} mt flexdir={'row'} placeholder={'Brand...'} />               
+                    <InputBox margin={'8px 0px 0px'} label={'Brand:'} mt value={newProduct.brand} change={({target})=>{setNewProduct(prev=>({...prev,brand:target.value}))}} flexdir={'row'} placeholder={'Brand...'} />               
                     <div className="flex gap-2 items-end w-full flex-grow">
-                      <InputBox placeholder={'Barcode...'} label={'Barcode:'} mt flexdir={'row'}/>
+                      <InputBox placeholder={'Barcode...'} label={'Barcode:'} mt value={newProduct.barcode} change={({target})=>{setNewProduct(prev=>({...prev,barcode:target.value}))}} flexdir={'row'}/>
                       <Button variant="outline" className="mt-2 h-full bg-white text-right w-fit p-2">
                         <ScanBarcode />
                       </Button>
@@ -67,29 +98,30 @@ const AddProduct = () => {
                   <div className="mt-2">
                     <p className="block mr-3">Dimensions</p>
                     <div className="">
-                      <InputBox width={'70px'} mr type={'number'} shortInput mt label={'L:'} flexdir={'row'}/>
-                      <InputBox width={'70px'} mr type={'number'} shortInput mt label={'W:'} flexdir={'row'}/>
-                      <InputBox width={'70px'} mr type={'number'} shortInput mt label={'H:'} flexdir={'row'}/>
+                      <InputBox width={'70px'} mr type={'number'} value={newProduct.dimension.L} change={({target})=>{setNewProduct(prev=>({...prev,dimension:{...prev.dimension,L:target.value}}))}} shortInput mt label={'L:'} flexdir={'row'}/>
+                      <InputBox width={'70px'} mr type={'number'} value={newProduct.dimension.W} change={({target})=>{setNewProduct(prev=>({...prev,dimension:{...prev.dimension,W:target.value}}))}} shortInput mt label={'W:'} flexdir={'row'}/>
+                      <InputBox width={'70px'} mr type={'number'} value={newProduct.dimension.H} change={({target})=>{setNewProduct(prev=>({...prev,dimension:{...prev.dimension,H:target.value}}))}} shortInput mt label={'H:'} flexdir={'row'}/>
                     </div>
                   </div>
                   <WeightSelection />
                 </div>
                
-                <Pricing />
+                <Pricing optionSets={optionSets} setOptionSets={(name,values)=>{setOptionSets(prev=>[...prev,{name:name,values:values}])}}/>
                
               </div>
 
               <div className="flex md:w-[32%] w-full flex-col">
-                <div className="w-full rounded-xl bg-core_grey2 p-2 md:px-3 md:py-5">
-                  <p className=" font-Voces pl-2px mb-1 font-semibold ">Product category</p>
-                  <Categories/>
+                <div className="w-full rounded-xl bg-purple-100 p-2 md:px-3 md:py-5">
+                  <p className=" font-Voces pl-2px mb-1 font-semibold "> Select product category</p>
+                    <Categories/>
                 </div>
-                <p className=" text-9px my-1">Store information</p>
-                <div className="flex w-full p-2 md:p-3 bg-core_grey2 rounded-xl flex-col">
-                  <p className=" text-[11px] text-gray-500 mt-2">Created by {'user id'}</p>
-                  <div className="flex flex-col md:gap-4 md:items-center">                
-                    <InputBox label={'Bulk quantity:'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>               
-                    <InputBox label={'Reorder quantity:'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>            
+                <p className=" text-9px mt-2 mb-1">Store information</p>
+                <div className="flex w-full p-2 md:p-3 bg-purple-100 rounded-xl flex-col">
+                  <p className=" text-gray-500 text-9px mb-1 mt-2">Created by: {'staff007'}</p>
+                  <div className="flex flex-col gap-1 md:items-start">                
+                    <InputBox shortInput label={'Reorder quantity'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>            
+                    <InputBox shortInput label={'SKU'} fit flexdir={'row'} mt inputDir={'input-reverse'}/>            
+                    <InputBox shortInput label={'Shelf No.'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]"></span>}/>               
                   </div>
                 </div>
 
@@ -99,21 +131,36 @@ const AddProduct = () => {
 
           <section className="flex mt-1 flex-col">
             {/* <Separator className='mt-1' /> */}
-            <p className=" text-9px my-1">E-Shop information</p>
+            <p className=" text-9px mt-2 mb-1">E-Shop information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
 
-                <div className="p-2 bg-core_grey2 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
-                  <p className=" font-Voces font-semibold ">Media</p>
+                <div className="p-2 bg-purple-100 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
+                  <p className=" font-Voces font-semibold ">Product description</p>
+                  <Tiptap />
+                  <p className="mt-4 font-Voces font-semibold ">Media</p>
                   <AddImage />
-                  <div className="bg-white shadow rounded-lg p-4 md:px-5">
-                    <p className="  mb-1">Description</p>              
-                    <InputBox textarea mt row={4}/>                
+                </div>
+
+                <div className="p-2 mt-4 bg-purple-100 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
+                  <p className="  font-Voces font-semibold ">Manage product variants on E-Shop</p>
+                    <EshopVariants Prop={newProduct.optionsets}/>
+                </div>
+
+                <div className="p-2 mt-4 bg-purple-100 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
+                  <Button onClick={()=>{setEditSEO(true)}}  variant='ghost' size='xs' className='p-0 h-fit float-right'>Edit</Button>
+                  <p className="  font-Voces font-semibold ">Search engine optimization</p>
+                  <div className={`grid transition-collapse ${editSEO ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                      <div className="overflow-hidden w-full">           
+                        <InputBox mt label={'Page title'} />
+                        <InputBox mt label={'Meta description'} textarea row={4} ghost />
+                        <InputBox mt label={'URL'} />
+                      </div>
                   </div>
                 </div>
 
               </div>
-              <div className="flex md:w-[31%] w-full bg-core_grey2 rounded-xl h-fit p-2 md:p-4 flex-col">
+              <div className="flex md:w-[32%] w-full bg-purple-100 rounded-xl h-fit p-2 md:px-3 flex-col">
                 <CollapseBox subject={"Warranty"}>
                   <div className="h-fit mt-1">
                     <InputBox textarea row={4} ghost />
@@ -126,8 +173,15 @@ const AddProduct = () => {
                   </div>
                 </div>
               </div>
+
             </div>
           </section>
+          <div className="p-2 mt-3 bg-purple-100 justify-end md:pt-4 md:px-5 md:pb-4 rounded-xl w-full">
+            <Button size='sm ' className='py-1 text-xs border float-right px-3'>
+                <Save className="w-4 h-4 mr-1"/>
+                <span className=" font-light">save</span>
+            </Button>
+          </div>
         </form>
       </div>
     )
@@ -137,7 +191,7 @@ const AddProduct = () => {
 
 
   
-export const Pricing =({})=>{
+export const Pricing =({optionSets,setOptionSets})=>{
   //UI
   const [toggleVariant,setToggleVariant]=useState(false)
   const [piecePrice,setPiecePrice]=useState(false)
@@ -170,7 +224,7 @@ export const Pricing =({})=>{
 
   return(
     <div className="">
-      <div className="p-2 bg-core_grey2 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
+      <div className="p-2 bg-purple-100 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
           <p className=" font-Voces font-semibold ">Pricing</p>
           <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
             <div className="grid gap-1 items-center w-full grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
@@ -222,6 +276,7 @@ const Categories =({})=>{
   const [categoryList,setCategoryList] = useState([])
   const [isLoading,setIsLoading]=useState(true)
   const [category,setCategory] = useState('')
+  const {newProduct,setNewProduct} = useContext(newProductContext)
   
   const categoryTree = buildCategoryTree(categoryList);
 
@@ -246,9 +301,12 @@ const Categories =({})=>{
 
   return (
     <div className="mt-2">
-      {categoryList.length? <CheckboxTree categoryList={categoryList} handleCheckboxChange={(id)=>{setCategory(id),console.log(id)}} checked={category} categories={categoryTree}/>:
-      <p className="h-14 flex justify-center items-center text-center">{isLoading?"Loading...":" No results."}</p> }
-      <Button onClick={()=>{setCategory('')}} variant='ghost' className='mt-1 hover:bg-core_contrast/10'><Eraser className="p-1px"/> Clear</Button>
+      {categoryList.length? <CheckboxTree categoryList={categoryList} handleCheckboxChange={(id)=>{setNewProduct(prev=>({...prev,category:id})),console.log(id)}} checked={newProduct.category} categories={categoryTree}/>:
+      <p className="h-12 flex justify-center items-center text-center">{isLoading?"Loading...":" No results."}</p> }
+      <p className="h-fit gap-3 flex justify-start items-center text-center">
+        <Button onClick={()=>{setCategory('')}} variant='ghost' size={'xs'} className='mt-1  hover:bg-core_contrast/15 bg-core_contrast/10'><Eraser className="p-2px"/></Button>
+        <Button onClick={()=>{setCategory('')}} variant='ghost' size={'xs'} className='mt-1  hover:bg-core_contrast/15 bg-core_contrast/10'><Plus className="p-2px"/>Add category</Button>
+      </p>
     </div>
   )
 }
@@ -338,7 +396,7 @@ const DropInput =({newCategory,setNewCategory,blur,createCategory,loading})=> {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='xs' className='rounded-sm hover:bg-gray-300 py-1 h-4 w-3 px-3'><CornerDownLeft className=""/></Button>
+        <Button variant='ghost' size='xs' className='rounded-sm hover:bg-gray-300 py-1 h-4 w-3 px-3'><Plus className=""/></Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
           <p className="inline-flex items-center"><input  placeholder="Add subcategory..." className='h-5 rounded-e-none outline-transparent focus-visible:outline-none ml-1 w-24 rounded-s-md' value={newCategory} onBlur={()=>{blur()}} onChange={({target})=>{setNewCategory(target.value)}}/><Button size='icon' onClick={()=>{createCategory()}} disabled={!newCategory} className='px-1 rounded-e-md rounded-s-none w-fit h-5'>{loading?<Loader2 className="animate-spin" />:<Check className=''/>}</Button></p>
