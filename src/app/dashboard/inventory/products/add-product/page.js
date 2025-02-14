@@ -204,6 +204,7 @@ export const Pricing =({optionSets,setOptionSets})=>{
   const [profit,setProfit]=useState('')
   const [sellingPrice,setSellingPrice]=useState(0)
 
+  
   function computeCostPriceMargin(){
     const computedMargin = margin/100
     const computedProfit = computedMargin*costPrice
