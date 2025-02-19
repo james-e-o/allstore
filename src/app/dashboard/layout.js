@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { usePathname } from "next/navigation";
 import HeaderValue from "@/components/context-values";
 import DashboardHeader from "@/components/dashboard-header";
+import { Toaster } from "@/components/ui/toaster";
 
 
 
@@ -29,7 +30,8 @@ export default function DashboardLayout({ children }) {
     },[path]) 
    
     return ( 
-        <HeaderValue>    
+        <HeaderValue>   
+        <Toaster /> 
         <div className='flex h-full overflow-hidden'>
             <Drawer>
             <AppSidebar sidebarOpen={sidebarActive} activeMenu={activeMenu} toggleSidebar={()=>setSidebarActive(!sidebarActive)} closeSidebar={()=>setSidebarActive(false)} openSidebar={()=>setSidebarActive(true)} collapsible={collapsible} toggleDrop={()=>setCollapsible(!collapsible)} wrap={()=>setCollapsible(false)} drop={()=>setCollapsible(false)}/>

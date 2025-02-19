@@ -15,7 +15,7 @@ const DashboardHeader = ({section,size}) => {
      return (
           <header className=" rounded-md pl-0 pr-1 md:pr-0 text-xs flex w-full justify-between items-center">
                {section?<div data-size={size} className="py-1 px-2 font-bold data-[size=xs]:text-xs data-[size=sm]:text-sm">{section&&section}</div>:""}
-               <div className="flex md:gap-3 p-2 min-w-max rounded-md shadow bg-white gap-2 items-center">
+               <div className="flex md:gap-3 py-2 px-3 min-w-max rounded-md shadow bg-white gap-2 items-center">
                     <DropdownMenu className="text-right hidden md:block">
                          <DropdownMenuTrigger asChild>
                               <div className="md:flex scale-90 hidden gap-2 items-center">
@@ -41,7 +41,7 @@ const DashboardHeader = ({section,size}) => {
                               <DropdownMenuItem>View payment details</DropdownMenuItem>
                          </DropdownMenuContent>
                     </DropdownMenu>
-                    <div className="">
+                    <div className="md:hidden">
                          <Mail className="p-[5px]" />
                     </div>
                     <div className="">

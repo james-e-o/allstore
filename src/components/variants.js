@@ -12,6 +12,7 @@ import SelectedVariantCombinationsTable, { DisplayVariant } from "./selected-var
 import { Switch } from "@/components/ui/switch"
 import { Checkbox } from "@/components/ui/checkbox";
 import { newProductContext } from "./context-values"
+import { items } from "./app-sidebar"
 
 
 export default function Variant ({sellingPrice,costPrice}){
@@ -49,7 +50,7 @@ export default function Variant ({sellingPrice,costPrice}){
      },[customVariants,colorValues,sizeValues])
      
      return(
-          <div  className="flex p-2 bg-purple-100 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
+          <div  className="flex p-2 bg-purple-50/70 border border-white/60 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
                <p className="  font-Voces font-semibold ">Manage product variants on store</p>
                <div className="mt-3 overflow-clip rounded-lg bg-transparent shadow-sm">
                     {newProduct.optionsets&&newProduct.optionsets.map((set,index)=>(
@@ -129,7 +130,7 @@ const Option =({setOptionBoard,optionBoard,fillOptions,updateOptions,optionData,
         setErr('')
      },[optionBoard])
      return(
-          <div className=" bg-core_grey2 py-2 md:px-6 px-3 flex-col">
+          <div className="py-2 md:px-6 px-3 flex-col">
                <InputBox readonly={editStatus} input_uppercase flexdir={'row'} value={optionName} change={({target})=>{setOptionName(target.value)}} label={'Option name'}/>
                <div className="mt-2 ml-8">
                     <p className="my-1">Option values</p>
@@ -157,7 +158,9 @@ export const EshopVariants =({Prop})=> {
      const [options,setOptions] = useState(Prop)
      const [selectedTypes,setSelectedTypes] = useState([])
      useEffect(()=>{
-          setSelectedTypes(prev=>Prop.map((item,index)=>(prev&&prev[index]?prev[index]:{name:item.name,display:''})))
+          let previousSelections = Object.fromEntries(selectedTypes&&selectedTypes.map(selection=>[selection.name,selection.display]))
+          // setSelectedTypes(prev=>Prop.map((item,index)=>(prev&& prev[index]?prev[index]:{name:item.name,display:''})))
+          setSelectedTypes(prev=>Prop.map((item,index)=>({name:item.name,display:previousSelections[item.name]??""})))
           console.log(selectedTypes)
           setOptions(Prop)
       },[Prop])
@@ -183,14 +186,35 @@ export const EshopVariants =({Prop})=> {
                               </DropdownMenuContent>
                          </DropdownMenu>
                     </div>
-                    {/* <div className={`grid transition-collapse ${selectedTypes[index].display ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                    <div className={`grid transition-collapse ${selectedTypes[index].display ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
                          <div className="overflow-hidden w-full">           
-                         {selectedTypes[index].display}
+                              <ImageSwatch/>
                          </div>
-                    </div> */}
+                    </div>
                </div>
                ))}
                
+          </div>
+     )
+}
+
+
+
+const ImageSwatch = ()=> {
+     return(
+          <div className="flex py-2 items-center">
+               <p className="py-1 px-1"><GripVertical className="p-2px"/></p>
+               <figure className="rounded-md md:mr-3 mr-2 border shadow bg-white h-14 w-14 "></figure>
+               <InputBox shortInput label={'value'} fit/>
+          </div>
+     )
+}
+const DropDown = ()=> {
+     return(
+          <div className="flex py-2 items-center">
+               <p className="py-1 px-1"><GripVertical className="p-2px"/></p>
+               <InputBox shortInput label={'value'} fit/>       
+               <InputBox shortInput fit/>   
           </div>
      )
 }

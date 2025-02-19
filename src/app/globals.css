@@ -213,4 +213,6 @@ label.rcp-field-label{
   margin-top: 0.25em;
   margin-bottom: 0.25em;
 }
-/*  */
+#upload_widget {
+  z-index: 5000;
+}
