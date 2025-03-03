@@ -216,3 +216,6 @@ label.rcp-field-label{
 #upload_widget {
   z-index: 5000;
 }
+.invertY {
+  transform: rotateY(180deg) translateY(-2rem);
+}

@@ -96,7 +96,7 @@ export default function Variant ({sellingPrice,costPrice}){
                     </div>
 
                </div>
-               <div className={`grid mt-4 transition-collapse ${tableData.length>0 ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+               <div className={`grid mt-4 transition-collapse ${newProduct.optionsets.length>0 ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
                     <div className="overflow-hidden w-full ">
                          <div className="flex w-full bg-white px-3 rounded-lg flex-col">
                               <SelectedVariantCombinationsTable sellingPrice={sellingPrice} costPrice={costPrice} table_data={newProduct.optionsets}/>
@@ -150,7 +150,11 @@ const Option =({setOptionBoard,optionBoard,fillOptions,updateOptions,optionData,
      )
 }
 
-
+// const VariantCombinations =()=> {
+//      return (
+          
+//      )
+// }
 
 
 export const EshopVariants =({Prop})=> {

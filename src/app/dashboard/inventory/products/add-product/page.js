@@ -31,6 +31,10 @@ export const newProductData =  {
   dimension:{L:"",W:"",H:""},
   weight:``,
   category:``,
+  costPrice:``,
+  sellingPrice:``,
+  margin:50,
+  profit:``,
   optionsets:[],
   
 }
@@ -198,6 +202,7 @@ export const Pricing =({optionSets,setOptionSets})=>{
   const [bulkDiscount,setBulkDiscount]=useState(false)
 
   //DATA
+  const {newProduct,setNewProduct} = useContext(newProductContext)
   const [costPrice,setCostPrice]=useState(0)
   const [wholesaleDiscount,setWholesaleDiscount]=useState(0)
   const [margin,setMargin]=useState('50')
@@ -230,14 +235,14 @@ export const Pricing =({optionSets,setOptionSets})=>{
           <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
             <div className="grid gap-1 items-center w-full grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
               <div className="inline-block">
-                <InputBox width={'195px'} label={'Unit cost price'} value={costPrice?costPrice:""} change={(e)=>{setCostPrice(new Number(e.target.value))}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
+                <InputBox width={'195px'} label={'Unit cost price'} value={newProduct.costPrice?newProduct.costPrice:""} change={(e)=>{setNewProduct(prev=>({...prev,costPrice:new Number(e.target.value)}))}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
               </div>
               <div className="inline-flex  items-center">
-                <InputBox width={'120px'} label={'Margin'} mt inputDir={'input-reverse'}  change={(e)=>{setMargin(new Number(e.target.value))}} flexdir={'row'} value={margin} type={'number'} icon={'%'}/>
+                <InputBox width={'120px'} label={'Margin'} mt inputDir={'input-reverse'}  change={(e)=>{setNewProduct(prev=>({...prev,margin:new Number(e.target.value)}))}} flexdir={'row'} value={newProduct.margin} type={'number'} icon={'%'}/>
               </div>
 
               <div className="inline-block" >
-                <InputBox width={'180px'} label={'Profit'}  value={profit?profit:""} change={(e)=>{setProfit(new Number(e.target.value)),computeSellingPrice(new Number(e.target.value)),e.target.value==""?computeSellingPrice(costPrice*(margin/100)):""}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
+                <InputBox width={'180px'} label={'Profit'}  value={newProduct.profit?newProduct.profit:""} change={(e)=>{setNewProduct(prev=>({...prev,profit:new Number(e.target.value)})),computeSellingPrice(new Number(e.target.value)),e.target.value==""?computeSellingPrice(costPrice*(margin/100)):""}} flexdir={'row'}  type={'number'} mt icon={'$'}/>
               </div>           
             </div>
             <div className=" mt-1">

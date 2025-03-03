@@ -89,7 +89,14 @@ const AddImage = () => {
              
      
      
-     function handleSuccess(result, widget) {
+     async function handleSuccess(result, widget) {
+          // addDoc(imageCollectionRef,{
+          //      id: result?.info.public_id,
+          //      folderId:null,
+          //      name:'',
+          //      storeId:'' ,
+          //      imageUrl:result?.info.secure_url,
+          // })
           console.log(result,result?.info)
           // setInfo(result?.info.map((resource,index)=>(
           //      { id: 1, name: "baker 1.png",folderId:null,}

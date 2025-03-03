@@ -183,7 +183,7 @@ export default function SslesInvoiceData ({}) {
             id: "add",
             enableHiding: false,
             size:26,
-            cell: <Button variant="ghost" className="h-7 p-0 text-right w-fit"><CirclePlus className="w-fit"/></Button>
+            cell: <Button variant="ghost" onClick={()=>{}} className="h-7 p-0 text-right w-fit"><CirclePlus className="w-fit"/></Button>
           },
       ]
      

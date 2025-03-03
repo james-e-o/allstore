@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
     darkMode: ["class"],
     content: [
@@ -8,6 +9,9 @@ module.exports = {
   ],
   theme: {
   	extend: {
+		backgroundImage: {
+			signup: "url('/dalle.png')",
+		},
   		colors: {
 			core_grey1:'#e1e1e1',
 			core_grey2:'#f8f8f8',

@@ -229,13 +229,14 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
            </div>
          </div>
          <div className="rounded-md border md:border-none">
-           <Table className={` md: w-full`}>
-             <TableHeader>
+           <Table className={` md: w-full overflow-x-scroll`}>
+             
+              <TableHeader>
                {table.getHeaderGroups().map((headerGroup) => (
                  <TableRow key={headerGroup.id}>
                    {headerGroup.headers.map((header) => {
                      return (
-                       <TableHead data-value={header.id}   key={header.id}>
+                       <TableHead data-value={header.id} className={`${header.id=='item'?"bg-green-300 z-30 sticky left-9":""} ${header.id=='select'?"bg-blue-300 z-30 sticky left-0":""}`}  key={header.id}>
                          {header.isPlaceholder
                            ? null
                            : flexRender(
@@ -258,6 +259,7 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
                      {row.getVisibleCells().map((cell,index) => (
                        <TableCell 
                          data-value={row.getVisibleCells().indexOf(cell)==index&&cell.id.split('_')[1]}  
+                         className={`${cell.column.id=='item'?"bg-green-300 z-30 sticky left-9":""} ${cell.column.id=='select'?"bg-blue-300 z-30 sticky left-0":""}`}
                          key={cell.id}
                          >
                          
@@ -316,7 +318,7 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
     const [value,setValue]=useState(initialValue)
     const updateData = () => table.options.meta?.updateState(row.index,column.id,value)
     return (
-         <Input value={value} onBlur={updateData} className=" md:  h-6" onChange={({target})=>{setValue(target.value)}} />
+         <Input value={value} onBlur={updateData} className=" md:  min-w-64 h-6" onChange={({target})=>{setValue(target.value)}} />
     )
   }
 

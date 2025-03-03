@@ -3,6 +3,7 @@ import { newProductData } from "@/app/dashboard/inventory/products/add-product/p
 
 export const headerValueContext = createContext()
 export const newProductContext = createContext()
+export const storeDataContext = createContext()
 
 const HeaderValue = ({children}) => {
      const [headerContext, setHeaderContext] = useState('Dashboard')
@@ -30,5 +31,20 @@ export const NewProductData = ({children}) => {
           <newProductContext.Provider value={{newProduct,setNewProduct}}>
                {children}
           </newProductContext.Provider>  
+     )
+}
+
+
+
+export const StoreData = ({children}) => {
+     const [data, setData] = useState({})
+
+     useEffect(()=>{
+          console.log(newProduct)
+     },[newProduct])
+     return (
+          <storeDataContext.Provider value={{newProduct,setNewProduct}}>
+               {children}
+          </storeDataContext.Provider>  
      )
 }

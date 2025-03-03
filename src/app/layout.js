@@ -9,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`font-Geist text-[0.69rem] font-medium h-svh overflow-hidden w-screen`}>
+      <body className={`font-Geist text-xs font-normal h-svh overflow-hidden w-screen`}>
          
           {children}
 
