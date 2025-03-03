@@ -108,7 +108,7 @@ const SignUp = () => {
                     </Button>
                   </p>
                 
-                  <Button size='sm' onClick={Submit} className='py-1 mt-5 rounded-md h-7  border  px-3'>
+                  <Button size='sm' disabled onClick={Submit} className='py-1 mt-5 rounded-md h-7  border  px-3'>
                     <Rocket className="w-4 h-4 mr-1"/>
                     <span className=" font-light">Launch</span>
                   </Button>
