@@ -118,7 +118,7 @@ const SignUp = () => {
             </div>
         </div>
          
-         <div className="flex justify-center"></div> <Link href={'/signin'}><Button variant='ghost' className="hover:bg-transparent bg-yellow-400 opacity-80 hover:opacity-100"><LogIn/><TriangleAlert/> <span className="text-red">Site under construuction, take a tour</span></Button></Link>
+         <div className="flex justify-center"></div> <Link href={'/dashboard'}><Button variant='ghost' className="hover:bg-transparent bg-yellow-400 opacity-80 hover:opacity-100"><TriangleAlert/> <span className="text-red">Site under construuction, take a tour</span></Button></Link>
 
         <footer className="flex flex-grow pb-6 scale-105 items-end justify-center">
           <Link href={'/signin'}><Button variant='ghost' className="hover:bg-transparent opacity-80 hover:opacity-100"><LogIn/>Sign in</Button></Link>
