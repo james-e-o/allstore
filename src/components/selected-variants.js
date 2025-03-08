@@ -256,7 +256,7 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
                  <TableRow key={headerGroup.id}>
                    {headerGroup.headers.map((header) => {
                      return (
-                       <TableHead data-value={header.id} className={`${header.id=='item'?"z-30 bg-white border sticky left-0":""}`}  key={header.id}>
+                       <TableHead data-value={header.id} className={`${header.id=='item'?"z-30 bg-white sticky left-0":""}`}  key={header.id}>
                          {header.isPlaceholder
                            ? null
                            : flexRender(
