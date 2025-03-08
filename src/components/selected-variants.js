@@ -28,6 +28,24 @@ export const DisplayVariant =({string})=> {
     )
 }
 
+function combineArrays(arrays, prefix = '', result = []) {
+
+  arrays = arrays.filter(array=>array.length>0)
+
+  if (arrays.length === 0) {
+  // Base case: Add the combination to the result
+  result.push(prefix.slice(1)); // Remove the leading slash
+  return result;
+  }
+
+  const [firstArray, ...restArrays] = arrays; // Destructure the arrays
+  for (const element of firstArray) {
+  combineArrays(restArrays, `${prefix}| ${element.value} `, result); // Recursive call
+  }
+
+  return result;
+}
+
 export default function SelectedVariantitemsTable({table_data,sellingPrice,costPrice}) {
       const [data,setData]=useState(table_data)
       const [sorting, setSorting] = useState([])
@@ -43,17 +61,14 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
       const columns = [
 
           {
-            id: "select",
-            header: ()=><span className="text-[10px] max-w-min">Default</span>,
-            cell: ({ row }) => (<Checkbox className='scale-90' checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)}/>),
-            enableSorting: false,
-            enableHiding: false,
-            size:25,
-          },
-          {
             accessorKey: "item",
             header:()=><div className="text-center">{isMobile ?"Values":"Option values"}</div>,
-            cell: ({ row }) => (<div className="uppercase "><DisplayVariant string={row.getValue("item")} /></div>),
+            cell: ({ row }) => (<div className="uppercase px-2 gap-7 md:min-w-44 min-w-32 flex justify-start ">
+                <Checkbox className='scale-90' checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)}/>
+                <div className="flex-grow flex justify-start">
+                  <DisplayVariant string={row.getValue("item")} />
+                </div>
+              </div>),
             enableHiding: false,
           },
           {
@@ -113,45 +128,53 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
       ]
      
      
-    const table = useReactTable({
-      data,
-      columns,
-      onSortingChange: setSorting,
-      onColumnFiltersChange: setColumnFilters,
-      getCoreRowModel: getCoreRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
-      getSortedRowModel: getSortedRowModel(),
-      getFilteredRowModel: getFilteredRowModel(),
-      onColumnVisibilityChange: setColumnVisibility,
-      onRowSelectionChange: setRowSelection,
-      state: {
-        sorting,
-        columnFilters,
-        columnVisibility,
-        rowSelection,
-      },
-      meta : {
-        updateState : (rowIndex, columnId, value)=>{
-          setData(prev=>prev.map((row,index)=>(
-            index===rowIndex?{...row,[columnId]:value}:row
-          )))
+      const table = useReactTable({
+        data,
+        columns,
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
+        onRowSelectionChange: setRowSelection,
+        state: {
+          sorting,
+          columnFilters,
+          columnVisibility,
+          rowSelection,
+        },
+        meta : {
+          updateState : (rowIndex, columnId, value)=>{
+            setData(prev=>prev.map((row,index)=>(
+              index===rowIndex?{...row,[columnId]:value}:row
+            )))
+          }
         }
+      })
+
+      function combineVariants(){
+        let arrays = table_data.map((item,index)=>([...item.values]))
+              
+        const combinedArray = combineArrays(arrays).map(item=>item.startsWith('|')?item.slice(1):item);
+        console.log(combinedArray);
+        setData(combinedArray.map((item,index)=>({item:item,sp:sellingPrice,cp:costPrice,sku:`SKU-${index}`})))
       }
-    })
    
     
        // Detect screen size
-       useEffect(() => {
-         const handleResize = () => {
-           setIsMobile(window.innerWidth <= 768); // Mobile breakpoint at 768px
-         };
-     
-         handleResize(); // Check initial size
-         window.addEventListener('resize', handleResize); // Listen for resize events
-         
-         setData(table_data.flatMap(option=>option.values).map((item,index)=>({item:item.value,sp:sellingPrice,cp:costPrice,sku:`SKU-${index}`})))
-         console.log(table_data.flatMap(option=>option.values).map((item,index)=>({item:item.value,sp:sellingPrice,cp:costPrice,sku:`SKU-${index}`})))
-         return () => window.removeEventListener('resize', handleResize);
+      useEffect(() => {
+        const handleResize = () => {
+          setIsMobile(window.innerWidth <= 768); // Mobile breakpoint at 768px
+        };
+    
+        handleResize(); // Check initial size
+        window.addEventListener('resize', handleResize); // Listen for resize events
+        
+        combineVariants()
+
+        return () => window.removeEventListener('resize', handleResize);
 
        }, [table_data])
    
@@ -175,14 +198,12 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
      if(isClient)
      return (
        <div className="w-full text-10px">
-         <div className="flex items-center  justify-between gap-2 py-4">
-           <Input placeholder="Search option..." value={(table.getColumn("item")?.getFilterValue()) ?? ""}
-             onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-sm text-10px"
-           />
+         <div className="flex items-center  justify-between gap-2 pb-1 pt-4">
+           <p className="text-start px-7 font-semibold">Variant combinations</p>
            <div className="flex items-center gap-2">
              <DropdownMenu>
                <DropdownMenuTrigger asChild>
-                 <Button variant="outline" className="ml-auto px-2">
+                 <Button variant="outline" className="ml-auto h-7 px-2">
                  {!isMobile?'Filter':''} <Filter />
                  </Button>
                </DropdownMenuTrigger>
@@ -205,7 +226,7 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
              </DropdownMenu>
             {!isMobile? <DropdownMenu>
                <DropdownMenuTrigger asChild>
-                 <Button variant="outline" className="ml-auto px-2">
+                 <Button variant="outline" className="ml-auto h-7 px-2">
                  {!isMobile?'Columns':''} <Columns3 />
                  </Button>
                </DropdownMenuTrigger>
@@ -228,15 +249,14 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
              </DropdownMenu>:""}
            </div>
          </div>
-         <div className="rounded-md border md:border-none">
+         <div className="rounded-md border md:border-none shadow-inner shadow-white">
            <Table className={` md: w-full overflow-x-scroll`}>
-             
               <TableHeader>
                {table.getHeaderGroups().map((headerGroup) => (
                  <TableRow key={headerGroup.id}>
                    {headerGroup.headers.map((header) => {
                      return (
-                       <TableHead data-value={header.id} className={`${header.id=='item'?"bg-green-300 z-30 sticky left-9":""} ${header.id=='select'?"bg-blue-300 z-30 sticky left-0":""}`}  key={header.id}>
+                       <TableHead data-value={header.id} className={`${header.id=='item'?"z-30 bg-white border sticky left-0":""}`}  key={header.id}>
                          {header.isPlaceholder
                            ? null
                            : flexRender(
@@ -259,7 +279,7 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
                      {row.getVisibleCells().map((cell,index) => (
                        <TableCell 
                          data-value={row.getVisibleCells().indexOf(cell)==index&&cell.id.split('_')[1]}  
-                         className={`${cell.column.id=='item'?"bg-green-300 z-30 sticky left-9":""} ${cell.column.id=='select'?"bg-blue-300 z-30 sticky left-0":""}`}
+                         className={`${cell.column.id=='item'?"z-30 bg-white shadow-xl sticky left-0":""}`}
                          key={cell.id}
                          >
                          
@@ -318,7 +338,7 @@ export default function SelectedVariantitemsTable({table_data,sellingPrice,costP
     const [value,setValue]=useState(initialValue)
     const updateData = () => table.options.meta?.updateState(row.index,column.id,value)
     return (
-         <Input value={value} onBlur={updateData} className=" md:  min-w-64 h-6" onChange={({target})=>{setValue(target.value)}} />
+         <Input value={value} onBlur={updateData} className=" md:  min-w-40 h-6" onChange={({target})=>{setValue(target.value)}} />
     )
   }
 

@@ -41,13 +41,6 @@ export default function Variant ({sellingPrice,costPrice}){
                {..._sizeValue,price:e.target.value}
           )))
      }
-
-     useEffect(()=>{
-         console.log(newProduct.optionsets)
-     },[newProduct])
-     useEffect(()=>{
-        
-     },[customVariants,colorValues,sizeValues])
      
      return(
           <div  className="flex p-2 bg-purple-50/70 border border-white/60 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">

@@ -9,7 +9,7 @@ const WeightSelection = () => {
 
      const {newProduct,setNewProduct} = useContext(newProductContext)
      const weightMeasurement = [{name:'kilograms',value:1,short:"kg"},{name:'grams',value:1000,short:"g"},{name:'milligrams',value:1000000,short:"mg"}]
-     const [selected,setSelected]=useState(weightMeasurement[0])
+     const [selected,setSelected]=useState(weightMeasurement[0].short)
      const [weightValue,setWeightValue] = useState ('')
 
      useEffect(()=>{
@@ -27,7 +27,7 @@ const WeightSelection = () => {
                          <DropdownMenuContent align="end">
                               <DropdownMenuSeparator />
                               {weightMeasurement.map((unit,index)=>(
-                                   <DropdownMenuItem key={index} onClick={(e) =>{setSelected(unit)}} >
+                                   <DropdownMenuItem key={index} onClick={(e) =>{setSelected(unit.short)}} >
                                         {unit.name}
                                    </DropdownMenuItem>
                               ))}

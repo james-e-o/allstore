@@ -62,7 +62,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
   },[])
 
   return (
-    <div id="sidebar" className={`z-30 md:w-fit border-r w-0 p-0 relative`}>
+    <div id="sidebar" className={`z-[100] md:w-fit border-r w-0 p-0 relative`}>
       <div data-open={sidebarOpen} className={`flex flex-col justify-between p-0 relative transition-all ease-out duration-200 data-[open=true]:ease-in-out data-[open=true]:duration-300 bg-[#fafbfc] h-full ${sidebarOpen ? "w-[60svw] sm:w-[35svw] md:w-48" : "w-0 md:w-[2.75rem] "}`}>
         <SidebarHeader className={`p-6 h-fit overflow-x-hidden ${sidebarOpen ? " " : "w-[2.7rem]"}`}>
           <div className="flex justify-center items-center">
@@ -82,7 +82,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
                       <Button size='xs' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?toggleDrop():item.sub_content==''?wrap():'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),wrap()):"",console.log(activeMenu,collapsible)}}  className='w-full text-core_contrast hover:bg-[#e7e7e7] relative border-none data-[active=true]:border shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
                         <span className=" flex w-full border-none items-center">
                           {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 md:scale-90 ml-[3px]"/>}
-                          <span className="w-fit ">{item.title}</span>
+                          <span className="w-fit font-semibold ">{item.title}</span>
                         </span>
                       </Button>
                     </Link>
@@ -90,7 +90,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
                     <Button size='xs' data-mobile={sidebarOpen} data-active={item.title==activeMenu} variant={'ghost'} onClick={()=>{setActiveMenu(item.title),!sidebarOpen&&item.sub_content!=''?openSidebar():"",item.sub_content!=''?toggleDrop():item.sub_content==''?wrap():'',sidebarOpen&&item.sub_content!=''?"":sidebarOpen&&!innerWidth?(closeSidebar(),wrap()):"",console.log(activeMenu,collapsible)}}  className='w-full text-core_contrast hover:bg-[#e7e7e7] relative border-none data-[active=true]:border shadow-none outline-none hover:text-black transition-all ease-in-out data-[mobile=true]:duration-75 duration-200 data-[mobile=true]:rounded-md rounded-none'>
                       <span className=" flex w-full border-none items-center">
                         {item.icon && <item.icon onClick={(e)=>{item.sub_content ?toggleSidebar():""}} className="mr-5 md:scale-90 ml-[3px]"/>}
-                        <span className="w-fit">{item.title}</span>
+                        <span className="w-fit font-semibold">{item.title}</span>
                       </span>
                   </Button>
                     }
@@ -101,7 +101,7 @@ const AppSidebar = ({sidebarOpen,toggleSidebar,closeSidebar,openSidebar,collapsi
                             <button size='sm' onClick={()=>{innerWidth?"":(closeSidebar(),wrap())}} variant={'ghost'} className='relative w-full justify-start border-none shadow-none outline-none hover:text-black px-1px py-2px rounded-md text-core_contrast hover:bg-[#e7e7e7]'>
                               <span className=" flex justify-start gap-1 items-center text-start px-1 ">
                                 {sub.icon && <sub.icon className='p-1 h-5 w-5'/>}
-                                <span className="w-fit">{sub.title}</span>
+                                <span className="w-fit font-semibold">{sub.title}</span>
                               </span>
                             </button>
                           </Link>
