@@ -128,7 +128,7 @@ const AddImage = () => {
   return (
      <DndProvider backend={HTML5Backend}>
      <div className=" my-2 md:flex-row flex-col gap-3 h-fit flex ">
-          <div className={`inset-0 bg-black/60 flex justify-center items-center fixed ${customDialog?"z-50":"-z-10"}`}>
+          <div className={`inset-0 bg-black/60 flex justify-center items-center fixed ${customDialog?"z-[200]":"-z-10"}`}>
                <div  className="flex bg-white flex-col gap-0 overflow-hidden justify-between w-11/12 md:w-[75%] max-w-[90%] md:max-w-[75%] h-5/6 md:h-[75%] px-3 md:px-6 pb-2 pt-3 rounded-lg ">
                     <div><div className=' h-fit border-b p-1'>
                          <p className="p-1x float-right h-fit flex justify-end items-center" onClick={()=>setCustomDialog(false)}>
@@ -139,11 +139,11 @@ const AddImage = () => {
                     <Tabs defaultValue='files' className="flex md:flex-row flex-col w-full overflow-hidden flex-grow p-1px my-1 items-start gap-0">
                          <div className="flex md:flex-col md:items-center items-start justify-start w-fit md:w-[30%] bg-white h-fit md:h-full">
                               
-                              <CldUploadWidget uploadPreset='nexshelf_image' onError={handleError} onSuccess={handleSuccess}>
+                              {/* <CldUploadWidget uploadPreset='nexshelf_image' onError={handleError} onSuccess={handleSuccess}>
                                    {({open})=>{
                                         return <Button className='md:mb-6 rounded-2xl h-8 px-3 md:mt-8 ' onClick={()=>open()}><Plus className=""/>Upload </Button>
                                    }}
-                              </CldUploadWidget>
+                              </CldUploadWidget> */}
                               {error && (
                                    toast({
                                         description: "Your message has not been sent.",

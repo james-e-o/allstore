@@ -43,7 +43,7 @@ export default function Variant ({sellingPrice,costPrice}){
      }
      
      return(
-          <div  className="flex p-2 bg-purple-50/70 border border-white/60 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
+          <div  className="flex p-2 bg-blue-50 border border-white/60 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
                <p className="  font-Voces font-semibold ">Manage product variants on store</p>
                <div className="mt-3 overflow-clip rounded-lg bg-transparent shadow-sm">
                     {newProduct.optionsets&&newProduct.optionsets.map((set,index)=>(

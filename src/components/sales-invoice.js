@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/components/ui/table"
 import {DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import { ArrowUpDown, ChevronDown, CirclePlus, Columns3, Filter, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown, CircleMinus, CirclePlus, Columns3, Filter, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {ColumnDef,ColumnFiltersState,SortingState,VisibilityState,flexRender,getCoreRowModel,getFilteredRowModel,getPaginationRowModel,getSortedRowModel,useReactTable,} from "@tanstack/react-table"
@@ -38,13 +38,14 @@ export const DisplayVariant =({string})=> {
 }
 
 const tableFormat = {
-     barcode:"",
-     item:"",
-     price:"",
-     quantity:"",
-     discount:"",
-     'stock bal.':"",
+    item:"test product",
+    barcode:"kilimau",
+    pInfo:""
 }
+
+// const tableArray =[tableFormat]
+
+// const multiplied = Array.from({ length: 17 }).map(() => ({ ...tableFormat[0] }));
 
 export default function SslesInvoiceData ({}) {
       const [data,setData]=useState([tableFormat])
@@ -81,35 +82,53 @@ export default function SslesInvoiceData ({}) {
           {
             accessorKey: "item",
             header:()=><div className="text-start">{"Items"}</div>,
-            cell: <EditableCell minWidth={'150px'} />,
+            cell: <EditableCell/> ,
             enableHiding: false,
           },
           {
             accessorKey: "barcode",
-            header: ()=><div className="text-start capitalize w-fit">barcode</div>,
-            cell: ({ row }) => (<div className=" lowercase text-right min-w-max ">{row.getValue("barcode")}</div>)
+            header: ()=><div className="text-start capitalize w-14">barcode</div>,
+            cell: ({ row }) => (<div className=" lowercase text-right w-14 "></div>)
           },
           {
-            accessorKey: "price",
-            header: "Price",
-            cell: <EditableCell width={'70px'} />,
+            accessorKey: "pInfo",
+            header: <div className="px-2 gap-3 text-right grid grid-cols-[5rem_3.2rem_3.2rem_3.2rem] ">
+                <p className="flex justify-center items-center">Price</p>
+                <p className="flex justify-center items-center">Quantity</p>
+                <p className="flex justify-center items-center">Discount</p>
+                <p className="flex justify-center items-center">Stock</p>
+            </div>,
+            cell: ({ row }) => (<div className="px-2 gap-3 text-right grid grid-cols-[5rem_3.2rem_3.2rem_3.2rem] ">
+                <EditableCell />
+                <EditableCell />
+                <EditableCell />
+                <div className=" lowercase text-center min-w-max ">K</div>
+              </div>),
+            // size:64,
           },
-          {
-            accessorKey: "quantity",
-            header: "Quantity",
-            cell: <EditableCell width={'50px'} />,
-          },
-          {
-            accessorKey: "discount",
-            header:()=><div className="text-start">{"Discount"}</div>,
-            cell: <EditableCell width={'70px'} />,
-          },
-          {
-               accessorKey: "stock bal.",
-               header: ()=><div className="text-right capitalize w-fit">Stock</div>,
-               cell: ({ row }) => (<div className=" lowercase text-start min-w-max ">{row.getValue("['stock bal.']")}</div>),
-               size:25,
-          },
+          // {
+          //   accessorKey: "price",
+          //   header: "Price",
+          //   cell: <EditableCell s_1 width={'4rem'} />,
+          //   size:64,
+          // },
+          // {
+          //   accessorKey: "quantity",
+          //   header: ()=><p className="inline-block max-w-min">Quantity</p>,
+          //   cell: <EditableCell s_2 width={'3rem'} />,
+          //   size:0,
+          // },
+          // {
+          //   accessorKey: "discount",
+          //   header:()=><div className="text-start">{"Discount"}</div>,
+          //   cell: <EditableCell s_2 />,
+          // },
+          // {
+          //      accessorKey: "stock bal.",
+          //      header: ()=><div className="text-right capitalize w-fit">Stock</div>,
+          //      cell: ({ row }) => (<div className=" lowercase text-start min-w-max ">{row.getValue("['stock bal.']")}</div>),
+          //      size:25,
+          // },
           {
             id: "responsive",
             header:({table,column})=>{
@@ -149,41 +168,58 @@ export default function SslesInvoiceData ({}) {
                 }
               </div>)},
           },
-          {
-            id: "actions",
-            enableHiding: false,
-            size:30,
-            cell: ({ row }) => {
-              const payment = row.original
+          // {
+          //   id: "actions",
+          //   enableHiding: false,
+          //   size:30,
+          //   cell: ({ row }) => {
+          //     const payment = row.original
               
-              return (
-                <DropdownMenu className="text-right">
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-7 text-right w-fit p-2">
-                      <span className="sr-only">Open menu</span>
-                      <MoreHorizontal />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem
-                      onClick={() => navigator.clipboard.writeText(payment.id)}
-                      >
-                      Copy payment ID
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>View customer</DropdownMenuItem>
-                    <DropdownMenuItem>View payment details</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )
-            },
-          },
+          //     return (
+          //       <DropdownMenu className="text-right">
+          //         <DropdownMenuTrigger asChild>
+          //           <Button variant="ghost" className="h-7 text-right w-fit p-2">
+          //             <span className="sr-only">Open menu</span>
+          //             <MoreHorizontal />
+          //           </Button>
+          //         </DropdownMenuTrigger>
+          //         <DropdownMenuContent align="end">
+          //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          //           <DropdownMenuItem
+          //             onClick={() => navigator.clipboard.writeText(payment.id)}
+          //             >
+          //             Copy payment ID
+          //           </DropdownMenuItem>
+          //           <DropdownMenuSeparator />
+          //           <DropdownMenuItem>View customer</DropdownMenuItem>
+          //           <DropdownMenuItem>View payment details</DropdownMenuItem>
+          //         </DropdownMenuContent>
+          //       </DropdownMenu>
+          //     )
+          //   },
+          // },
           {
             id: "add",
             enableHiding: false,
-            size:26,
-            cell: <Button variant="ghost" onClick={()=>{}} className="h-7 p-0 text-right w-fit"><CirclePlus className="w-fit"/></Button>
+            header:<Button variant="ghost" onClick={()=>{addRow()}} className="h-7 invisible p-0 text-right w-fit"><CirclePlus className="w-fit"/></Button>,
+            cell: ({row,table})=>{
+              function addRow(){
+                setData(prev => {
+                  const newData = [...prev];
+                  newData.splice(row.index + 1, 0, tableFormat); // Assuming you're adding a single object
+                  return newData;
+                 
+                });
+                console.log(row)
+              }
+              return <Button variant="ghost" onClick={()=>{addRow()}} className="h-7 p-0 text-right w-fit"><CirclePlus className="w-fit"/></Button>}
+          },
+          {
+            id: "remove",
+            enableHiding: false,
+             header:<Button variant="ghost" onClick={()=>{addRow()}} className="h-7 mr-3 invisible p-0 text-right w-fit"><CirclePlus className="w-fit"/></Button>,
+            size:20,
+            cell: <Button variant="ghost" onClick={()=>{}} className="h-7 mr-3 flex justify-center items-center p-0 text-right w-fit"><CircleMinus  className="w-fit"/></Button>
           },
       ]
      
@@ -249,8 +285,8 @@ export default function SslesInvoiceData ({}) {
        
      if(isClient)
      return (
-       <div className="w-full text-10px">
-         <div className="flex items-center  justify-between gap-2 py-1">
+       <div className="w-full h-full flex flex-col text-10px">
+         <div className="flex items-center justify-between gap-2 py-1">
            <Input placeholder="Search option..." value={(table.getColumn("item")?.getFilterValue()) ?? ""}
              onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-sm h-7 text-10px"
            />
@@ -303,14 +339,16 @@ export default function SslesInvoiceData ({}) {
              </DropdownMenu>:""}
            </div>
          </div>
-         <div className="rounded-md border md:border-none">
-           <Table className={` md: w-full`}>
-             <TableHeader>
+         <div className="rounded-md relative flex-grow flex flex-col justify-between overflow-hidden border md:border-none">
+           <Table className={`w-full relative`}>
+             <TableHeader className="">
                {table.getHeaderGroups().map((headerGroup) => (
                  <TableRow key={headerGroup.id}>
                    {headerGroup.headers.map((header) => {
                      return (
-                       <TableHead data-value={header.id}   key={header.id}>
+                       <TableHead data-value={header.id} 
+                       className={`${header.id=='pInfo'?"flex w-fit ":header.id=='item'?"w-full ":""}`}
+                         key={header.id}>
                          {header.isPlaceholder
                            ? null
                            : flexRender(
@@ -323,34 +361,47 @@ export default function SslesInvoiceData ({}) {
                  </TableRow>
                ))}
              </TableHeader>
-             <TableBody className='rounded-md overflow-clip'>
+           </Table>
+           <div className="flex-grow overflow-y-hidden">
+           <Table  twrap={'h-full overflow-y-scroll bg-purple-200'}  className={`w-full scroll-m-[3px] relative`}>
+             <TableBody className='rounded-md'>
+              {/* <div className="overflow-y-scroll w-full bg-red-300"> */}
+                
                {table.getRowModel().rows?.length ? (
                  table.getRowModel().rows.map((row) => (
-                   <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}  className='bg-white overflow-clip table-auto border-b-0 rounded-md mb-1' >
+                   <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}  className='bg-white overflow-clip  border-b-0 rounded-md mb-1' >
                      {row.getVisibleCells().map((cell,index) => (
-                       <TableCell data-value={row.getVisibleCells().indexOf(cell)==index&&cell.id.split('_')[1]}  key={cell.id} >  
-                          <p className='flex'>
+                       <TableCell data-value={row.getVisibleCells().indexOf(cell)==index&&cell.id.split('_')[1]} 
+                        className={`${cell.column.id=='pInfo'?"w-fit flex ":cell.column.id=='item'?"w-full":""} `}
+                        key={cell.id} >  
+                          {/* <p className='flex justify-center items-center w-4'> */}
                             {flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext()
                             )}
-                          </p>                       
+                          {/* </p>                        */}
                        </TableCell>
                      ))}
                    </TableRow>
                  ))
-               ) : (
-                 <TableRow>
+                ) : (
+                  <TableRow>
                    <TableCell
                      colSpan={columns.length}
-                     className="h-24 text-center"
-                   >
+                     className="h-24 whitespace-nowrap text-center"
+                     >
                      No Selected items.
                    </TableCell>
                  </TableRow>
                )}
              </TableBody>
            </Table>
+          </div>
+               
+           <div className=" h-[13%] min-h-16 mt-1 bg-orange-200">
+               wit
+               <p className="p-5">hello</p>
+           </div>
          </div>
          {/* <div className="flex items-center justify-end space-x-2 py-4">
            <div className="flex-1 text-muted-foreground">
@@ -375,18 +426,20 @@ export default function SslesInvoiceData ({}) {
                Next
              </Button>
            </div>
-         </div> */}
+         </div> */}    
        </div>
      )
    }
   //  ₦₦₦₦₦
 
-   const EditableCell =({getValue,row,column,table,width,minWidth})=> {
+   const EditableCell =({row,column,table,getValue})=> {
     const initialValue = getValue
     const [value,setValue]=useState(initialValue)
     const updateData = () => table.options.meta?.updateState(row.index,column.id,value)
     return (
-         <Input style={{width:width?width:"",minWidth:minWidth}} value={value} onBlur={updateData} className=" flex-grow  h-6" onChange={({target})=>{setValue(target.value)}} />
+    
+        <Input value={value} onBlur={updateData} className="w-full px-1 data-[s1=true]:max-w-20 data-[s2=true]:max-w-12 bg-blue-50 py-0 h-6" onChange={({target})=>{setValue(target.value),console.log(getValue)}} />
+
     )
   }
 

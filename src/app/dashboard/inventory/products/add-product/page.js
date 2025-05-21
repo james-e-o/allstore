@@ -62,7 +62,7 @@ const AddProduct = () => {
     },[])
     
     return (
-      <div className="px-1 md:pl-3 md:pr-0 py-1 flex h-full  w-full overflow-x-hidden flex-col">
+      <div className="px-1 md:pl-3 md:pr-0 flex h-full  w-full overflow-x-hidden flex-col">
         <DashboardHeader section={'Add product'} size={'xs'}/>
         <div className="flex w-full justify-end gap-3 my-2 items-center">
           <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ const AddProduct = () => {
             <p className=" text-9px pl-2px">Product information</p>
             <div className="flex flex-col md:flex-row md:justify-between gap-2">
               <div className="flex md:w-4/6 w-full flex-col">
-                <div className="p-2 bg-purple-50/70 border border-white/60 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
+                <div className="p-2 bg-blue-50 border border-white/60 flex-col md:pt-5 md:px-6 md:pb-5 rounded-xl w-full">
                   <p className=" font-Voces pl-2px mb-1 font-semibold ">Product details</p>
                   <InputBox flexdir={'row'} mt value={newProduct.productName} change={({target})=>{setNewProduct(prev=>({...prev,productName:target.value}))}} placeholder={'Product name...'} label={'Product name:'} />
                   <div className="flex flex-col mt-1 md:flex-row md:gap-2 md:items-center">                
@@ -115,12 +115,12 @@ const AddProduct = () => {
               </div>
 
               <div className="flex md:w-[32%] w-full flex-col">
-                <div className="w-full rounded-xl bg-purple-50/70 border border-white/60 p-2 md:px-3 md:py-5">
+                <div className="w-full rounded-xl bg-blue-50 border border-white/60 p-2 md:px-3 md:py-5">
                   <p className=" font-Voces pl-2px mb-1 font-semibold "> Select product category</p>
                     <Categories/>
                 </div>
                 <p className=" text-9px mt-2 mb-1">Store information</p>
-                <div className="flex w-full p-2 md:p-3 bg-purple-50/70 border border-white/60 rounded-xl flex-col">
+                <div className="flex w-full p-2 md:p-3 bg-blue-50 border border-white/60 rounded-xl flex-col">
                   <p className=" text-gray-500 text-9px mb-1 mt-2">Created by: {'staff007'}</p>
                   <div className="flex flex-col gap-1 md:items-start">                
                     <InputBox shortInput label={'Reorder quantity'} type={'number'} mt fit flexdir={'row'} inputDir={'input-reverse'} icon={<span className="text-[10px]">units</span>}/>            
@@ -139,19 +139,19 @@ const AddProduct = () => {
             <div className="flex flex-col md:flex-row md:justify-between gap-3">
               <div className="flex md:w-4/6 w-full flex-col">
 
-                <div className="p-2 bg-purple-50/70 border border-white/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
+                <div className="p-2 bg-blue-50 border border-white/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
                   <p className=" font-Voces font-semibold ">Product description</p>
                   <Tiptap />
                   <p className="mt-4 font-Voces font-semibold ">Media</p>
                   <AddImage />
                 </div>
 
-                <div className="p-2 mt-4 bg-purple-50/70 border border-white/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
+                <div className="p-2 mt-4 bg-blue-50 border border-white/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
                   <p className="  font-Voces font-semibold ">Manage product variants on E-Shop</p>
                     <EshopVariants Prop={newProduct.optionsets}/>
                 </div>
 
-                <div className="p-2 mt-4 bg-purple-50/70 border border-white/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
+                <div className="p-2 mt-4 bg-blue-50 border border-white/60 flex-col md:pt-4 md:px-5 md:pb-5 rounded-xl w-full">
                   <Button onClick={()=>{setEditSEO(true)}}  variant='ghost' size='xs' className='p-0 h-fit float-right'>Edit</Button>
                   <p className="  font-Voces font-semibold ">Search engine optimization</p>
                   <div className={`grid transition-collapse ${editSEO ? " grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
@@ -164,7 +164,7 @@ const AddProduct = () => {
                 </div>
 
               </div>
-              <div className="flex md:w-[32%] w-full bg-purple-50/70 border border-white/60 rounded-xl h-fit p-2 md:px-3 flex-col">
+              <div className="flex md:w-[32%] w-full bg-blue-50 border border-white/60 rounded-xl h-fit p-2 md:px-3 flex-col">
                 <CollapseBox subject={"Warranty"}>
                   <div className="h-fit mt-1">
                     <InputBox textarea row={4} ghost />
@@ -180,7 +180,7 @@ const AddProduct = () => {
 
             </div>
           </section>
-          <div className="p-2 mt-3 bg-purple-50/70 border border-white/60 justify-end md:pt-4 md:px-5 md:pb-4 rounded-xl w-full">
+          <div className="p-2 mt-3 bg-blue-50 border border-white/60 justify-end md:pt-4 md:px-5 md:pb-4 rounded-xl w-full">
             <Button size='sm ' className='py-1 text-xs border float-right px-3'>
                 <Save className="w-4 h-4 mr-1"/>
                 <span className=" font-light">save</span>
@@ -230,7 +230,7 @@ export const Pricing =({optionSets,setOptionSets})=>{
 
   return(
     <div className="">
-      <div className="p-2 bg-purple-50/70 border border-white/60 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
+      <div className="p-2 bg-blue-50 border border-white/60 mt-3 md:mt-5 flex-col md:p-6 rounded-xl w-full">
           <p className=" font-Voces font-semibold ">Pricing</p>
           <div className="flex gap-1 max-h-min items-start flex-col w-full flex-grow">
             <div className="grid gap-1 items-center w-full grid-cols-[_repeat(auto-fit,minmax(200px,_0.8fr))_]">
